@@ -20,8 +20,8 @@
     'hero.l2': { es: 'Compite.', en: 'Compete.' },
     'hero.l3': { es: 'Diviértete.', en: 'Have fun.' },
     'hero.sub': {
-      es: 'Repers convierte el ejercicio en un juego: compite con tus amigos, tan amistoso como tú quieras 😈, y diviértete tanto que ni te das cuenta de que estás entrenando.',
-      en: 'Repers turns exercise into a game: compete with your friends, as friendly as you want 😈, and have so much fun you forget you’re working out.'
+      es: 'Repers convierte el ejercicio en un juego: compite con tus amigos —amistoso o a muerte, tú decides— y diviértete tanto que ni te das cuenta de que estás entrenando.',
+      en: 'Repers turns exercise into a game: compete with your friends — fierce or friendly, your call — and have so much fun you forget you’re working out.'
     },
     'hero.cta1': { es: 'Únete a la beta', en: 'Join the beta' },
     'hero.cta2': { es: 'Dejar feedback', en: 'Leave feedback' },
