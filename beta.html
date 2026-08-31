@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repers — Beta en TestFlight</title>
+  <meta name="description" content="Prueba Repers antes que nadie: únete a la beta por TestFlight.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <!-- ===== Nav ===== -->
+  <nav class="nav">
+    <a class="nav-brand" href="index.html" data-keep-lang>
+      <img src="img/favicon.png" alt="Logo de Repers" width="34" height="34">
+      Repers
+    </a>
+    <div class="nav-links">
+      <div class="lang-toggle" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es">ES</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a class="nav-cta" href="index.html#feedback" data-keep-lang data-i18n="beta.fb">Dejar feedback</a>
+    </div>
+  </nav>
+
+  <!-- ===== Hero beta ===== -->
+  <header class="hero beta-hero">
+    <div class="particles" aria-hidden="true"></div>
+    <div class="hero-logo-wrap">
+      <img class="hero-logo" src="img/logo-480.png" alt="Repers: cabeza 3D con una R" width="480" height="480">
+      <span class="orb orb-1" aria-hidden="true">🚀</span>
+      <span class="orb orb-2" aria-hidden="true">🧪</span>
+    </div>
+    <span class="beta-badge"><span class="dot"></span> <span data-i18n="beta.badge">Beta cerrada · TestFlight</span></span>
+    <h1>
+      <span class="line"><span data-i18n="beta.title1">Sé de los</span></span>
+      <span class="line"><span data-i18n="beta.title2">primeros.</span></span>
+    </h1>
+    <p class="hero-sub" data-i18n="beta.sub">
+      Repers está en beta por TestFlight, la plataforma oficial de pruebas de Apple.
+      Prueba la app antes que nadie y ayúdanos a pulirla.
+    </p>
+    <div class="hero-ctas">
+      <!-- ⚠️ PLACEHOLDER: reemplazar por el link público real cuando se active
+           en App Store Connect (TestFlight → grupo externo → Enable Public Link).
+           Formato: https://testflight.apple.com/join/XXXXXXXX -->
+      <a class="btn btn-primary btn-big" href="https://testflight.apple.com/join/PLACEHOLDER" target="_blank" rel="noopener">
+         <span data-i18n="beta.cta">Abrir en TestFlight</span>
+      </a>
+    </div>
+    <div class="tf-note reveal in">
+      <span aria-hidden="true">📱</span>
+      <span data-i18n="beta.note">
+        La beta es solo para iPhone por ahora. Esta página es temporal: cuando Repers
+        llegue al App Store, el botón te va a llevar directo ahí.
+      </span>
+    </div>
+  </header>
+
+  <!-- ===== Pasos ===== -->
+  <section>
+    <div class="wrap">
+      <div class="reveal">
+        <span class="kicker" data-i18n="beta.how.kicker">Cómo entrar</span>
+        <h2 class="section-title" data-i18n="beta.how.title">En tres toques ya estás jugando</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <h3 data-i18n="beta.1.t">Instala TestFlight</h3>
+          <p data-i18n="beta.1.p">Descarga la app gratuita TestFlight desde el App Store (es de Apple).</p>
+        </div>
+        <div class="step reveal">
+          <h3 data-i18n="beta.2.t">Toca el botón de arriba</h3>
+          <p data-i18n="beta.2.p">El enlace de invitación abre TestFlight con Repers listo para instalar.</p>
+        </div>
+        <div class="step reveal">
+          <h3 data-i18n="beta.3.t">Juega y cuéntanos</h3>
+          <p data-i18n="beta.3.p">¿Algo raro? ¿Algo genial? Déjanos tu feedback en la página principal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="footer-wrap">
+      <a class="nav-brand" href="index.html" data-keep-lang>
+        <img src="img/favicon.png" alt="" width="28" height="28"> Repers
+      </a>
+      <div class="footer-links">
+        <a href="index.html" data-keep-lang data-i18n="beta.back">← Volver a la página principal</a>
+        <a href="index.html#feedback" data-keep-lang data-i18n="beta.fb">Dejar feedback</a>
+      </div>
+      <p class="footer-note" data-i18n="foot.note">© 2026 Repers. Hecho con muchas sentadillas.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>

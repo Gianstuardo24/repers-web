@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repers — Muévete. Compite. Diviértete.</title>
+  <meta name="description" content="Repers convierte el ejercicio en un juego: compite con tus amigos y diviértete tanto que ni te das cuenta de que estás entrenando.">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:title" content="Repers — Muévete. Compite. Diviértete.">
+  <meta property="og:description" content="Retos de movimiento con amigos, avatar 3D y recompensas por cada repetición.">
+  <meta property="og:image" content="img/logo-480.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- ===== Nav ===== -->
+  <nav class="nav">
+    <a class="nav-brand" href="index.html" data-keep-lang>
+      <img src="img/favicon.png" alt="Logo de Repers" width="34" height="34">
+      Repers
+    </a>
+    <div class="nav-links">
+      <a class="nav-link-sec" href="#que-es" data-i18n="nav.que">Qué es</a>
+      <a class="nav-link-sec" href="#como-se-juega" data-i18n="nav.como">Cómo se juega</a>
+      <a class="nav-link-sec" href="#feedback" data-i18n="nav.feedback">Feedback</a>
+      <div class="lang-toggle" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es">ES</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a class="nav-cta" href="beta.html" data-keep-lang data-i18n="nav.beta">Probar la beta</a>
+    </div>
+  </nav>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="particles" aria-hidden="true"></div>
+    <div class="hero-logo-wrap">
+      <img class="hero-logo" src="img/logo-480.png" alt="Repers: cabeza 3D con una R" width="480" height="480">
+      <span class="orb orb-1" aria-hidden="true">⚡</span>
+      <span class="orb orb-2" aria-hidden="true">👟</span>
+      <span class="orb orb-3" aria-hidden="true">🏆</span>
+    </div>
+    <h1>
+      <span class="line"><span data-i18n="hero.l1">Muévete.</span></span>
+      <span class="line"><span data-i18n="hero.l2">Compite.</span></span>
+      <span class="line"><span data-i18n="hero.l3">Diviértete.</span></span>
+    </h1>
+    <p class="hero-sub" data-i18n="hero.sub">
+      Repers convierte el ejercicio en un juego: compite con tus amigos —amistoso o en serio,
+      como te guste— y diviértete tanto que ni te das cuenta de que estás entrenando.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="beta.html" data-keep-lang data-i18n="hero.cta1">Únete a la beta</a>
+      <a class="btn btn-ghost" href="#feedback" data-i18n="hero.cta2">Dejar feedback</a>
+    </div>
+    <a class="hero-scroll" href="#que-es" aria-label="Bajar">↓</a>
+  </header>
+
+  <!-- ===== Ticker ===== -->
+  <!-- Se repite 4 veces la misma tira: con el espaciado en margin (no gap, ver
+       styles.css) cada tramo mide exactamente lo mismo, así translateX(-25%)
+       cae justo donde empieza la siguiente copia — el loop no da saltos ni se
+       queda corto en pantallas anchas. -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>🏃 <b data-i18n="tick.1">Jumping jacks</b></span>
+      <span>🦵 <b data-i18n="tick.2">Sentadillas</b></span>
+      <span>💪 <b data-i18n="tick.3">Flexiones</b></span>
+      <span>🔥 <b data-i18n="tick.4">Elevación de rodillas</b></span>
+      <span>⚡ <b data-i18n="tick.5">+40 tokens ganados</b></span>
+      <span>🎉 <b data-i18n="tick.6">Partida terminada</b></span>
+      <span>🏃 <b data-i18n="tick.1">Jumping jacks</b></span>
+      <span>🦵 <b data-i18n="tick.2">Sentadillas</b></span>
+      <span>💪 <b data-i18n="tick.3">Flexiones</b></span>
+      <span>🔥 <b data-i18n="tick.4">Elevación de rodillas</b></span>
+      <span>⚡ <b data-i18n="tick.5">+40 tokens ganados</b></span>
+      <span>🎉 <b data-i18n="tick.6">Partida terminada</b></span>
+      <span>🏃 <b data-i18n="tick.1">Jumping jacks</b></span>
+      <span>🦵 <b data-i18n="tick.2">Sentadillas</b></span>
+      <span>💪 <b data-i18n="tick.3">Flexiones</b></span>
+      <span>🔥 <b data-i18n="tick.4">Elevación de rodillas</b></span>
+      <span>⚡ <b data-i18n="tick.5">+40 tokens ganados</b></span>
+      <span>🎉 <b data-i18n="tick.6">Partida terminada</b></span>
+      <span>🏃 <b data-i18n="tick.1">Jumping jacks</b></span>
+      <span>🦵 <b data-i18n="tick.2">Sentadillas</b></span>
+      <span>💪 <b data-i18n="tick.3">Flexiones</b></span>
+      <span>🔥 <b data-i18n="tick.4">Elevación de rodillas</b></span>
+      <span>⚡ <b data-i18n="tick.5">+40 tokens ganados</b></span>
+      <span>🎉 <b data-i18n="tick.6">Partida terminada</b></span>
+    </div>
+  </div>
+
+  <!-- ===== Qué es ===== -->
+  <section id="que-es">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="kicker" data-i18n="feat.kicker">Qué es Repers</span>
+        <h2 class="section-title" data-i18n="feat.title">Un party game que te hace sudar</h2>
+        <p class="section-sub" data-i18n="feat.sub">
+          Nada de rutinas aburridas: aquí se juega, se ríe, y cuando te das cuenta… ya entrenaste.
+        </p>
+      </div>
+      <div class="grid">
+        <div class="card reveal">
+          <div class="icon icon-red">🎮</div>
+          <h3 data-i18n="feat.1.t">Retos con amigos</h3>
+          <p data-i18n="feat.1.p">Rondas de jumping jacks, sentadillas, flexiones y más. La suma total de repeticiones gana la partida.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon icon-blue">🧍</div>
+          <h3 data-i18n="feat.2.t">Tu avatar 3D</h3>
+          <p data-i18n="feat.2.p">Un personaje con tu estilo: ropa, zapatillas y accesorios que se ganan jugando.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon icon-yellow">⚡</div>
+          <h3 data-i18n="feat.3.t">Tokens y Market</h3>
+          <p data-i18n="feat.3.p">Cada partida suma tokens. Gástalos en el Reper Market para estrenar looks.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon icon-green">🏆</div>
+          <h3 data-i18n="feat.4.t">Logros y niveles</h3>
+          <p data-i18n="feat.4.p">XP, logros y desafíos que te empujan a moverte un poquito más cada día.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Banda avatar/market ===== -->
+  <section class="band reveal">
+    <div class="wrap">
+      <div>
+        <h2 data-i18n="band.title">Tu look, tus reglas</h2>
+        <p data-i18n="band.p">
+          Remeras, pantalones, zapatillas con estampados propios y accesorios.
+          Cada partida suma tokens para ir desbloqueando piezas nuevas y armar tu look.
+        </p>
+        <div class="chips">
+          <span class="chip" data-i18n="band.c1">👟 Zapatillas con logos</span>
+          <span class="chip" data-i18n="band.c2">🎨 Colores para todo</span>
+          <span class="chip" data-i18n="band.c3">🏆 Skins por logros</span>
+        </div>
+      </div>
+      <div class="band-art">
+        <img src="img/logo-480.png" alt="" aria-hidden="true" width="480" height="480">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Cómo se juega ===== -->
+  <section id="como-se-juega">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="kicker" data-i18n="how.kicker">Cómo se juega</span>
+        <h2 class="section-title" data-i18n="how.title">Tres pasos y a transpirar</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <h3 data-i18n="how.1.t">Arma la partida</h3>
+          <p data-i18n="how.1.p">Invita a tus amigos y elige los movimientos de cada ronda.</p>
+        </div>
+        <div class="step reveal">
+          <h3 data-i18n="how.2.t">Muévete de verdad</h3>
+          <p data-i18n="how.2.p">El teléfono cuenta tus repeticiones mientras compites en vivo.</p>
+        </div>
+        <div class="step reveal">
+          <h3 data-i18n="how.3.t">Gana y equípate</h3>
+          <p data-i18n="how.3.p">Suma tokens, desbloquea logros y lleva tu avatar al próximo nivel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Feedback ===== -->
+  <section id="feedback">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="kicker" data-i18n="fb.kicker">Feedback</span>
+        <h2 class="section-title" data-i18n="fb.title">Cuéntanos qué te parece</h2>
+        <p class="section-sub" data-i18n="fb.sub">
+          Los Repers son amistosos: ideas, bugs, elogios — todo suma. Esta app se construye con la comunidad.
+        </p>
+      </div>
+      <form class="feedback-card reveal" id="feedback-form" novalidate>
+        <label class="field-label" data-i18n="fb.tipo">¿Qué nos quieres contar?</label>
+        <div class="chip-row">
+          <button type="button" class="chip-btn active" data-tipo="idea" data-i18n="fb.t.idea">💡 Una idea</button>
+          <button type="button" class="chip-btn" data-tipo="bug" data-i18n="fb.t.bug">🐛 Un bug</button>
+          <button type="button" class="chip-btn" data-tipo="elogio" data-i18n="fb.t.elogio">❤️ Un elogio</button>
+          <button type="button" class="chip-btn" data-tipo="otro" data-i18n="fb.t.otro">💬 Otra cosa</button>
+        </div>
+        <div class="form-row">
+          <label class="field-label" for="fb-mensaje" data-i18n="fb.msg">Tu mensaje</label>
+          <textarea id="fb-mensaje" maxlength="2000" required data-i18n-ph="fb.msg.ph" placeholder="Escribe con confianza…"></textarea>
+        </div>
+        <div class="form-row">
+          <label class="field-label" for="fb-contacto" data-i18n="fb.contacto">Tu mail (opcional, por si queremos responderte)</label>
+          <input type="email" id="fb-contacto" maxlength="200" autocomplete="email">
+        </div>
+        <!-- honeypot anti-bots -->
+        <div class="hp" aria-hidden="true">
+          <label for="fb-web">Web</label>
+          <input type="text" id="fb-web" tabindex="-1" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary" id="fb-submit" data-i18n="fb.enviar">Enviar feedback</button>
+        <p class="form-msg" id="fb-out" role="status"></p>
+        <p class="form-note" data-i18n="fb.nota">Solo guardamos lo que escribes aquí. Nada más.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="footer-wrap">
+      <a class="nav-brand" href="index.html" data-keep-lang>
+        <img src="img/favicon.png" alt="" width="28" height="28"> Repers
+      </a>
+      <div class="footer-links">
+        <a href="beta.html" data-keep-lang data-i18n="foot.beta">Beta en TestFlight</a>
+        <a href="#feedback" data-i18n="foot.fb">Feedback</a>
+        <a href="#top" data-i18n="foot.top">Volver arriba</a>
+      </div>
+      <p class="footer-note" data-i18n="foot.note">© 2026 Repers. Hecho con muchas sentadillas.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>
