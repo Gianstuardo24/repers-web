@@ -113,6 +113,8 @@
     /* footer */
     'foot.beta': { es: 'Beta en TestFlight', en: 'TestFlight beta' },
     'foot.fb': { es: 'Feedback', en: 'Feedback' },
+    'foot.privacy': { es: 'Privacidad', en: 'Privacy' },
+    'foot.terms': { es: 'Términos', en: 'Terms' },
     'foot.top': { es: 'Volver arriba', en: 'Back to top' },
     'foot.note': {
       es: '© 2026 Repers. Hecho con muchas sentadillas.',
