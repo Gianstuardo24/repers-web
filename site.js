@@ -17,11 +17,11 @@
     'nav.beta': { es: 'Probar la beta', en: 'Try the beta' },
     /* hero */
     'hero.l1': { es: 'Muévete.', en: 'Move.' },
-    'hero.l2': { es: 'Compite.', en: 'Compete.' },
+    'hero.l2': { es: 'Comparte.', en: 'Share.' },
     'hero.l3': { es: 'Diviértete.', en: 'Have fun.' },
     'hero.sub': {
-      es: 'Repers convierte el ejercicio en un juego: compite con tus amigos —amistoso o a muerte, tú decides— y diviértete tanto que ni te das cuenta de que estás entrenando.',
-      en: 'Repers turns exercise into a game: compete with your friends — fierce or friendly, your call — and have so much fun you forget you’re working out.'
+      es: 'Repers convierte el ejercicio en un juego: comparte la partida con tus amigos —en casa o donde sea— y diviértete tanto que ni te das cuenta de que estás entrenando.',
+      en: 'Repers turns exercise into a game: share the fun with your friends — at home or anywhere — and enjoy it so much you forget you’re working out.'
     },
     'hero.cta1': { es: 'Únete a la beta', en: 'Join the beta' },
     'hero.cta2': { es: 'Dejar feedback', en: 'Leave feedback' },
@@ -69,8 +69,8 @@
     },
     'how.2.t': { es: 'Muévete de verdad', en: 'Actually move' },
     'how.2.p': {
-      es: 'El teléfono cuenta tus repeticiones mientras compites en vivo.',
-      en: 'Your phone counts your reps while you compete live.'
+      es: 'El teléfono cuenta tus repeticiones mientras juegan en vivo.',
+      en: 'Your phone counts your reps while you all play live.'
     },
     'how.3.t': { es: 'Gana y equípate', en: 'Win and gear up' },
     'how.3.p': {
