@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Repers</title>
+<!-- 17/10 (Tao: "app independiente"): instalable desde Safari/Chrome con
+     ícono propio. La app nativa no usa estas líneas. -->
+<meta name="apple-mobile-web-app-title" content="Repers">
+<meta name="theme-color" content="#F5F6F8">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <script type="module" crossorigin src="./assets/index-CjwB5Ogc.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/i18n-Bi4_o9Jh.js">
+  <link rel="modulepreload" crossorigin href="./assets/dist-Cnp6P8yH.js">
+  <link rel="modulepreload" crossorigin href="./assets/three.module-UxhUSwNl.js">
+  <link rel="modulepreload" crossorigin href="./assets/pintura-calzado-DRES24nj.js">
+  <link rel="modulepreload" crossorigin href="./assets/preload-helper-HclGiUj8.js">
+  <link rel="modulepreload" crossorigin href="./assets/prod-mrtbH_l5.js">
+  <link rel="modulepreload" crossorigin href="./assets/errores-gud4tay5.js">
+  <link rel="modulepreload" crossorigin href="./assets/calentamiento-diario-BFkSOQ4b.js">
+  <link rel="modulepreload" crossorigin href="./assets/definitions-DlpntO5o.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-MyMyx8Yg.css">
+</head>
+<body>
+
+<!-- PANTALLA DE CARGA PREVIA (1/9, pedido de Tao: "primero que carguen las
+     cosas de Inicio antes de mostrar la pantalla" -- reporto que tocar la
+     tarjeta de Perfil justo al abrir la app "se queda pegado", porque
+     competia con la carga del avatar 3D de Inicio (varios MB) en el mismo
+     hilo. Se saca con opacity/pointer-events (no display:none) para poder
+     hacer un fade suave -- ver .boot-overlay en styles.css -- y la apaga
+     main.js cuando el avatar de Inicio esta listo (o a los 6s como tope,
+     para nunca dejar la app trabada si algo tarda de mas). A proposito
+     SOLO tapa Inicio + Perfil: Ropa y Tienda siguen cargando lazy al
+     tocarlas, como ya hacian y a Tao le parecia bien. -->
+<div id="bootOverlay" class="boot-overlay">
+  <div class="boot-overlay-mark">Repers</div>
+  <div class="loading-spin"></div>
+</div>
+
+<div class="app">
+
+  <!-- ONBOARDING (28/8) — primer recorrido, una sola vez. Ver
+       onboarding.js para el porqué completo. INACTIVO por defecto acá en
+       el HTML (Inicio se queda con class="screen active" tal cual
+       estaba, sin tocar) — initOnboarding() decide en tiempo de arranque
+       si corresponde mostrarlo, según reprs.onboardingVisto.
+       18/9 v2: la activacion del onboarding se difiere hasta que el
+       bootOverlay termine de fundir (ver initOnboarding). Antes se probo
+       .pre-destape aca (mismo patron que home) pero se pisaba mal con
+       el sync de piezas nativas — texto e imagen quedaban ocultos
+       despues del destape. Con la espera del transitionend, el
+       onboarding se activa recien cuando el overlay ya se fue,
+       resolviendo el mismo problema sin tocar la sync. -->
+  <section class="screen" id="screen-onboarding">
+    <!-- 16/9: se removio el boton "Saltar" — todos los pasos son obligatorios
+         ahora (pedido de Tao). Antes eran skippables desde cualquier paso;
+         ahora el usuario debe pasar por los 7 pasos para llegar a Inicio.
+         Motivo: los pasos 3 y 4 (Telefono + Postura) son CRITICOS para que la
+         deteccion de reps funcione bien — si el usuario los salta, primera
+         partida sale mal y probablemente califica mal la app. Ver bitacora
+         16-sep y calibracion-estimaciones para contexto.
+         17/9: se agrega boton "Atras" en la misma altura donde vivia el
+         Saltar (pedido de Tao) — permite volver un paso, pero no permite
+         saltar todo el onboarding. Se oculta en el paso 0 (nada atras). -->
+    <button class="onb-atras" type="button" id="onbBtnAtras" onclick="onboardingAnterior()" data-i18n="html.onboarding.15" hidden>Atrás</button>
+
+    <div class="onb-pasos">
+      <div class="onb-paso active" data-paso="0">
+        <div class="onb-paso-cuerpo">
+          <video class="onb-video-bienvenida" id="onbVideoBienvenida" src="./bienvenida.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.02">Muévete, compite y diviértete</h1>
+          <p class="onb-sub" data-i18n="html.onboarding.03">Cada ejercicio real que hagas mueve a tu Reper — así de simple.</p>
+        </div>
+      </div>
+      <div class="onb-paso" data-paso="1">
+        <div class="onb-paso-cuerpo">
+          <!-- 16/9 rediseno de Tao: visual del paso 2 con 4 tarjetas azul-tinto
+               (emoji + nombre en mayusculas) en grid 2x2, mas 2 pills debajo
+               (pasos y calorias con emoji). Comunica en un vistazo que contamos
+               los 4 ejercicios + stats diarias del dia. -->
+          <div class="onb-esfuerzo-visual" aria-hidden="true">
+            <div class="onb-esfuerzo-grid">
+              <div class="onb-esfuerzo-tarjeta">
+                <img class="onb-esfuerzo-silueta" id="onbEsfuerzoJacks" alt="" hidden>
+                <span class="onb-esfuerzo-nombre" data-i18n="html.moves.04">Jacks</span>
+              </div>
+              <div class="onb-esfuerzo-tarjeta">
+                <img class="onb-esfuerzo-silueta" id="onbEsfuerzoSentadillas" alt="" hidden>
+                <span class="onb-esfuerzo-nombre" data-i18n="html.moves.06">Sentadillas</span>
+              </div>
+              <div class="onb-esfuerzo-tarjeta">
+                <img class="onb-esfuerzo-silueta" id="onbEsfuerzoFlexiones" alt="" hidden>
+                <span class="onb-esfuerzo-nombre" data-i18n="html.moves.08">Flexiones</span>
+              </div>
+              <div class="onb-esfuerzo-tarjeta">
+                <img class="onb-esfuerzo-silueta" id="onbEsfuerzoRodillas" alt="" hidden>
+                <span class="onb-esfuerzo-nombre" data-i18n="html.moves.10">Rodillas</span>
+              </div>
+            </div>
+            <div class="onb-esfuerzo-pills">
+              <span class="onb-esfuerzo-pill"><svg class="onb-esfuerzo-pill-icono onb-pill-pasos" viewBox="0 0 24 24" aria-hidden="true"><rect x="12.6" y="2.2" width="7" height="10.6" rx="3.5" transform="rotate(8 16.1 7.5)"/><rect x="14" y="14.6" width="5" height="4.6" rx="2.2" transform="rotate(8 16.5 16.9)"/><rect x="4.4" y="6.6" width="7" height="10.6" rx="3.5" transform="rotate(-8 7.9 11.9)"/><rect x="5.6" y="19" width="5" height="4.6" rx="2.2" transform="rotate(-8 8.1 21.3)"/></svg><span data-i18n="data.stats_diarias.pasos">Pasos</span></span>
+              <span class="onb-esfuerzo-pill"><svg class="onb-esfuerzo-pill-icono onb-pill-calorias" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.3 2.2s.7 2.5.7 4.5c0 1.93-1.26 3.5-3.2 3.5-1.94 0-3.4-1.57-3.4-3.5l.03-.34C5.53 8.6 4.4 11.5 4.4 14.7c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5c0-5.05-2.43-9.55-6.1-12.5z"/></svg><span data-i18n="data.stats_diarias.calorias">Calorías</span></span>
+            </div>
+          </div>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.04">Tu esfuerzo, tu progreso</h1>
+          <p class="onb-sub" data-i18n="html.onboarding.05">Contamos tus jacks, sentadillas, flexiones y rodillas — más tus pasos y calorías del día.</p>
+        </div>
+      </div>
+      <!-- NUEVO 16/9: paso obligatorio "Como ubicar el telefono" — el mismo
+           contenido que screen-condiciones (foto telefono.jpg + regla de
+           60-75cm), pero traido al onboarding para que TODO nuevo usuario lo
+           vea antes de su primera partida. Antes solo se veia si tocaban el
+           boton (i) de Inicio. -->
+      <div class="onb-paso" data-paso="2">
+        <div class="onb-paso-cuerpo">
+          <img class="onb-imagen-telefono" id="onbImgTelefono" alt="" aria-hidden="true" hidden>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.11">Cómo ubicar el teléfono</h1>
+          <p class="onb-sub" data-i18n="html.onboarding.12">Cámara frontal, a 60-75 cm y con tu cuerpo entero visible. Así la detección de repeticiones es precisa.</p>
+        </div>
+      </div>
+      <!-- NUEVO 16/9: paso obligatorio "Postura correcta" — grid 2x2 con las
+           mismas 4 fotos que el carrusel de screen-condiciones. Version
+           simplificada (sin swipe/dots): la idea es sembrar la nocion de
+           "hay postura correcta", el detalle esta en (i) de Inicio. -->
+      <div class="onb-paso" data-paso="3">
+        <div class="onb-paso-cuerpo">
+          <div class="onb-postura-carrusel" id="onbPosturaCarrusel" aria-hidden="true">
+            <div class="onb-postura-slide"><img id="onbImgJacks" alt="" hidden></div>
+            <div class="onb-postura-slide"><img id="onbImgSentadillas" alt="" hidden></div>
+            <div class="onb-postura-slide"><img id="onbImgFlexiones" alt="" hidden></div>
+            <div class="onb-postura-slide"><img id="onbImgRodillas" alt="" hidden></div>
+          </div>
+          <div class="onb-postura-nav">
+            <button class="onb-postura-flecha" id="onbPosturaFlechaIzq" type="button" aria-label="Anterior">&lsaquo;</button>
+            <div class="onb-postura-dots" id="onbPosturaDots"></div>
+            <button class="onb-postura-flecha" id="onbPosturaFlechaDer" type="button" aria-label="Siguiente">&rsaquo;</button>
+          </div>
+          <p class="onb-postura-label" id="onbPosturaLabel"></p>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.13">Postura correcta</h1>
+          <p class="onb-sub" data-i18n="html.onboarding.14">Aprende la técnica de cada ejercicio antes de jugar. El detalle está en el botón ⓘ arriba en Inicio.</p>
+        </div>
+      </div>
+      <div class="onb-paso" data-paso="4">
+        <div class="onb-paso-cuerpo">
+          <!-- 17/9 (tarde): la racha vuelve a ser video en loop (nuevo asset
+               con la llamita del 3, re-encodeado sobre fondo #F3F4F7 uniforme
+               para que funda sin bordes visibles). -->
+          <video class="onb-video-racha" id="onbVideoRacha" src="./racha.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.09">Cuida tu racha</h1>
+          <p class="onb-sub" data-i18n="html.onboarding.10">Cada día que entrenas suma: haz el calentamiento más una Partida Completa — o 4 rondas sueltas — y tu racha sigue creciendo.</p>
+        </div>
+      </div>
+      <div class="onb-paso" data-paso="5">
+        <div class="onb-paso-cuerpo">
+          <img class="onb-imagen" id="onbImgEspejo" alt="" aria-hidden="true" hidden>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.07">Ganas tokens jugando</h1>
+          <p class="onb-sub" data-i18n="html.onboarding.08">Úsalos en el Reper Market para personalizar tu Reper con ropa y estilos nuevos.</p>
+        </div>
+      </div>
+      <!-- 19/9 (Tao — advertencia de salud): penultimo paso del onboarding.
+           Se agrego un paso obligatorio con disclaimer de seguridad para
+           ejercicio fisico. Icono sutil arriba + texto scrolleable si
+           excede el alto (max-height con overflow-y auto). Se aclara que
+           la intensidad depende de cuanto la persona se exija a si misma.
+           Boton "Entendido" avanza al siguiente paso (Nombre). El mismo
+           contenido se muestra tambien desde Perfil → "Aviso de salud"
+           via #screen-aviso-salud. -->
+      <div class="onb-paso onb-paso-salud" data-paso="6">
+        <div class="onb-paso-cuerpo">
+          <div class="onb-salud-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3l9.5 17H2.5L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M12 10v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="12" cy="17.5" r="0.9" fill="currentColor"/>
+            </svg>
+          </div>
+          <h1 class="onb-titulo" data-i18n="html.onboarding.salud_titulo">Antes de empezar</h1>
+          <div class="onb-salud-contenido">
+            <p class="onb-salud-parrafo" data-i18n="html.onboarding.salud_intro">Repers incluye ejercicio fisico cuya intensidad depende de cuanto te exijas a ti mismo (jumping jacks, sentadillas, flexiones y elevacion de rodillas).</p>
+            <p class="onb-salud-parrafo onb-salud-parrafo-fuerte" data-i18n="html.onboarding.salud_consulta">Consulta con tu medico antes de usar la app si:</p>
+            <ul class="onb-salud-lista">
+              <li data-i18n="html.onboarding.salud_cond1">Tienes problemas cardiacos o hipertension</li>
+              <li data-i18n="html.onboarding.salud_cond2">Estas embarazada o en post-parto reciente</li>
+              <li data-i18n="html.onboarding.salud_cond3">Tienes lesiones o dolor articular activo</li>
+              <li data-i18n="html.onboarding.salud_cond4">Estas recuperandote de una cirugia</li>
+              <li data-i18n="html.onboarding.salud_cond5">Cualquier condicion medica que limite el ejercicio</li>
+            </ul>
+            <p class="onb-salud-parrafo" data-i18n="html.onboarding.salud_durante">Durante los ejercicios: detente si sientes mareo, dolor en el pecho, falta de aire o cualquier molestia.</p>
+            <p class="onb-salud-parrafo onb-salud-parrafo-legal" data-i18n="html.onboarding.salud_legal">Repers no reemplaza consejo medico profesional. Al usar la app, aceptas que lo haces bajo tu propia responsabilidad.</p>
+          </div>
+        </div>
+      </div>
+      <div class="onb-paso onb-paso-nombre" data-paso="7">
+        <!-- 17/9 (tarde v2): paso 6 (Nombre) — reemplazado el video mp4
+             por PNG transparente del R + animacion CSS de entrada
+             (bounce/scale + fade), Opcion A propuesta por Tao. Ver
+             onboarding.js (src del img) y styles.css (@keyframes
+             r-entrance + cuerpo fade con animation-delay). Ventaja: 3x
+             mas liviano, escalable a cualquier tamano de pantalla,
+             cero decode de video, se siente nativo. -->
+        <img class="onb-r-logo" id="onbRLogo" alt="" aria-hidden="true" hidden>
+        <div class="onb-paso-cuerpo onb-cuerpo-nombre" id="onbCuerpoNombre">
+          <h1 class="onb-titulo" data-i18n="html.onboarding.06">¿Cómo te llamamos?</h1>
+          <p class="onb-sub" data-i18n="html.profile.03">Un apodo para ti — es local a este dispositivo, nunca se comparte ni cambia cómo te ven otros jugadores.</p>
+          <div class="perfil-campo" style="margin-top:14px;">
+            <input class="perfil-campo-input" id="onbNombreInput" type="text" placeholder="Tu nombre" data-i18n-placeholder="html.profile.attr.placeholder.01" maxlength="24" autocomplete="off" autocapitalize="words" spellcheck="false">
+          </div>
+          <!-- 18/9 (Tao: filtro de vulgaridad): aviso que aparece al intentar
+               avanzar con un nombre grosero. Pieza nativa registrada en
+               piezas-nativas-vitrina.js como 'onboarding-nombre-aviso'. -->
+          <div class="onb-nombre-aviso" id="onbNombreAviso" data-i18n="js.perfil.nombre_no_permitido">Ese nombre no está permitido</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="onb-dots">
+      <span class="onb-dot on"></span>
+      <span class="onb-dot"></span>
+      <span class="onb-dot"></span>
+      <span class="onb-dot"></span>
+      <span class="onb-dot"></span>
+      <span class="onb-dot"></span>
+      <span class="onb-dot"></span>
+      <span class="onb-dot"></span>
+    </div>
+    <div class="home-actions">
+      <button class="btn btn-primary" type="button" id="onbBtnSiguiente" onclick="onboardingSiguiente()">Siguiente</button>
+    </div>
+  </section>
+
+  <!-- .pre-destape (4/9, tarea 1 del plan de eficiencia): el contenido DOM
+       de Inicio (tarjetas, botones, chips, escena) nace INVISIBLE y se revela
+       en el MISMO instante del flip nativo (transitionend del fundido del
+       overlay de carga) — antes se traslucia gradualmente durante el fade de
+       0.4s y las piezas nativas/avatar llegaban recien al final: "cargan
+       primero las tarjetas y despues el slogan y el avatar". La clase la
+       saca destaparBootOverlay() en main.js; visibility (no display) para
+       que el layout ya este medido y las piezas nativas puedan armarse
+       debajo del overlay como siempre. -->
+  <section class="screen active pre-destape" id="screen-home">
+
+
+      <div class="home-topbar">
+        <div class="home-eyebrow" data-i18n="html.home.01">Repers</div>
+        <!-- AVISO DE CONDICIONES (23/8, pedido de Tao): un ❕discreto a la
+             derecha del logo, arriba del chip de Logros, que abre la pantalla
+             de condiciones para ganar tokens (la misma a la que ya llevan la
+             config de partida y el Calentamiento — un solo lugar para la
+             regla, ver condiciones-screen.js / data/condiciones.js). -->
+        <button class="cond-aviso-btn" type="button" onclick="verCondiciones('screen-home')" aria-label="Condiciones para ganar tokens" data-i18n-aria-label="html.home.attr.aria-label.01">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.6"/><path d="M12 7.5v6" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1"/></svg>
+        </button>
+        <!-- Tarjeta de NIVEL: segunda fila del encabezado, debajo de "REPERS" y
+             pegada al borde IZQUIERDO (4/9: antes a la derecha; Tao pidió cambiarla
+             de lado sobre la foto de referencia, donde la tarjeta de nombre/nivel
+             cuelga bajo el logo). Va colgada del topbar (absolute) y no del flujo:
+             si ocupara alto empujaría toda la escena hacia abajo y el avatar con
+             ella. Se declara acá, después del logo y antes de .home-pills, pero su
+             posición la fija el CSS, no el orden.
+             XP real desde el 23/8 (nivel-jugador.js): "Nivel 1 · 0/100" es el
+             default honesto para un jugador sin XP todavía, no un placeholder
+             — se sobreescribe con la primera pintada, tenga o no red. -->
+        <!-- Chip de LOGROS: la OTRA punta de esa misma segunda fila. Cuelga del
+             mismo topbar con el mismo offset vertical que .level-card, pero pegado al
+             borde DERECHO (4/9: antes a la izquierda, ver .level-card arriba) —
+             Nivel a la izquierda, Logros a la derecha, cada uno en su esquina. SIN
+             número resumen a propósito (se probó "14 de 36" y se sacó): el avance
+             por logro se ve al entrar y en ningún otro lado. -->
+        <button class="logros-chip" type="button" onclick="entrarALogros()">
+          <!-- Puntito rojo: hay niveles alcanzados SIN reclamar (lo prende y
+               apaga logros.js). Es la invitación a entrar — el pago ahora es
+               manual, con el botón Reclamar de cada fila. -->
+          <span class="logros-chip-punto" hidden aria-hidden="true"></span>
+          <svg class="logros-chip-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0V4z"/><path d="M8 5.5H5.6A2.1 2.1 0 008 9.2M16 5.5h2.4A2.1 2.1 0 0116 9.2"/><path d="M12 13.2v3.3M9.4 20h5.2"/></svg>
+          <span data-i18n="html.home.02">Logros</span>
+          <svg class="logros-chip-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/></svg>
+        </button>
+        <!-- El chip de AMIGOS que vivia aca (1/10) se mudo a la columna
+             derecha de la escena (.home-der, tanda C 8/10) junto con su
+             punto rojo #amigosChipPunto. CSS .amigos-chip queda sin uso. -->
+        <div class="level-card">
+          <!-- Nombre local (4/9, pedido de Tao sobre la foto de referencia):
+               se muda ACA desde .home-nombre-flotante, que flotaba sobre la
+               cabeza del avatar — mismo dato, mismo pintarNombreEnInicio()
+               (perfil.js), que solo busca [data-nombre-local] y no le
+               importa en qué elemento viva. Sin nombre guardado, oculto —
+               no se inventa un "Jugador". -->
+          <div class="level-card-nombre" data-nombre-local hidden></div>
+          <div class="level-card-text" data-i18n="html.home.03">Nivel 1 · 0/100</div>
+          <div class="level-card-track"><div class="level-card-fill"></div></div>
+        </div>
+        <!-- CADENA de píldoras del encabezado: grupo único anclado al borde derecho, con
+             gap fijo entre elementos. Para sumar una píldora nueva alcanza con insertarla
+             acá en el orden deseado (la más a la derecha queda contra el borde); no hay
+             márgenes individuales que recalcular. -->
+        <div class="home-pills">
+          <!-- RACHA diaria real desde el 23/8 (data/racha-diaria.js, pintada por
+               home-stats.js): cualquier partida o Calentamiento completado marca el
+               día, racha = días consecutivos. Emoji real 💪, no ícono SVG. -->
+          <div class="streak-pill">
+            <!-- Llama SVG en vez del 💪 (5/9): la pinta home-stats.js con
+                 flamaChip() segun los dias — naranja viva, azul desde 3,
+                 gris rota. -->
+            <span class="streak-flama" aria-hidden="true"></span>
+            <span data-racha-dias>0</span>
+          </div>
+          <!-- Saldo REAL de tokens: lo pinta billetera.js sobre [data-saldo-tokens].
+               Arranca con una raya y no con un número: mostrar "240" (o "0") mientras
+               llega la consulta sería mentirle al usuario durante ese instante, y el
+               240 fijo de antes era justo eso, pero para siempre. -->
+          <div class="token-pill">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0071E3" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0071E3" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span data-saldo-tokens>—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="avatar-scene" id="avatarScene">
+        <!-- AMBIENTE (8/10, receta "Inicio vivo"): siluetas flotantes DENTRO
+             de la escena del avatar, en las mismas posiciones del mockup v10.
+             z-index:-1 (el stacking context lo da #screen-home) = detras del
+             canvas y de todo; overflow:hidden de la escena las recorta. -->
+        <div class="home-ambiente" aria-hidden="true">
+          <div class="ha-obj ha-o1"><svg viewBox="0 0 32 32"><path d="M8 10v12M24 10v12M4 13v6M28 13v6M8 16h16"/></svg></div>
+          <div class="ha-obj ha-o2"><svg viewBox="0 0 32 32"><path d="M18 3L8 18h7l-2 11 10-15h-7z"/></svg></div>
+          <div class="ha-obj ha-o3"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M12.5 10.5h4.5a3.4 3.4 0 010 6.8h-4.5v-6.8M12.5 17.3l6 6.2"/></svg></div>
+          <div class="ha-obj ha-o4"><svg viewBox="0 0 32 32"><path d="M16 4l3.4 7.4 8 .9-6 5.4 1.7 7.9L16 21.5l-7.1 4.1 1.7-7.9-6-5.4 8-.9z"/></svg></div>
+          <div class="ha-obj ha-o5"><svg viewBox="0 0 32 32"><path d="M18 3L8 18h7l-2 11 10-15h-7z"/></svg></div>
+          <div class="ha-obj ha-o6"><svg viewBox="0 0 32 32"><path d="M8 10v12M24 10v12M4 13v6M28 13v6M8 16h16"/></svg></div>
+        </div>
+        <div class="avatar-loading" id="avatarLoading">
+          <div class="loading-spin"></div>
+          Cargando avatar
+        </div>
+        <canvas id="avatar-canvas"></canvas>
+        <!-- Stats del día FLOTANDO sobre la escena (absolute), igual que el aura
+             de fondo: no le quitan ni un píxel de ancho al avatar, así que el
+             encuadre de avatar-viewer.js no se toca. Los llena home-stats.js.
+             Rediseño del 4/9: UNA columna de 3 tarjetas iguales (antes eran
+             2 anillos de progreso a la izquierda + una tarjeta de barras a
+             la derecha) — homeAnillos/homeBarras se mantienen como IDs (los
+             sigue usando home-stats.js) pero ya no son dos columnas propias:
+             son dos grupos dentro de la misma .hs-pilas, uno con pasos y
+             calorías y el otro con la tarjeta de reps. -->
+        <div class="hs-pilas">
+          <div class="hs-anillos" id="homeAnillos"></div>
+          <div class="hs-barras" id="homeBarras"></div>
+        </div>
+
+        <!-- Columna DERECHA provisional (8/10, tanda C "Inicio vivo"):
+             espeja las stats al otro lado del reper (mockup v10, d4).
+             Cofre y ranking son teasers (popup "pronto" en home-stats.js);
+             Amigos abre el globo REAL: el chip de la esquina se mudo aca
+             con su punto rojo (#amigosChipPunto, lo pinta amigos.js). -->
+        <div class="home-der">
+          <button class="hd-card hd-cofre" type="button" onclick="window.avisoCofrePronto && window.avisoCofrePronto()">
+            <span class="ic" aria-hidden="true">🎁</span>
+            <span class="l" data-i18n="html.home.23">COFRE</span>
+          </button>
+          <button class="hd-card" type="button" onclick="abrirAmigos()">
+            <span class="ic pto" aria-hidden="true">👥<span class="amigos-chip-punto hd-punto" id="amigosChipPunto" hidden></span></span>
+            <span class="l" data-i18n="html.home.24">AMIGOS</span>
+          </button>
+          <button class="hd-card" type="button" onclick="window.avisoRankingPronto && window.avisoRankingPronto()">
+            <span class="n" aria-hidden="true">🥈 2°</span>
+            <span class="l" data-i18n="html.home.25">SEMANA</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bloque inferior de Inicio: hint + tarjetas + título + tabs se mueven COMO
+           CONJUNTO. .home-lower toma el margin-top:auto (antes lo tenía .home-actions),
+           así todo el sobrante vertical queda ARRIBA del bloque y el conjunto se apoya
+           cerca de "Jugar ahora" en cualquier alto de pantalla. El avatar NO se mueve:
+           .avatar-scene sigue con alto fijo y su posición no depende del sobrante.
+           .rotate-hint salió de .avatar-scene y se ancla al bloque (bottom: 100% + 18px)
+           para viajar con él manteniendo su separación exacta, sin ocupar alto de flujo
+           (igual que antes, cuando iba absoluto dentro de la escena). -->
+      <div class="home-lower">
+        <div class="rotate-hint">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 11-3.5-7.1M21 4v5h-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+          Arrastra para rotar
+        </div>
+
+        <!-- 4/9, pedido de Tao: recuperar el acceso a Calentamiento, que antes
+             vivia en la fila .mode-row (Clasico/Calentamiento) de aca abajo.
+             Esa fila quedo retirada (ver historial git de este bloque; el CSS
+             .mode-row/.mode-tab se deja intacto y sin usar, mismo criterio que
+             ya usaba este archivo con .mode-tab-pill para Runners): nunca tuvo
+             panel nativo propio en Inicio (PanelTipoNativo/PanelModosNativo son
+             de screen-multi-config, ver config-partida.js), asi que no hay nada
+             nativo que reconectar. Calentamiento vuelve como boton real, apilado
+             con "Jugar ahora" en .home-actions — mockup iterado con Tao hasta
+             v9: mismo alto que el resto de los .btn, 75% de ancho centrado
+             (.btn-narrow), separaciones parejas de 10px con las tarjetas y con
+             Reper Market. -->
+        <h1 class="home-title" data-i18n-html="html.home.16">Muévete. <span class="home-title-azul">Comparte.</span> Diviértete.</h1>
+      </div><!-- /.home-lower -->
+
+      <div class="home-actions">
+        <!-- Destino ÚNICO consolidado (config-partida.js): Individual/Multi/Personalizada
+             en una pantalla, tipo por defecto = Individual. Antes: goTo('screen-entry-type'),
+             ahora DEPRECADO junto con lobby-solo/lobby-custom. -->
+        <button class="btn btn-primary btn-narrow" onclick="entrarConfigPartida()" data-i18n="html.home.11">Jugar partida</button>
+        <!-- Calentamiento (4/9): mismo destino de siempre (calentamiento.js),
+             ahora expuesto como boton real en vez de tab muerta. -->
+        <!-- BOTONERA COMPACTA (8/10, receta "Inicio vivo" de Tao): Calentamiento,
+             el Ropero/Perfil de .customize-row y Reper Market pasan de tres
+             bloques apilados a UNA fila de 4 accesos chicos — el Inicio cabe
+             sin scroll y el reper gana aire. Mismos destinos de siempre:
+             entrarCalentamiento() (calentamiento.js), entrarARopa() (relee
+             compras/equipado en cada entrada, ropero.js), entrarAlMarket()
+             (screen-market) y entrarPerfil(). OJO paridad iOS: el espejo
+             nativo (piezas-nativas-inicio.js) todavia apunta a los botones
+             viejos — re-mapear a .home-compacta en la pasada de paridad. -->
+        <div class="home-compacta">
+          <button type="button" onclick="entrarCalentamiento()">
+            <span class="ic" aria-hidden="true">🤸</span>
+            <span data-i18n="html.home.09">Calentar</span>
+          </button>
+          <button type="button" onclick="entrarARopa()">
+            <span class="ic" aria-hidden="true">👕</span>
+            <span data-i18n="html.home.05">Ropero</span>
+          </button>
+          <button type="button" onclick="entrarAlMarketPortada()">
+            <span class="ic" aria-hidden="true">🛍️</span>
+            <span>Market</span>
+          </button>
+          <button type="button" onclick="entrarPerfil()">
+            <span class="ic" aria-hidden="true">👤</span>
+            <span data-i18n="html.home.07">Perfil</span>
+          </button>
+        </div>
+
+        <!-- PASE DE TEMPORADA + DESTACADO LEGENDARIO (8/10, receta "Inicio
+             vivo"; version PROVISIONAL): el pase aun no existe, asi que su
+             tarjeta es un teaser honesto (popup "pronto", ver home-stats.js);
+             el destacado SI navega al Market real, donde vive la Skin Dragon
+             legendaria. Sin publicidad por ahora (decision de Tao 8/10). -->
+        <!-- SIMULACION de publicidad INLINE (8/10, Tao 2da vuelta: "entre el
+             pase y las tarjetas"): tarjeta adaptativa ~54px entre la
+             botonera y el pase, como el mockup v10. La prende/apaga el
+             switch flotante ADS (main.js). Sin i18n a proposito:
+             herramienta de desarrollo, no UI real. -->
+        <div class="home-banner-sim" id="homeBannerSim" hidden>
+          <span class="t1">AD</span>
+          <span class="t2">Publicidad de prueba &middot; adaptativa</span>
+        </div>
+        <!-- G2 "barra-borde" (8/10, elegido en el armador): el key art de la
+             temporada ES la tarjeta; la barra de progreso es el borde
+             inferior y el nivel va en un chip de vidrio. El titulo vive en
+             el arte, por eso html.home.17 pasa a aria-label. -->
+        <button class="home-pase" type="button" onclick="window.avisoPasePronto && window.avisoPasePronto()" aria-label="Pase de temporada" data-i18n-aria-label="html.home.17">
+          <img class="hp-art" src="./assets/pase-temporada-1-AvfBbzbf.jpg" alt="" aria-hidden="true">
+          <span class="hp-mini"><span data-i18n="html.home.22">Nivel 1</span></span>
+          <span class="hp-borde" aria-hidden="true"><span></span></span>
+          <span class="badge" data-i18n="html.home.18">PRONTO</span>
+        </button>
+        <button class="home-destacado" type="button" onclick="entrarAlMarketConItem('skin-dragon')">
+          <img class="hd-art" src="./assets/skin-dragon-banner-BrcA5EH6.jpg" alt="" aria-hidden="true">
+          <span class="hd-chip">
+            <span class="tt" data-i18n="html.home.19">Skin Dragón</span>
+            <span class="sb" data-i18n="html.home.20">Legendaria · en el Reper Market</span>
+          </span>
+          <span class="pr" data-i18n="html.home.21">Ver ›</span>
+        </button>
+      </div>
+
+      <!-- POPUP DE OBJETIVOS DIARIOS (23/8, pedido de Tao: "un pop up mejor
+           que una pantalla entera"). Se abre tocando la tarjeta de barras de
+           Inicio; las filas las arma objetivos.js. Cada toque persiste solo
+           (mismo criterio que las metas de pasos/calorías) — "Listo" y el
+           fondo oscuro solo cierran. Vive DENTRO de screen-home: si la
+           pantalla se va, el popup se va con ella. -->
+      <div class="obj-overlay" id="objOverlay" hidden>
+        <div class="obj-modal" role="dialog" aria-label="Objetivos del día" data-i18n-aria-label="html.home.attr.aria-label.02">
+          <div class="obj-titulo" data-i18n="html.home.12">Objetivos del día</div>
+          <p class="obj-sub" data-i18n="html.home.13">Elige tus ejercicios y cuántas repeticiones quieres hacer por día. Las barras de Inicio muestran tu avance.</p>
+          <div id="objFilas"></div>
+          <p class="obj-nota" data-i18n="html.home.14">Tu avance se reinicia a medianoche. Los objetivos quedan guardados.</p>
+          <button class="btn btn-primary" onclick="cerrarObjetivos()" data-i18n="html.home.15">Listo</button>
+        </div>
+      </div>
+
+      <!-- METAS DIARIAS y LOGROS como GLOBOS (4/9, pedido de Tao: "mejor
+           ventanitas flotantes que pantallas completas, como la de objetivos
+           del día") — mismo patrón .obj-overlay/.obj-modal que objOverlay, y
+           viven acá adentro por el mismo motivo. Condiciones se queda como
+           pantalla completa A PROPÓSITO (pedido explícito). Las filas las
+           siguen armando metas.js y logros.js en los mismos ids de siempre
+           (#metasLista / #logrosLista) — solo cambió dónde viven. -->
+      <div class="obj-overlay" id="metasOverlay" hidden>
+        <div class="obj-modal obj-modal-scroll" role="dialog" aria-label="Metas diarias" data-i18n-aria-label="html.goals.01">
+          <div class="obj-titulo" data-i18n="html.goals.02">Tus metas</div>
+          <p class="obj-sub" data-i18n="html.goals.03">Los anillos de Inicio miden tu día contra estos números. Se guardan solos.</p>
+          <div class="mt-card" id="metasLista"></div>
+          <button class="btn btn-primary" onclick="cerrarMetas()" data-i18n="html.home.15">Listo</button>
+        </div>
+      </div>
+      <div class="obj-overlay" id="logrosOverlay" hidden>
+        <div class="obj-modal obj-modal-scroll" role="dialog" aria-label="Logros" data-i18n-aria-label="html.logros.01">
+          <div class="obj-titulo" data-i18n="html.logros.02">Tus logros</div>
+          <p class="obj-sub" data-i18n="html.logros.03">Se acumulan de por vida y no se reinician nunca. Cada nivel que desbloqueas te paga sus tokens.</p>
+          <div class="lg-banner-inicial" id="lgBannerInicial" hidden>
+            <div class="lg-banner-titulo" data-i18n="html.logros.banner_titulo">¡Empieza a desbloquear logros!</div>
+            <div class="lg-banner-texto" data-i18n="html.logros.banner_texto">Cada partida cuenta. Termina tu primera para sumar tus primeros pasos.</div>
+            <button class="lg-banner-btn" type="button" onclick="cerrarLogrosDetalle(); goTo('screen-home');" data-i18n="html.logros.banner_boton">Jugar partida</button>
+          </div>
+          <div class="lg-card" id="logrosLista"></div>
+          <button class="btn btn-primary" onclick="cerrarLogrosDetalle()" data-i18n="html.home.15">Listo</button>
+        </div>
+      </div>
+      <!-- GLOBO DE AMIGOS (1/10, mockup aprobado por Tao): mismo patron
+           .obj-overlay/.obj-modal que Metas y Logros. Solicitudes arriba
+           (aceptar/rechazar), lista de amigos abajo (quitar con doble
+           toque). Las filas las arma amigos.js. El feed llega despues. -->
+      <div class="obj-overlay" id="amigosOverlay" hidden>
+        <div class="obj-modal obj-modal-scroll" role="dialog" aria-label="Amigos" data-i18n-aria-label="html.amigos.01">
+          <div class="obj-titulo" data-i18n="html.amigos.01">Amigos</div>
+          <div id="amigosSolicitudesSec" hidden>
+            <div class="am-seccion" data-i18n="html.amigos.02">Solicitudes</div>
+            <div class="am-filas" id="amigosSolicitudes"></div>
+          </div>
+          <div class="am-filas" id="amigosLista"></div>
+          <button class="btn btn-primary" onclick="cerrarAmigos()" data-i18n="html.home.15">Listo</button>
+        </div>
+      </div>
+  </section>
+
+  <!-- POPUP "¿Vaciar la sala?" (25/8, cambiar tamaño en vivo): mismo patrón
+       EXACTO que #objOverlay/.obj-modal de arriba — overlay fijo + tarjeta
+       del tema, para no inventar un lenguaje visual nuevo. Aparece SOLO
+       cuando el host (Personalizada) achica el tamaño por debajo de la
+       gente ya conectada — config-partida.js · mostrarPopupVaciar(). Vive
+       suelto, fuera de cualquier screen, porque tiene que poder aparecer
+       sobre screen-multi-config sin atarse a ninguna sección — mismo
+       criterio que un modal global. -->
+  <!-- POPUP SALIR CON SALA VIVA (6/9, decision de Tao: "deberia darse un
+       aviso de que si se sale de ahi, se cierra la partida"): la flecha de
+       config lo muestra SOLO si hay una sala en curso — sin sala, la
+       flecha vuelve directo como siempre. Misma anatomia que el popup de
+       vaciar de abajo. -->
+  <div class="obj-overlay" id="cfgPopupSalir" hidden>
+    <div class="obj-modal" role="dialog" aria-label="Salir de la sala" data-i18n-aria-label="html.multi_config.popup_salir_titulo">
+      <div class="obj-titulo" data-i18n="html.multi_config.popup_salir_titulo">¿Salir de la sala?</div>
+      <p class="obj-sub" data-i18n="html.multi_config.popup_salir_texto">Si vuelves al inicio, la sala se cierra y tus invitados quedan fuera.</p>
+      <div class="cfg-popup-botones">
+        <button class="btn btn-secondary" type="button" onclick="cancelarSalirConfig()" data-i18n="js.config_partida.cancelar">Cancelar</button>
+        <button class="btn btn-primary" type="button" onclick="confirmarSalirConfig()" data-i18n="html.multi_config.popup_salir_boton">Salir</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="obj-overlay" id="cfgPopupVaciar" hidden>
+    <div class="obj-modal" role="dialog" aria-label="Vaciar la sala" data-i18n-aria-label="html.multi_config.popup_vaciar_titulo">
+      <div class="obj-titulo" data-i18n="html.multi_config.popup_vaciar_titulo">¿Vaciar la sala?</div>
+      <p class="obj-sub" data-i18n="html.multi_config.popup_vaciar_texto">Este tamaño no alcanza para todos los que ya están conectados. Si continúas, la sala se vacía y la vuelves a armar.</p>
+      <div class="cfg-popup-botones">
+        <button class="btn btn-secondary" type="button" onclick="cancelarVaciar()" data-i18n="js.config_partida.cancelar">Cancelar</button>
+        <button class="btn btn-primary" type="button" onclick="confirmarVaciar()" data-i18n="js.config_partida.continuar">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="screen" id="screen-moves">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.moves.01">Ronda 1 de 5</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" data-i18n="html.moves.02">Elige el movimiento</h2>
+      <p class="section-sub" data-i18n="html.moves.03">Toca un ejercicio para practicarlo suelto, o juega la Partida Completa (los 4).</p>
+
+      <!-- 16/9 rediseno de Tao: lista vertical con silueta azul chica + nombre +
+           subtitulo, mismo lenguaje visual que la lista de "Modo de juego"
+           (Partida Rapida) y "Minimo de reps" en Condiciones. Contenido rellenado
+           al arrancar la app por initEligeMovimiento() en elige-movimiento.js —
+           mantiene los onclick originales (entrarGameplayMovimiento /
+           abrirSentadillasIntegrado). Antes: grid 2x2 de .move-card2. -->
+      <div class="move-lista" id="movesLista"></div>
+
+      <div class="home-actions">
+        <div class="pc-hint" data-i18n="html.moves.12">O juega los 4 ejercicios seguidos</div>
+        <!-- Entrada REAL de Partida Completa (Individual, 4 ejercicios encadenados).
+             Sortea el orden y arranca el 1º ejercicio. Ver iniciarPartidaCompleta()
+             en gameplay-avatar.js. onclick sin cambios — rediseño puramente visual. -->
+        <button class="pc-card" onclick="entrarPartidaCompleta()">
+          <div class="pc-card-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/></svg>
+          </div>
+          <div class="pc-card-text">
+            <div class="pc-card-title" data-i18n="html.moves.13">Partida Completa</div>
+            <div class="pc-card-sub" data-i18n="html.moves.14">Los 4 ejercicios, un solo desafío</div>
+          </div>
+        </button>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-entry-type">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div style="width:38px"></div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" data-i18n="html.entry_type.01">¿Cómo quieres jugar?</h2>
+      <p class="section-sub" data-i18n="html.entry_type.02">Elige con quién armar la partida.</p>
+
+      <div class="entry-card selected" data-target="screen-multi-config" onclick="selectEntry(this)">
+        <div class="entry-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="2.5"/><path d="M3 20c0-3.5 3-5.5 6-5.5s6 2 6 5.5M15 14.5c2.5 0 4.5 1.8 4.5 5.5"/></svg>
+        </div>
+        <div class="entry-card-body">
+          <div class="entry-card-title" data-i18n="html.entry_type.03">Multijugador</div>
+          <div class="entry-card-sub" data-i18n="html.entry_type.04">2 o 4 jugadores · te empareja al instante</div>
+        </div>
+        <div class="entry-card-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></div>
+      </div>
+
+      <div class="entry-card" data-target="screen-lobby-custom" onclick="selectEntry(this)">
+        <div class="entry-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 8l4-4 4 3 4-3 4 4-3 3v9H7v-9z"/></svg>
+        </div>
+        <div class="entry-card-body">
+          <div class="entry-card-title" data-i18n="html.entry_type.05">Partida Personalizada</div>
+          <div class="entry-card-sub" data-i18n="html.entry_type.06">2, 3 o 4 jugadores · invita a quien quieras</div>
+        </div>
+        <div class="entry-card-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></div>
+      </div>
+
+      <div class="entry-card" data-target="screen-lobby-solo" onclick="selectEntry(this)">
+        <div class="entry-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <div class="entry-card-body">
+          <div class="entry-card-title" data-i18n="html.entry_type.07">Individual</div>
+          <div class="entry-card-sub" data-i18n="html.entry_type.08">Entrena a tu ritmo, sin sala</div>
+        </div>
+        <div class="entry-card-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></div>
+      </div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goToSelectedEntry()" data-i18n="html.entry_type.09">Continuar</button>
+      </div>
+  </section>
+
+  <!-- Pantalla de CONFIGURACIÓN DE PARTIDA consolidada — destino único de "Jugar
+       ahora". Individual / Multijugador / Personalizada en un solo lugar. Estado
+       e interacciones en config-partida.js. (Las entradas viejas por
+       screen-entry-type → lobby-solo/lobby-custom quedan DEPRECADAS, no borradas.) -->
+  <section class="screen" id="screen-multi-config">
+
+      <div class="topbar2">
+        <!-- salirDeConfig() y no un goTo pelado (6/9): con una sala viva
+             pregunta antes de cerrarla; sin sala vuelve directo. -->
+        <div class="back-btn" onclick="salirDeConfig()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" id="cfgTipoBadge" data-i18n="html.multi_config.01">Multijugador</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" data-i18n="html.multi_config.02">Elige tu partida</h2>
+      <p class="section-sub" data-i18n="html.multi_config.03">Tipo, modo de juego y sala — todo en un lugar.</p>
+
+      <!-- 1/10 (Tao, estilo opcion C con 2 chips): Tipo (con las pills 2/4
+           adentro) a la izquierda y Modo a la derecha, en UNA fila. Las
+           ventanas flotantes se anclan a la FILA, asi abren a ancho completo. -->
+      <div class="cfg-selects-row">
+      <!-- PIEZA 1 · Selector de tipo de partida (mismo patrón que "Modo de juego") -->
+      <div class="mode-select-wrap">
+      <div class="mode-select-btn" id="cfgTipoBtn" onclick="toggleCfgTipoPanel()">
+        <div>
+          <div class="mode-select-label" data-i18n="html.multi_config.04">Tipo de partida</div>
+          <div class="mode-select-value" id="cfgTipoValue" data-i18n="html.multi_config.05">Multijugador</div>
+        </div>
+        <!-- 8/10 (Tao, opcion A del armador): las pills 2/4 se mudaron a las
+             filas Multijugador/Personalizada del panel (.size-seg-fila); el
+             valor cerrado dice "Multijugador · 2" (textoValorTipo). -->
+        <div class="mode-select-chevron">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+      </div>
+      <div class="mode-panel mode-panel-flotante" id="cfgTipoPanel">
+        <div class="mode-panel-inner">
+          <!-- 1/10 (Tao): mismas filas que "Modo de juego" — adios entry-cards.
+               La elegida se marca con el check (fondo blanco, ver marcarTipoElegido). -->
+          <div class="mode-lista">
+            <div class="mode-fila" data-tipo="individual" onclick="selectCfgTipo('individual')">
+              <div class="mode-fila-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+              <div class="mode-fila-txt">
+                <div class="mode-fila-title" data-i18n="html.multi_config.06">Individual</div>
+                <div class="mode-fila-sub" data-i18n="html.multi_config.07">Entrena a tu ritmo, sin sala</div>
+              </div>
+              <div class="mode-fila-check"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg></div>
+            </div>
+            <div class="mode-fila" data-tipo="multi" onclick="selectCfgTipo('multi')">
+              <div class="mode-fila-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="2.5"/><path d="M3 20c0-3.5 3-5.5 6-5.5s6 2 6 5.5M15 14.5c2.5 0 4.5 1.8 4.5 5.5"/></svg></div>
+              <div class="mode-fila-txt">
+                <div class="mode-fila-title" data-i18n="html.multi_config.08">Multijugador</div>
+                <div class="mode-fila-sub" data-i18n="html.multi_config.09">2 o 4 jugadores · te empareja al instante</div>
+              </div>
+              <div class="mode-fila-check"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg></div>
+            </div>
+            <div class="mode-fila" data-tipo="personalizada" onclick="selectCfgTipo('personalizada')">
+              <div class="mode-fila-icon"><svg viewBox="0 0 24 24"><path d="M4 8l4-4 4 3 4-3 4 4-3 3v9H7v-9z"/></svg></div>
+              <div class="mode-fila-txt">
+                <div class="mode-fila-title" data-i18n="html.multi_config.10">Personalizada</div>
+                <div class="mode-fila-sub" data-i18n="html.multi_config.11">Invita a quien quieras con un código</div>
+              </div>
+              <div class="mode-fila-check"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg></div>
+            </div>
+            <!-- 8/10 (Tao, 3ra iteracion): UN solo selector de tamano para
+                 todo el panel, como fila propia al fondo — sin pills
+                 duplicadas por fila ni espejo. Se apaga con Individual
+                 (marcarTipoElegido le pone .apagada). -->
+            <div class="mode-fila mode-fila-tamano" id="cfgFilaTamano" onclick="event.stopPropagation()">
+              <div class="mode-fila-txt">
+                <div class="mode-fila-title" data-i18n="html.multi_config.24">Tamaño de sala</div>
+                <div class="mode-fila-sub" data-i18n="html.multi_config.25">Para Multijugador y Personalizada</div>
+              </div>
+              <div class="size-seg size-seg-fila">
+                <button type="button" data-size="2" class="on" onclick="event.stopPropagation(); selectCfgTamano(2)">2</button>
+                <button type="button" data-size="4" onclick="event.stopPropagation(); selectCfgTamano(4)">4</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /.mode-select-wrap (Tipo) -->
+
+      <!-- PIEZA 2 · Tamaño de sala (visible solo en Multi/Personalizada) -->
+      <div class="size-toggle" id="cfgSizeToggle" style="display:none;">
+        <div class="size-btn selected" data-size="2" onclick="selectCfgTamano(2)">
+          <div class="size-btn-num">2</div><div class="size-btn-label" data-i18n="html.multi_config.12">jugadores</div>
+        </div>
+        <div class="size-btn" data-size="4" onclick="selectCfgTamano(4)">
+          <div class="size-btn-num">4</div><div class="size-btn-label" data-i18n="html.multi_config.13">jugadores</div>
+        </div>
+      </div>
+
+      <!-- PIEZA 3 · Modo de juego (carrusel de 2 niveles: Completa/Rápida → 4 ejercicios).
+           El panel es FLOTANTE (2/9, opción 1 "tipo Apple"): se despliega POR
+           ENCIMA del contenido con transform+opacity (animación 100% GPU, sin
+           reflow → sin lag), como un menú de iOS. El wrapper es el ancla del
+           position:absolute. -->
+      <div class="mode-select-wrap">
+      <div class="mode-select-btn" id="cfgModoBtn" onclick="toggleCfgModoPanel()">
+        <div>
+          <div class="mode-select-label" data-i18n="html.multi_config.14">Modo de juego</div>
+          <div class="mode-select-value" id="cfgModoValue" data-i18n="html.multi_config.15">Partida Completa</div>
+        </div>
+        <div class="mode-select-chevron">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+      </div>
+      <div class="mode-panel mode-panel-flotante" id="cfgModoPanel">
+        <div class="mode-panel-inner">
+          <!-- Nivel 1: Completa / Rápida (carrusel deslizable) -->
+          <div id="cfgNivelModos">
+            <!-- 1/10 (Tao): las dos opciones pasan de CARRUSEL de tarjetas a FILAS
+                 apiladas — mismo formato de lista que el resto de la pantalla.
+                 Mismos onclick/data-mode/i18n de siempre; la fila elegida se
+                 marca con .elegida (fondo acento + check), ver marcarModoElegido(). -->
+            <div class="mode-lista">
+              <div class="mode-fila" data-mode="completa" onclick="selectCfgModoCompleta()">
+                <div class="mode-fila-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+                <div class="mode-fila-txt">
+                  <div class="mode-fila-title" data-i18n="html.multi_config.16">Partida Completa</div>
+                  <div class="mode-fila-sub" data-i18n="html.multi_config.17">Los 4 ejercicios encadenados, un solo desafío.</div>
+                </div>
+                <div class="mode-fila-check"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg></div>
+              </div>
+              <div class="mode-fila" data-mode="rapida" onclick="abrirCfgNivelEjercicios()">
+                <div class="mode-fila-icon"><svg viewBox="0 0 24 24"><path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"/></svg></div>
+                <div class="mode-fila-txt">
+                  <div class="mode-fila-title" data-i18n="html.multi_config.18">Partida Rápida</div>
+                  <div class="mode-fila-sub" data-i18n="html.multi_config.19">Un solo ejercicio, elige cuál.</div>
+                </div>
+                <div class="mode-fila-check"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <!-- Nivel 2: elegir ejercicio (tarjetas estilo screen-moves; se arma por JS) -->
+          <div id="cfgNivelEjercicios" style="display:none;">
+            <button class="cfg-nivel-back" onclick="volverCfgNivelModos()">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+              Modo de juego
+            </button>
+            <div class="move-grid" id="cfgEjerciciosGrid"></div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /.mode-select-wrap -->
+      </div><!-- /.cfg-selects-row -->
+
+      <!-- PIEZA 4 · Jugadores (visible solo en Multi/Personalizada; filas por JS) -->
+      <div id="cfgJugadores" style="display:none;">
+        <div class="pl-header">
+          <div class="pl-header-title" id="cfgJugadoresTitulo" data-i18n="html.multi_config.20">Jugadores (1 de 2)</div>
+          <button class="pl-code" id="cfgCodigoBtn" onclick="copiarCodigoSala()">
+            <span id="cfgCodigo">7K2P</span>
+            <svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+          </button>
+        </div>
+        <div class="pl-rows" id="cfgJugadoresRows"></div>
+        <!-- Unirse a la sala de OTRO con su código (solo Personalizada y solo
+             con backend conectado; sin red no hay sala ajena a la que entrar).
+             No arranca nada: igual que el resto de la config, solo guarda
+             estado — el que arranca es "Comenzar". -->
+        <div class="pl-unirse" id="cfgUnirse" style="display:none;">
+          <span class="pl-unirse-label" data-i18n="html.multi_config.21">¿Te invitaron?</span>
+          <input class="pl-unirse-input" id="cfgUnirseCodigo" maxlength="4" placeholder="CÓDIGO" data-i18n-placeholder="html.multi_config.attr.placeholder.01"
+                 autocomplete="off" autocapitalize="characters" spellcheck="false">
+          <button class="pl-unirse-btn" onclick="unirseConCodigo()" data-i18n="html.multi_config.22">Unirme</button>
+        </div>
+      </div>
+
+      <!-- PIEZA 5 · Link a la tarjeta de condiciones (22/8): recuerda que hay un
+           mínimo de reps para que la partida cuente tokens. Mismo texto/regla en
+           condiciones-screen.js — un solo lugar para el número, ver data/condiciones.js. -->
+      <button class="cfg-condiciones-link" type="button" onclick="verCondiciones('screen-multi-config')">
+        <!-- El MISMO icono (i) del aviso de condiciones de Inicio (6/9,
+             pedido de Tao: "me gustaba... porque coincidia con el del
+             inicio") — antes este era su gemelo invertido (punto arriba). -->
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.6"/><path d="M12 7.5v6" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1"/></svg>
+        Mínimo de reps para ganar tokens
+      </button>
+
+      <div class="home-actions">
+        <!-- PIEZA 6 · Botón "Comenzar" con ventana de CANCELAR (3s) + spinner sutil
+             sin número. Ver onComenzarClick()/dispatchComenzar() en config-partida.js. -->
+        <div class="cfg-comenzar-spinner" id="cfgComenzarSpinner"><div class="loading-spin"></div></div>
+        <button class="btn btn-primary" id="cfgComenzarBtn" onclick="onComenzarClick()" data-i18n="html.multi_config.23">Comenzar</button>
+      </div>
+  </section>
+
+  <!-- Tarjeta de condiciones (22/8): mínimo de reps por ejercicio para que la
+       partida cuente tokens — pedida por Tao para Individual, Multi y
+       Calentamiento; desde el 23/8 también se llega desde el ❕ de Inicio.
+       Screen aparte y no un modal: mismo patrón que el resto de la app
+       (goTo(), sin overlay nuevo que mantener). volverDeCondiciones()
+       recuerda desde dónde se abrió (condiciones-screen.js). -->
+  <section class="screen" id="screen-condiciones">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="volverDeCondiciones()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.condiciones.01">Condiciones</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:6px;" data-i18n="html.condiciones.02">Para que la partida cuente</h2>
+      <!-- Regla ENDURECIDA el 23/8 (pedido de Tao, anti-farmeo): antes bastaba
+           el mínimo en UN ejercicio; ahora hay que llegar al mínimo en TODOS
+           los que la partida incluya. Ver data/condiciones.js. -->
+      <p class="section-sub" style="margin-bottom:12px;" data-i18n="html.condiciones.03">Necesitas llegar al mínimo en TODOS los ejercicios que incluya la partida — el objetivo es mantenerte activo de principio a fin.</p>
+
+      <!-- Selector modo: Solo/Multi vs Calentamiento (12/9, pedido de Tao para
+           que se vean ambas tablas de mínimos sin cambiar de pantalla). -->
+      <div class="cond-tabs" id="condTabs">
+        <button type="button" class="cond-tab" data-modo="partida" data-i18n="html.condiciones.tab_partida">Solo / Multijugador</button>
+        <button type="button" class="cond-tab" data-modo="calentamiento" data-i18n="html.condiciones.tab_calentamiento">Calentamiento</button>
+      </div>
+
+      <div class="cond-lista" id="condGrid"></div>
+
+      <p class="cond-nota" style="margin-top:12px;" id="condNota" data-i18n="html.condiciones.nota_partida">Aplica en Individual y Multijugador. Si un ejercicio queda bajo su mínimo, esa partida no otorga tokens. Las repeticiones se suman igual a tus Logros y a tus barras del día.</p>
+
+      <!-- NUEVO (31/8) -- pedido de Tao: además del mínimo de reps, dos
+           secciones más para que la partida realmente cuente: cómo ubicar
+           el teléfono (cámara frontal, 60-75cm) y la postura correcta por
+           ejercicio. Textos en el diccionario i18n (html.condiciones.05-07
+           + js.condiciones_screen.postura_*), pintados por
+           pintarPosturas() en condiciones-screen.js -- mismo patrón que
+           #condGrid arriba. -->
+      <h2 class="section-title cond-seccion-extra" style="margin-top:20px; margin-bottom:12px;" data-i18n="html.condiciones.05">Cómo ubicar el teléfono</h2>
+      <div class="cond-telefono-img" id="condTelefonoImg" aria-hidden="true"></div>
+      <p class="section-sub" style="margin-top:12px;" data-i18n="html.condiciones.06">Usa la cámara frontal (modo selfie) — así siempre ves a tu Reper en pantalla mientras juegas. Apóyalo a una distancia de 60 a 75 cm y deja espacio para moverte: todo tu cuerpo debe entrar en el encuadre para que el conteo de repeticiones sea preciso.</p>
+
+      <h2 class="section-title cond-seccion-extra" style="margin-top:20px; margin-bottom:12px;" data-i18n="html.condiciones.07">Postura correcta por ejercicio</h2>
+      <div class="postura-grid" id="condPosturaGrid"></div>
+      <div class="postura-nav">
+        <button class="postura-flecha" id="condPosturaIzq" type="button" aria-label="Anterior">&lsaquo;</button>
+        <div class="postura-dots" id="condPosturaDots"></div>
+        <button class="postura-flecha" id="condPosturaDer" type="button" aria-label="Siguiente">&rsaquo;</button>
+      </div>
+  </section>
+
+  <!-- SECCIÓN DE CALENTAMIENTO (22/8) — pedido de Tao: mismos 4 ejercicios,
+       sesión un poco más larga con foco en menos repeticiones por ronda (ver
+       el comentario de SENT_EXEC_CALENTAMIENTO_MS en gameplay-avatar.js), una
+       intro que explique que el objetivo es preparar el cuerpo (no apurarse),
+       la tarjeta de condiciones también accesible desde acá, y 1 sola
+       recompensa por día (calentamiento.js / data/calentamiento-diario.js). -->
+  <section class="screen" id="screen-calentamiento-intro">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.calentamiento_intro.01">Calentamiento</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" data-i18n="html.calentamiento_intro.02">Prepárate para moverte</h2>
+      <p class="section-sub" data-i18n="html.calentamiento_intro.03">Acá el objetivo no es sumar repeticiones rápido — es preparar tu cuerpo para la actividad física. Los mismos 4 ejercicios, con calma y sin apuro.</p>
+
+      <div class="move-grid" id="calenEjerciciosGrid"></div>
+
+      <!-- Mismo link/pantalla que screen-multi-config: un solo lugar para el
+           número (data/condiciones.js), origen distinto para que "volver"
+           vuelva acá y no a la config de partida. -->
+      <button class="cfg-condiciones-link" type="button" onclick="verCondiciones('screen-calentamiento-intro')">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.6"/><path d="M12 11v5" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="8" r="1"/></svg>
+        Mínimo de reps para ganar tokens
+      </button>
+
+      <!-- Texto real lo pinta calentamiento.js (pintarEstadoDiario) al entrar,
+           según yaUsoCalentamientoHoy() — esto es solo el default pre-render. -->
+      <p class="cond-nota" id="calenEstadoDiario" data-i18n="html.calentamiento_intro.04">Al completarlo hoy ganas tokens, igual que en una partida.</p>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="comenzarCalentamiento()" data-i18n="html.calentamiento_intro.05">Comenzar Calentamiento</button>
+      </div>
+  </section>
+
+  <!-- Pantalla final de Calentamiento: total de las 4 rondas + estado de la
+       recompensa (otorgada / sin mínimo / ya usada hoy). Sin las 4 barras por
+       ejercicio de Partida Completa — un cierre de calentamiento pide
+       serenidad, no comparación. Ver mostrarPantallaFinalCalentamiento() en
+       gameplay-avatar.js. -->
+  <section class="screen" id="screen-calentamiento-final">
+      <div class="topbar2">
+        <div class="home-eyebrow" data-i18n="html.calentamiento_final.01">Calentamiento</div>
+        <div style="width:38px"></div>
+      </div>
+      <h2 class="section-title" data-i18n="html.calentamiento_final.02">¡Calentamiento terminado!</h2>
+      <div class="pf-total-wrap">
+        <div class="pf-total" id="calen-total">0</div>
+        <div class="pf-total-label" data-i18n="html.calentamiento_final.03">Repeticiones en total</div>
+      </div>
+      <!-- Barras por ejercicio (7/9, pedido de Tao tras probar F1: dijo
+           que faltaban, "como en las partidas completas de multijugador",
+           y lo confirmo aparte con una prueba deliberada -- reps distintas
+           por ejercicio y no vio ninguna barra). Mismas clases que
+           .pf-barras de screen-gameplay-final (CSS compartido, sin scope
+           de pantalla) -- IDs propios (calen-bar-*, no pf-bar-*) porque
+           las dos pantallas conviven en el DOM a la vez y getElementById
+           no puede repetir id. Poblado en mostrarPantallaFinalCalentamiento()
+           (gameplay-avatar.js). -->
+      <div class="pf-barras" id="calenBarras">
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="calen-bar-nombre-0">—</span><span class="pf-barra-reps" id="calen-bar-reps-0">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="calen-bar-fill-0"></div></div>
+        </div>
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="calen-bar-nombre-1">—</span><span class="pf-barra-reps" id="calen-bar-reps-1">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="calen-bar-fill-1"></div></div>
+        </div>
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="calen-bar-nombre-2">—</span><span class="pf-barra-reps" id="calen-bar-reps-2">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="calen-bar-fill-2"></div></div>
+        </div>
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="calen-bar-nombre-3">—</span><span class="pf-barra-reps" id="calen-bar-reps-3">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="calen-bar-fill-3"></div></div>
+        </div>
+      </div>
+      <p class="pf-mensaje" data-i18n="html.calentamiento_final.04">Tu cuerpo ya está listo para la actividad física de verdad.</p>
+      <div class="token-earned">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0058B0" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0058B0" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="calen-tokens" data-i18n="html.calentamiento_final.05">+20 tokens ganados</span>
+      </div>
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="comenzarCalentamiento()" data-i18n="html.calentamiento_final.06">Repetir Calentamiento</button>
+        <button class="btn btn-secondary" onclick="goTo('screen-home')" data-i18n="html.calentamiento_final.07">Volver</button>
+      </div>
+  </section>
+
+  <!-- PANTALLA DE PERFIL (22/8) — pedido de Tao: "versión + nombre local".
+       Ver perfil.js: el nombre es 100% local (nunca viaja a Supabase, nunca
+       se muestra a otros jugadores — la app sigue siendo anónima por diseño,
+       ver net/identidad.js), la versión es una constante a mano (no hay
+       plugin de Capacitor instalado que lea el número real de Xcode). -->
+  <section class="screen" id="screen-profile">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.profile.01">Perfil</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:6px;" data-i18n="html.profile.02">Tu perfil</h2>
+      <p class="section-sub" style="margin-bottom:10px;" data-i18n="html.profile.03">Un apodo para ti — es local a este dispositivo, nunca se comparte ni cambia cómo te ven otros jugadores.</p>
+
+      <div class="perfil-campo">
+        <label class="perfil-campo-label" for="perfilNombreInput" style="margin-bottom:6px;" data-i18n="html.profile.04">Nombre local</label>
+        <input class="perfil-campo-input" id="perfilNombreInput" type="text" placeholder="Tu nombre" data-i18n-placeholder="html.profile.attr.placeholder.01" maxlength="24" autocomplete="off" autocapitalize="words" spellcheck="false">
+      </div>
+      <div class="home-actions" style="margin-top:10px; padding-top:0;">
+        <button class="btn btn-primary" id="perfilGuardarBtn" onclick="guardarPerfilNombre()" data-i18n="html.profile.05">Guardar</button>
+      </div>
+      <div class="perfil-guardado-aviso" id="perfilGuardadoAviso" hidden data-i18n="html.profile.06">Guardado</div>
+
+      <!-- CÓDIGO DE JUGADOR (1/10, sistema de amigos): único por jugador,
+           sirve para que otro te agregue. Se lee de players.codigo_jugador
+           (perfil.js lo pinta al entrar); sin red queda oculto. -->
+      <!-- V3 del armador (8/10, Tao): cada letra en su ficha (codigo de
+           sala de juego) + Copiar y Compartir (hoja nativa via
+           navigator.share; sin soporte, cae a copiar). -->
+      <div class="perfil-version-card perfil-codigo-card" id="perfilCodigoCard" hidden style="margin-top:12px;">
+        <div class="perfil-version-label" data-i18n="html.profile.22">Tu código de jugador</div>
+        <div class="perfil-codigo-letras" id="perfilCodigoValor"></div>
+        <p class="perfil-codigo-sub" data-i18n="html.profile.24">Compártelo para que tus amigos te agreguen.</p>
+        <div class="perfil-codigo-botones">
+          <button class="perfil-codigo-copiar" id="perfilCodigoCopiar" onclick="copiarCodigoJugador()" data-i18n="html.profile.23">Copiar</button>
+          <button class="perfil-codigo-compartir" onclick="compartirCodigoJugador()" data-i18n="html.profile.25">Compartir</button>
+        </div>
+      </div>
+
+      <!-- CUENTA (24/8, simplificado en 2da ronda) — pedido de Tao: Perfil
+           solo MUESTRA el estado (invitado / con cuenta), sin formulario a
+           la vista. El botón "Registrarse" lleva a screen-cuenta, donde
+           viven las opciones de Apple/Google/mail — ver cuenta.js. Arranca
+           en estado "invitado" (perfilCuentaActiva oculta) — alCambiarSesion()
+           en perfil.js corrige esto al toque si de verdad hay sesión guardada. -->
+      <h2 class="section-title" style="margin-top:16px; margin-bottom:12px;" data-i18n="html.profile.07">Tu cuenta</h2>
+
+      <div id="perfilCuentaInvitado">
+        <p class="section-sub" style="margin-bottom:10px;" data-i18n-html="html.profile.15">Juegas como invitado — puedes seguir así sin problema. Regístrate y te regalamos el <strong>Reper Suit</strong> del Reper Market.</p>
+        <div class="home-actions" style="margin-top:0; padding-top:0;">
+          <button class="btn btn-primary" id="perfilRegistrarseBtn" onclick="irARegistrarse()" data-i18n="html.profile.08">Registrarse</button>
+        </div>
+      </div>
+
+      <div id="perfilCuentaActiva" hidden>
+        <div class="perfil-version-card" style="margin-top:0;">
+          <div class="perfil-version-label" data-i18n="html.profile.09">Cuenta</div>
+          <div class="perfil-version-value" id="perfilCuentaMail"></div>
+        </div>
+        <button class="btn btn-secondary perfil-cerrar-btn" id="perfilCerrarSesionBtn" onclick="salirDeCuenta()" data-i18n="html.profile.10">Cerrar sesión</button>
+      </div>
+
+      <div class="perfil-version-card perfil-idioma-card" style="margin-top:16px;">
+        <div class="perfil-version-label" style="margin-bottom:6px;" data-i18n="html.profile.13">Idioma</div>
+        <p class="perfil-idioma-sub" style="margin-bottom:10px;" data-i18n="html.profile.14">La app sigue el idioma de tu dispositivo por defecto. Elige uno para fijarlo.</p>
+        <div class="perfil-idioma-seg" role="group" aria-label="Idioma">
+          <button type="button" class="perfil-idioma-btn" id="perfilIdiomaEs" onclick="elegirIdioma('es')" data-i18n="js.perfil.idioma_espanol">Español</button>
+          <button type="button" class="perfil-idioma-btn" id="perfilIdiomaEn" onclick="elegirIdioma('en')" data-i18n="js.perfil.idioma_ingles">English</button>
+          <button type="button" class="perfil-idioma-btn" id="perfilIdiomaAuto" onclick="elegirIdioma(null)" data-i18n="js.perfil.idioma_seguir_dispositivo">Seguir al dispositivo</button>
+        </div>
+      </div>
+
+      <!-- Sonido (27/8): música de fondo + sonido de botones (este último sin
+           sonidos reales todavía, la preferencia ya existe para cuando
+           lleguen). Botones .mt-toggle (mismo componente que "En Inicio" de
+           Metas) para prender/apagar cada uno, stepper .obj-stepper (mismo
+           componente que Objetivos) para el volumen — nada de UI nueva. -->
+      <div class="perfil-version-card perfil-sonido-card" style="margin-top:16px;">
+        <div class="perfil-version-label" style="margin-bottom:10px;" data-i18n="html.profile.16">Sonido</div>
+
+        <div class="perfil-sonido-fila" style="margin-bottom:10px;">
+          <span class="perfil-sonido-fila-nombre" data-i18n="html.profile.17">Música de fondo</span>
+          <button class="mt-toggle" id="perfilMusicaToggle" type="button" onclick="alternarPerfilMusica()"></button>
+        </div>
+        <div class="perfil-sonido-fila" id="perfilVolumenFila" style="margin-bottom:10px;">
+          <span class="perfil-sonido-fila-nombre" data-i18n="html.profile.19">Volumen</span>
+          <div class="obj-stepper" id="perfilVolumenStepper">
+            <button class="obj-btn" type="button" onclick="bajarPerfilVolumen()" data-i18n-aria-label="js.perfil.aria_bajar_volumen">−</button>
+            <span class="obj-valor" id="perfilVolumenValor">60</span>
+            <button class="obj-btn" type="button" onclick="subirPerfilVolumen()" data-i18n-aria-label="js.perfil.aria_subir_volumen">+</button>
+          </div>
+        </div>
+
+        <div class="perfil-sonido-fila">
+          <span class="perfil-sonido-fila-nombre" data-i18n="html.profile.18">Sonido de botones</span>
+          <button class="mt-toggle" id="perfilBotonesToggle" type="button" onclick="alternarPerfilBotones()"></button>
+        </div>
+      </div>
+
+      <!-- Aviso de salud (19/9, Tao): acceso al disclaimer de seguridad
+           que se muestra en el onboarding (paso 6). Abre #screen-aviso-salud
+           con el mismo contenido, para que la persona pueda consultarlo
+           cuando quiera. Coloqueo antes de "Version" (bloque informativo
+           al pie) para agruparlo con el resto de acciones. -->
+      <div class="perfil-aviso-salud-item" onclick="entrarAvisoSalud()" role="button" tabindex="0">
+        <div class="perfil-aviso-salud-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l9.5 17H2.5L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M12 10v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="17.5" r="0.9" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="perfil-aviso-salud-label" data-i18n="html.profile.aviso_salud">Aviso de salud</div>
+        <div class="perfil-aviso-salud-flecha" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="perfil-version-card" style="margin-top:16px;">
+        <div class="perfil-version-label" data-i18n="html.profile.11">Versión</div>
+        <div class="perfil-version-value" id="perfilVersion" data-i18n="html.profile.12">1.0 (build 1)</div>
+      </div>
+
+      <!-- Feedback (31/8): pedido de Tao, "alguna sección de feedback... para
+           que la persona pueda dejar un feedback" -- botón de texto al pie de
+           Perfil, mismo lugar/peso visual que "Registrarse" pero secundario
+           (no compite con las acciones principales de la pantalla). Ver
+           screen-feedback + feedback.js. -->
+      <div class="home-actions" style="margin-top:16px; padding-top:0;">
+        <button class="btn btn-secondary" id="perfilFeedbackBtn" onclick="entrarFeedback()" data-i18n="html.profile.21">Dejar feedback</button>
+      </div>
+  </section>
+
+  <!-- PANTALLA DE CUENTA (24/8, 2da ronda) — Apple / Google / mail, en
+       grande. Se llega acá desde el botón "Registrarse" de Perfil (nunca
+       directo, nunca al abrir la app). Ver cuenta.js para todo el cableado;
+       usa el mismo componente .entry-card que "¿Cómo quieres jugar?"
+       (screen-entry-type) para los 3 proveedores, y .perfil-campo para el
+       formulario de mail (oculto hasta que se toca "Continuar con mail"). -->
+  <section class="screen" id="screen-cuenta">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-profile')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.cuenta.01">Registrarse</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:6px;" data-i18n="html.cuenta.02">Crea tu cuenta</h2>
+      <p class="section-sub" style="margin-bottom:10px;" data-i18n-html="html.cuenta.13">Elige cómo registrarte y te regalamos el <strong>Reper Suit</strong> del Reper Market. Tu progreso de invitado se conserva.</p>
+
+      <!-- SIN USO desde el 7/9 (pedido de Tao: una sola ventana con
+           correo + Apple juntos, no elegir primero y ver Apple de nuevo
+           adentro) -- se deja el bloque por si se retoma esta pantalla de
+           elegir mas adelante; ya ningun boton navega hasta aca (ver
+           entrarCuenta() en cuenta.js e irARegistrarse() en perfil.js). -->
+      <div id="cuentaOpciones">
+        <div class="entry-card" onclick="entrarConApple()">
+          <div class="entry-card-icon">
+            <!-- Logo de Apple = el GLIFO del sistema (U+F8FF, 6/9, foto de
+                 Tao: el path SVG a mano se veia deforme — la hoja flotando
+                 separada del cuerpo). En iPhone/Mac la fuente del sistema lo
+                 dibuja perfecto, que es donde corre la app. -->
+            <span class="icono-apple" aria-hidden="true"></span>
+          </div>
+          <div class="entry-card-body">
+            <div class="entry-card-title" data-i18n="html.cuenta.03">Continuar con Apple</div>
+            <div class="entry-card-sub" data-i18n="html.cuenta.04">Rápido, con tu cuenta de Apple</div>
+          </div>
+          <div class="entry-card-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></div>
+        </div>
+
+        <!-- La tarjeta de Google se sacó (4/9, decisión de Tao: "no va a haber
+             registro por Google, solo Apple y correo"). entrarConGoogle() y el
+             flujo de auth siguen existiendo en cuenta.js/net/auth.js por si se
+             restaura — solo se fue la entrada de UI. -->
+        <div class="entry-card" onclick="mostrarFormularioMail()">
+          <div class="entry-card-icon">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="entry-card-body">
+            <div class="entry-card-title" data-i18n="html.cuenta.07">Continuar con correo</div>
+            <div class="entry-card-sub" data-i18n="html.cuenta.08">Con un correo y una contraseña</div>
+          </div>
+          <div class="entry-card-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Formulario de mail — única ventana de la pantalla (7/9, pedido de
+           Tao: "que aparezca una sola ventana... y que la persona elija" en
+           vez de mostrar Apple/correo primero y Apple otra vez adentro). El
+           botón de Apple va ABAJO de "Crear cuenta", como botón negro del
+           mismo tamaño (.btn-apple) en vez de tarjeta -- pedido explícito
+           de Tao en el mismo mensaje. -->
+      <div id="cuentaFormMail" hidden>
+        <form id="cuentaForm" onsubmit="enviarFormularioCuenta(event)">
+          <div class="perfil-campo">
+            <label class="perfil-campo-label" for="cuentaMailInput" data-i18n="html.cuenta.09">Correo</label>
+            <input class="perfil-campo-input" id="cuentaMailInput" type="email" placeholder="tu@correo.com" data-i18n-placeholder="html.cuenta.attr.placeholder.01" autocomplete="email" autocapitalize="off" spellcheck="false" enterkeyhint="next" data-siguiente="cuentaPassInput" required>
+          </div>
+          <div class="perfil-campo" style="margin-top:10px;">
+            <label class="perfil-campo-label" for="cuentaPassInput" data-i18n="html.cuenta.10">Contraseña</label>
+            <input class="perfil-campo-input" id="cuentaPassInput" type="password" placeholder="Al menos 6 caracteres" data-i18n-placeholder="html.cuenta.attr.placeholder.02" autocomplete="current-password" minlength="6" enterkeyhint="go" required>
+          </div>
+
+          <label class="cuenta-checkbox-fila" id="cuentaNovedadesFila" for="cuentaNovedadesInput" style="margin-top:10px;">
+            <input type="checkbox" id="cuentaNovedadesInput">
+            <span data-i18n="html.cuenta.14">Quiero recibir novedades y lanzamientos por correo</span>
+          </label>
+
+          <div class="home-actions" style="padding-top:12px;">
+            <button class="btn btn-primary" type="submit" id="cuentaSubmit" data-i18n="html.cuenta.11">Crear cuenta</button>
+          </div>
+        </form>
+
+        <p class="cuenta-divisor" data-i18n="html.cuenta.15">o continúa con Apple</p>
+        <div class="home-actions" style="padding-top:0;">
+          <button type="button" class="btn btn-apple" onclick="entrarConApple()">
+            <span class="icono-apple" aria-hidden="true"></span>
+            <span data-i18n="html.cuenta.03">Continuar con Apple</span>
+          </button>
+        </div>
+
+        <p class="perfil-cuenta-alternar" id="cuentaAlternar" onclick="alternarModoCuenta()" data-i18n="html.cuenta.12">¿Ya tienes cuenta? Inicia sesión</p>
+      </div>
+
+      <div class="perfil-guardado-aviso" id="cuentaAviso" hidden></div>
+  </section>
+
+  <!-- PANTALLA DE FEEDBACK (31/8) -- pedido de Tao. Reusa la tabla `feedback`
+       de Supabase que YA existe con su RLS lista (feedback_insert_publico) --
+       es el MISMO destino al que apunta el formulario del sitio (docs/site.js,
+       todavia sin publicar), asi que no hace falta esperar el dominio para
+       tener un canal de feedback real. Se llega aca desde Perfil (boton al
+       pie, ver arriba). Anonimo por diseño, igual que el resto de la app --
+       "contacto" es opcional. Ver feedback.js para el cableado. -->
+  <section class="screen" id="screen-feedback">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-profile')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.feedback.01">Feedback</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:6px;" data-i18n="html.feedback.02">Cuéntanos qué piensas</h2>
+      <p class="section-sub" style="margin-bottom:12px;" data-i18n="html.feedback.03">Ideas, errores o lo que sea -- lo lee Tao directamente.</p>
+
+      <div class="feedback-tipo-grid" role="group" aria-label="Tipo de feedback">
+        <button type="button" class="feedback-tipo-btn" id="feedbackTipoIdea" onclick="elegirTipoFeedback('idea')" data-i18n="js.feedback.tipo_idea">💡 Idea</button>
+        <button type="button" class="feedback-tipo-btn" id="feedbackTipoBug" onclick="elegirTipoFeedback('bug')" data-i18n="js.feedback.tipo_bug">🐞 Problema</button>
+        <button type="button" class="feedback-tipo-btn" id="feedbackTipoElogio" onclick="elegirTipoFeedback('elogio')" data-i18n="js.feedback.tipo_elogio">❤️ Elogio</button>
+        <button type="button" class="feedback-tipo-btn" id="feedbackTipoOtro" onclick="elegirTipoFeedback('otro')" data-i18n="js.feedback.tipo_otro">✏️ Otro</button>
+      </div>
+
+      <form id="feedbackForm" onsubmit="enviarFormularioFeedback(event)">
+        <div class="perfil-campo" style="margin-top:16px;">
+          <label class="perfil-campo-label" for="feedbackMensajeInput" data-i18n="html.feedback.04">Tu mensaje</label>
+          <textarea class="perfil-campo-input perfil-campo-textarea" id="feedbackMensajeInput" placeholder="Escribe aquí…" data-i18n-placeholder="html.feedback.attr.placeholder.01" maxlength="2000" minlength="3" rows="5" required></textarea>
+        </div>
+        <div class="perfil-campo" style="margin-top:12px;">
+          <label class="perfil-campo-label" for="feedbackContactoInput" data-i18n="html.feedback.05">Correo (opcional, por si quieres respuesta)</label>
+          <input class="perfil-campo-input" id="feedbackContactoInput" type="email" placeholder="tu@correo.com" data-i18n-placeholder="html.feedback.attr.placeholder.02" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="200">
+        </div>
+        <div class="home-actions" style="padding-top:10px;">
+          <button class="btn btn-primary" type="submit" id="feedbackSubmit" data-i18n="html.feedback.06">Enviar</button>
+        </div>
+      </form>
+      <div class="perfil-guardado-aviso" id="feedbackAviso" hidden></div>
+  </section>
+
+  <!-- 19/9 (Tao): pantalla dedicada al aviso de salud. Se llega desde
+       Perfil → "Aviso de salud". El mismo contenido tambien aparece
+       obligatoriamente en el onboarding (paso 6) — ver .onb-paso-salud.
+       Usa los mismos i18n keys que el paso del onboarding para que
+       traducciones y copia queden sincronizadas. -->
+  <section class="screen" id="screen-aviso-salud">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-profile')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.profile.aviso_salud">Aviso de salud</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <div class="onb-salud-icono" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3l9.5 17H2.5L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M12 10v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="17.5" r="0.9" fill="currentColor"/>
+        </svg>
+      </div>
+      <h2 class="section-title" data-i18n="html.onboarding.salud_titulo">Antes de empezar</h2>
+
+      <div class="onb-salud-contenido">
+        <p class="onb-salud-parrafo" data-i18n="html.onboarding.salud_intro">Repers incluye ejercicio fisico cuya intensidad depende de cuanto te exijas a ti mismo (jumping jacks, sentadillas, flexiones y elevacion de rodillas).</p>
+        <p class="onb-salud-parrafo onb-salud-parrafo-fuerte" data-i18n="html.onboarding.salud_consulta">Consulta con tu medico antes de usar la app si:</p>
+        <ul class="onb-salud-lista">
+          <li data-i18n="html.onboarding.salud_cond1">Tienes problemas cardiacos o hipertension</li>
+          <li data-i18n="html.onboarding.salud_cond2">Estas embarazada o en post-parto reciente</li>
+          <li data-i18n="html.onboarding.salud_cond3">Tienes lesiones o dolor articular activo</li>
+          <li data-i18n="html.onboarding.salud_cond4">Estas recuperandote de una cirugia</li>
+          <li data-i18n="html.onboarding.salud_cond5">Cualquier condicion medica que limite el ejercicio</li>
+        </ul>
+        <p class="onb-salud-parrafo" data-i18n="html.onboarding.salud_durante">Durante los ejercicios: detente si sientes mareo, dolor en el pecho, falta de aire o cualquier molestia.</p>
+        <p class="onb-salud-parrafo onb-salud-parrafo-legal" data-i18n="html.onboarding.salud_legal">Repers no reemplaza consejo medico profesional. Al usar la app, aceptas que lo haces bajo tu propia responsabilidad.</p>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-lobby-custom" style="position:relative">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-entry-type')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.lobby_custom.01">Partida Personalizada</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <div class="lobby-code-card">
+        <div class="lobby-code-label" data-i18n="html.lobby_custom.02">Código de sala</div>
+        <div class="lobby-code-value">7K2P</div>
+        <div class="lobby-code-hint" data-i18n="html.lobby_custom.03">Comparte este código para que se unan</div>
+      </div>
+
+      <div class="home-actions" style="margin-top:14px; padding-top:0;">
+        <button class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" style="width:17px;height:17px;stroke:currentColor;stroke-width:2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v14"/></svg>
+          Compartir código
+        </button>
+      </div>
+
+      <div class="lobby-slots-label" data-i18n="html.lobby_custom.04">Jugadores (1 de 4)</div>
+
+      <div class="lobby-slots">
+        <div class="lobby-slot filled">
+          <div class="lobby-slot-avatar" style="background:var(--p-red)">P1</div>
+          <div class="lobby-slot-name" data-i18n="html.lobby_custom.05">Tú</div>
+          <div class="lobby-slot-ready" data-i18n="html.lobby_custom.06">Listo</div>
+        </div>
+        <div class="lobby-slot empty">
+          <div class="lobby-slot-avatar-empty">2</div>
+          <span data-i18n="html.lobby_custom.07">Esperando jugador</span>
+        </div>
+        <div class="lobby-slot empty">
+          <div class="lobby-slot-avatar-empty">3</div>
+          <span data-i18n="html.lobby_custom.08">Esperando jugador</span>
+        </div>
+        <div class="lobby-slot empty">
+          <div class="lobby-slot-avatar-empty">4</div>
+          <span data-i18n="html.lobby_custom.09">Esperando jugador</span>
+        </div>
+      </div>
+
+      <div class="mode-select-btn" id="modeSelectBtn" onclick="toggleModePanel()">
+        <div>
+          <div class="mode-select-label" data-i18n="html.lobby_custom.10">Modo de juego</div>
+          <div class="mode-select-value" id="modeSelectValue" data-i18n="html.lobby_custom.11">Partida Completa</div>
+        </div>
+        <div class="mode-select-chevron">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+      </div>
+
+      <div class="mode-panel" id="modePanel">
+        <div class="mode-panel-inner">
+          <div class="mode-carousel-track" id="modeCarouselCustom">
+            <div class="mode-card centered" data-mode="completa" onclick="selectModeCard(this, 'Partida Completa')">
+              <div class="mode-card-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+              </div>
+              <div class="mode-card-title" data-i18n="html.lobby_custom.12">Partida Completa</div>
+              <div class="mode-card-sub" data-i18n="html.lobby_custom.13">Los 5 ejercicios, 5 rondas. Suma total + mejor en cada uno.</div>
+            </div>
+            <!-- Partida Rápida deshabilitada temporalmente. mode-card-locked ya aplica
+                 opacity/grayscale + pointer-events:none (no seleccionable). Sin onclick. -->
+            <div class="mode-card mode-card-locked" data-mode="rapida" aria-disabled="true">
+              <div class="mode-card-icon">
+                <svg viewBox="0 0 24 24"><path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"/></svg>
+              </div>
+              <div class="mode-card-title" data-i18n="html.lobby_custom.14">Partida Rápida</div>
+              <div class="mode-card-sub" data-i18n="html.lobby_custom.15">Próximamente</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goTo('screen-confirm')" data-i18n="html.lobby_custom.16">Simular: todos conectados →</button>
+      </div>
+
+  </section>
+
+  <section class="screen" id="screen-lobby-solo">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-entry-type')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.lobby_solo.01">Individual</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <div class="lobby-slots-label" data-i18n="html.lobby_solo.02">Listo para entrenar</div>
+
+      <div class="lobby-slots">
+        <div class="lobby-slot filled">
+          <div class="lobby-slot-avatar" style="background:var(--p-red)">P1</div>
+          <div class="lobby-slot-name" data-i18n="html.lobby_solo.03">Tú</div>
+          <div class="lobby-slot-ready" data-i18n="html.lobby_solo.04">Listo</div>
+        </div>
+      </div>
+
+      <div class="lobby-status" data-i18n="html.lobby_solo.05">A tu ritmo, sin presión.</div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goTo('screen-moves')" data-i18n="html.lobby_solo.06">Empezar →</button>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-invite-friends">
+
+      <div class="topbar2">
+        <!-- Volver a la pantalla consolidada (único origen vivo de "Invitar"). Antes
+             iba fijo a screen-lobby-custom (Personalizada vieja, deprecada). El sistema
+             de navegación no tiene stack, así que es destino fijo a la consolidada. -->
+        <div class="back-btn" onclick="goTo('screen-multi-config')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.invite_friends.01">Invitar amigos</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:20px;" data-i18n="html.invite_friends.02">Tus amigos</h2>
+
+      <div class="stats-card" style="padding:4px 16px;">
+        <div class="friend-row">
+          <div class="friend-avatar" style="background:var(--p-blue)" data-i18n="html.invite_friends.03">MJ</div>
+          <div class="friend-info">
+            <div class="friend-name" data-i18n="html.invite_friends.04">Male Jara</div>
+            <div class="friend-status" data-i18n="html.invite_friends.05">En línea</div>
+          </div>
+          <button class="friend-invite-btn" onclick="toggleInvite(this)" data-i18n="html.invite_friends.06">Invitar</button>
+        </div>
+        <div class="friend-row">
+          <div class="friend-avatar" style="background:var(--p-green)" data-i18n="html.invite_friends.07">FC</div>
+          <div class="friend-info">
+            <div class="friend-name" data-i18n="html.invite_friends.08">Franco Castillo</div>
+            <div class="friend-status" data-i18n="html.invite_friends.09">Hace 2h</div>
+          </div>
+          <button class="friend-invite-btn invited" onclick="toggleInvite(this)" data-i18n="html.invite_friends.10">Cancelar</button>
+        </div>
+        <div class="friend-row">
+          <div class="friend-avatar" style="background:var(--p-yellow)" data-i18n="html.invite_friends.11">CS</div>
+          <div class="friend-info">
+            <div class="friend-name" data-i18n="html.invite_friends.12">Cami Soto</div>
+            <div class="friend-status" data-i18n="html.invite_friends.13">En línea</div>
+          </div>
+          <button class="friend-invite-btn" onclick="toggleInvite(this)" data-i18n="html.invite_friends.14">Invitar</button>
+        </div>
+      </div>
+  </section>
+
+  <!-- ══════════════════════ ROPA · EL CLÓSET REAL ══════════════════════
+       Convergencia tienda↔ropa (21/8): misma estructura que screen-market —
+       categorías arriba, visor 3D a pantalla completa con el carrusel
+       flotando en su pie, acción abajo. La diferencia es el REPARTO: la
+       tienda muestra todo el catálogo y vende; el clóset muestra SOLO lo
+       comprado y viste (Equipar, sin precios). Lo arma ropero.js. -->
+  <section class="screen" id="screen-wardrobe">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.wardrobe.01">Ropa</div>
+        <!-- Mismo .token-pill que Inicio y Market: billetera.js pinta todos
+             los [data-saldo-tokens] a la vez. Ver tu saldo también acá cierra
+             el circuito ganar → comprar → vestir sin cambiar de pantalla. -->
+        <div class="token-pill">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0071E3" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0071E3" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span data-saldo-tokens>—</span>
+        </div>
+      </div>
+
+      <!-- Las MISMAS 5 categorías del Market, con el mismo componente:
+           3 tabs visibles + flechas + puntitos. Ids propios (wc*): los llena
+           ropero.js. -->
+      <div class="mk-cat-row">
+        <button class="mk-cat-nav" id="wcCatPrev" type="button" aria-label="Categoría anterior" data-i18n-aria-label="html.wardrobe.attr.aria-label.01">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+        <div class="wc-tabs mk-tabs" id="wcTabs"></div>
+        <button class="mk-cat-nav" id="wcCatNext" type="button" aria-label="Categoría siguiente" data-i18n-aria-label="html.wardrobe.attr.aria-label.02">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+      </div>
+      <div class="mk-cat-dots" id="wcCatDots"></div>
+
+      <!-- Visor 3D a pantalla completa: el MISMO visor del Market
+           (market-viewer.js parametrizado) con el avatar A-pose calibrado y
+           las prendas/skins reales puestas. -->
+      <div class="avatar-scene" id="wardrobeAvatarScene">
+        <div class="avatar-loading" id="wardrobeAvatarLoading">
+          <div class="loading-spin"></div>
+          Cargando avatar
+        </div>
+        <canvas id="wardrobe-avatar-canvas"></canvas>
+
+        <div class="mk-flotante">
+          <div class="rotate-hint">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 11-3.5-7.1M21 4v5h-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+            Arrastra para rotar
+          </div>
+          <div class="wc-track-wrap" id="wcWrap">
+            <div class="wc-track" id="wcTrack"></div>
+          </div>
+          <!-- Categoría sin prendas COMPRADAS (o clóset sin conexión): el
+               aviso ocupa el lugar del carrusel, mismo mecanismo que la
+               tienda. El texto lo decide ropero.js según el caso. -->
+          <div class="mk-vacio" id="wcVacio" hidden></div>
+          <!-- Selector de color: las mismas prendas tintables que en la
+               tienda, con la misma fila (espacio siempre reservado). -->
+          <div class="mk-color-row" id="wcColores" hidden></div>
+        </div>
+      </div>
+
+      <!-- Pie: Equipar/Equipado de la prenda centrada (lo arma ropero.js —
+           nunca precios: todo lo que se ve acá ya es tuyo) y la entrada al
+           Market debajo, para el camino inverso al que trae la tienda acá.
+           El botón "Listo" se retiró: hacía EXACTAMENTE lo mismo que la
+           flecha ← del topbar, y su lugar lo necesitaba la fila de color. -->
+      <div id="wcCta"></div>
+      <button class="btn btn-secondary mk-cta-bottom" onclick="entrarAlMarketPortada()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 8h12l-1 12H7L6 8z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 8V6.5a3 3 0 016 0V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reper Market
+      </button>
+
+  </section>
+
+  <!-- (Las pantallas de Metas diarias y Logros se mudaron a GLOBOS dentro
+       de screen-home el 4/9 — ver #metasOverlay / #logrosOverlay allá.) -->
+
+  <!-- ══════════════════════ REPER MARKET ══════════════════════
+       Vidriera 3D, no una grilla: el avatar a pantalla completa con la prenda
+       puesta y el carrusel flotando encima — mismo patrón que Ropa
+       (screen-wardrobe), con el mismo componente de carrusel
+       (carrusel-prendas.js) y el mismo tipo de visor (market-viewer.js).
+       Las 5 categorías entran de a 3 con flechas a los costados; el resto de la
+       pantalla (tabs, tarjetas, colores, aviso y botón) lo arma market.js a
+       partir de data/catalogo-market.js. El saldo del topbar es el real
+       (billetera.js) y la compra es la RPC `comprar_item` de siempre. -->
+  <!-- PORTADA DEL MARKET (9/10, "Reper Market Pro" — diseno cerrado con
+       Tao): vitrina principal ANTES del probador. Solo web: en iOS nativo
+       entrarAlMarketPortada() sigue yendo directo a screen-market (paridad
+       pendiente). La llena pintarPortada() en market.js. v1: pase alto +
+       destacado de la semana + fila Skins + tiles de Ropa. Cofres, ruleta y
+       Animaciones (Escenario) llegan en las tandas siguientes. -->
+  <!-- PANTALLA DE AMIGOS (10/10, web): la arma amigos-pantalla.js -->
+  <section class="screen" id="screen-amigos">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.amigos.01">Amigos</div>
+        <button class="amg-agregar" type="button" onclick="abrirAgregarAmigo()" data-i18n="html.amigos2.agregar">+ Agregar</button>
+      </div>
+      <div class="amg-hero" id="amgHero"></div>
+      <div class="amg-seg" id="amgSeg">
+        <button type="button" class="on" data-p="amigos"><span data-i18n="html.amigos2.tab_amigos">Amigos</span></button>
+        <button type="button" data-p="ranking"><span data-i18n="html.amigos2.tab_ranking">Ranking</span></button>
+        <button type="button" data-p="solicitudes"><span data-i18n="html.amigos2.tab_solicitudes">Solicitudes</span><span class="amg-pto" id="amgSolN" hidden></span></button>
+      </div>
+      <div class="amg-pane on" id="amgPaneAmigos"></div>
+      <div class="amg-pane" id="amgPaneRanking"></div>
+      <div class="amg-pane" id="amgPaneSolicitudes"></div>
+  </section>
+
+  <section class="screen" id="screen-market-portada">
+      <div class="topbar2">
+        <div class="back-btn" onclick="goTo('screen-home')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.market.01">Reper Market</div>
+        <div class="mkp-derecha"><button class="mkp-rul-pill" type="button" onclick="abrirRuletaPortada()" aria-label="Ruleta">🎡<b id="mkpRulN">3</b></button><div class="token-pill">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0071E3" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0071E3" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span data-saldo-tokens>—</span>
+        </div></div>
+      </div>
+      <div class="mkp-cuerpo">
+        <button class="mkp-pase" type="button" onclick="window.avisoPasePronto && window.avisoPasePronto()" aria-label="Pase de temporada" data-i18n-aria-label="html.home.17">
+          <img class="mkp-pase-art" src="./assets/pase-temporada-1-alto-BzOP-sSq.jpg" alt="" aria-hidden="true">
+          <span class="mkp-pase-nv" data-i18n="html.home.22">Nivel 1</span>
+          <span class="mkp-pase-borde" aria-hidden="true"><span></span></span>
+        </button>
+        <button class="mkp-dest" type="button" onclick="entrarAlMarketConItem('skin-dragon')">
+          <img class="mkp-dest-art" src="./assets/skin-dragon-banner-BrcA5EH6.jpg" alt="" aria-hidden="true">
+          <span class="mkp-dest-tiempo" id="mkpTiempo">⏳</span>
+          <span class="mkp-dest-chip"><b data-i18n="html.home.19">Skin Dragón</b><small data-i18n="html.market.p01">Legendaria · Semana Dragón</small></span>
+          <span class="mkp-dest-ver" id="mkpDestVer" data-i18n="html.home.21">Ver ›</span>
+          <span class="mkp-dest-ver mkp-dest-tuya" id="mkpDestTuya" hidden></span>
+        </button>
+        <button class="mkp-set" type="button" id="mkpSet"></button>
+        <div class="mkp-sec"><span data-i18n="html.market.p04">Cofres</span></div>
+        <div class="mkc-fila" id="mkpCofres"></div>
+        <button class="mkp-rul" type="button" onclick="abrirRuletaPortada()">
+          <span class="mkp-rueda" aria-hidden="true"></span>
+          <span class="mkp-rul-tx"><b data-i18n="html.market.p05">Ruleta de premios</b><small id="mkpRulTx"></small></span>
+          <span class="mkp-rul-btn" data-i18n="html.market.p06">Girar</span>
+        </button>
+        <div class="mkp-sec"><span id="mkpTitSkins">Skins</span><button type="button" onclick="verTodoMarket('skins')" data-i18n="html.market.p02">Ver todo ›</button></div>
+        <div class="mkp-fila" id="mkpSkins"></div>
+        <div class="mkp-sec"><span data-i18n="html.market.p03">Ropa</span><button type="button" onclick="verTodoMarket('torso')" data-i18n="html.market.p02">Ver todo ›</button></div>
+        <div class="mkp-tiles" id="mkpRopa"></div>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-market">
+
+      <div class="topbar2">
+        <div class="back-btn" onclick="salirDelProbadorMarket()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge" data-i18n="html.market.01">Reper Market</div>
+        <!-- MISMO componente .token-pill que Inicio, y el mismo atributo: lo
+             pinta billetera.js sin que el Market tenga que saber nada de saldos. -->
+        <div class="token-pill">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0071E3" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0071E3" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span data-saldo-tokens>—</span>
+        </div>
+      </div>
+
+      <!-- Categorías: 3 tabs visibles de las 5 + flechas para llegar al resto.
+           Mismo .wc-tab de siempre; lo nuevo son los dos botones circulares de
+           los costados y los puntitos de posición de abajo. -->
+      <div class="mk-cat-row">
+        <button class="mk-cat-nav" id="mkCatPrev" type="button" aria-label="Categoría anterior" data-i18n-aria-label="html.market.attr.aria-label.01">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+        <div class="wc-tabs mk-tabs" id="mkTabs"></div>
+        <button class="mk-cat-nav" id="mkCatNext" type="button" aria-label="Categoría siguiente" data-i18n-aria-label="html.market.attr.aria-label.02">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+      </div>
+      <div class="mk-cat-dots" id="mkCatDots"></div>
+
+      <!-- Visor 3D a pantalla completa: MISMO markup que Ropa (avatar-scene +
+           canvas + rotate-hint). El carrusel flota encima con position:absolute,
+           mismo patrón que .wc-overlay allá. -->
+      <div class="avatar-scene" id="marketAvatarScene">
+        <div class="avatar-loading" id="marketAvatarLoading">
+          <div class="loading-spin"></div>
+          Cargando avatar
+        </div>
+        <canvas id="market-avatar-canvas"></canvas>
+
+        <!-- El hint vive DENTRO de este bloque y se ancla con
+             bottom:calc(100% + 18px) — MISMA técnica y MISMO valor que
+             #screen-home .rotate-hint: el 100% se mide contra el borde superior
+             del conjunto carrusel+color, no un bottom en píxeles adivinado. -->
+        <div class="mk-flotante">
+          <div class="rotate-hint">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 11-3.5-7.1M21 4v5h-5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+            Arrastra para rotar
+          </div>
+          <div class="wc-track-wrap" id="mkWrap">
+            <div class="wc-track" id="mkTrack"></div>
+          </div>
+          <!-- Categoría sin prendas todavía (hoy: Skins). Ocupa el lugar del
+               carrusel para que la pestaña siga siendo navegable en vez de
+               abrirse en un vacío que se leería como pantalla rota. -->
+          <div class="mk-vacio" id="mkVacio" hidden></div>
+          <!-- La fila de colores se mudó ADENTRO de la ficha de compra
+               (4/9, imagen de referencia de Tao — "que los colores estén
+               dentro de esa tarjetita"). El id no cambió: pintarColores()
+               sigue pintando el mismo elemento, viva donde viva. -->
+        </div>
+
+        <!-- Rechazos de la compra y el aviso de "tienda sin conexión", como
+             pastilla flotante bajo los puntitos (21/8: salió del pie, donde
+             gastaba ~67px de alto que hoy son escena — ver .mk-aviso-flotante).
+             Oculta mientras no haya nada que decir; mismo id de siempre, así
+             market.js no cambia. -->
+        <div class="mk-aviso mk-aviso-flotante" id="mkAviso" role="status" hidden></div>
+      </div>
+
+      <!-- FICHA DE COMPRA (4/9, imagen de referencia de Tao — la que había
+           quedado pendiente desde la versión nativa perdida en el revert):
+           tarjeta blanca de tamaño CONSTANTE con nombre / tipo / qué incluye /
+           colores (si la prenda tiene) a la izquierda, Saldo y Te-faltan a la
+           derecha separados por una línea vertical, divisor horizontal
+           parejo, y el botón "Comprar por N" con el mismo gradiente y sombra
+           que "Jugar ahora". La llena pintarCta() (y pintarColores() la fila
+           de colores). -->
+      <div class="mk-ficha" id="mkFicha" hidden>
+        <div class="mk-ficha-info">
+          <div class="mk-ficha-izq">
+            <div class="mk-ficha-nombre" id="mkFichaNombre"></div>
+            <div class="mk-ficha-tipo" id="mkFichaTipo"></div>
+            <div class="mk-ficha-incluye" id="mkFichaIncluye"></div>
+            <div class="mk-color-row" id="mkColores" hidden></div>
+          </div>
+          <div class="mk-ficha-der" id="mkFichaLados"></div>
+        </div>
+        <div class="mk-ficha-divisor"></div>
+        <div id="mkCta"></div>
+      </div>
+
+  </section>
+
+  <section class="screen" id="screen-confirm">
+
+      <div class="gp-back-row">
+        <div class="back-btn" onclick="goTo('screen-moves')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <div class="round-badge">Jumping Jacks</div>
+        <div style="width:38px"></div>
+      </div>
+
+      <div class="phase-pill">
+        <div class="phase-dot pulse"></div> Confirmando posición
+      </div>
+
+      <div class="gp-stage">
+        <div class="gp-badge" style="background:var(--p-red)">P1</div>
+        <div class="gp-placeholder">
+          <div class="gp-placeholder-ring" style="position:relative;">
+            <div class="gp-hold-ring">
+              <svg viewBox="0 0 88 88">
+                <circle class="track" cx="44" cy="44" r="42"/>
+                <circle class="fill" cx="44" cy="44" r="42"/>
+              </svg>
+            </div>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><path d="M12 9v8M8 21l4-4 4 4M6 13l6-2 6 2"/></svg>
+          </div>
+          <div class="gp-placeholder-label">Ubícate en cámara</div>
+        </div>
+      </div>
+
+      <p class="section-sub" style="text-align:center; margin-top:14px;">Mantén la posición inicial durante 3 segundos.</p>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goTo('screen-countdown')">Simular confirmación →</button>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-countdown">
+
+      <div class="phase-pill" style="margin-top:8px;">
+        <div class="phase-dot pulse"></div> Prepárate
+      </div>
+
+      <div class="gp-big-timer">5</div>
+      <p class="gp-timer-caption">Los movimientos empiezan a contar cuando llegue a cero.</p>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goTo('screen-execute')">Simular inicio →</button>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-execute">
+
+      <div class="phase-pill">
+        <div class="phase-dot pulse"></div> Contando repeticiones · 0:24
+      </div>
+
+      <div class="gp-stage">
+        <div class="gp-badge" style="background:var(--p-red)">P1</div>
+        <div class="gp-rep-count">12</div>
+        <div class="gp-placeholder">
+          <div class="gp-placeholder-ring">
+            <svg viewBox="0 0 24 24"><path d="M12 4l3 3M12 4l-3 3M12 4v8M8 20l4-4 4 4M4 12l8-2 8 2"/></svg>
+          </div>
+          <div class="gp-placeholder-label">Avatar de gameplay en vivo</div>
+        </div>
+      </div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goTo('screen-results')">Simular fin de ronda →</button>
+      </div>
+  </section>
+
+  <section class="screen" id="screen-results">
+
+      <div class="topbar2">
+        <div class="home-eyebrow">Partida terminada</div>
+        <div style="width:38px"></div>
+      </div>
+      <h2 class="section-title">Resultados</h2>
+
+      <div class="podium-wrap">
+        <div class="pod-slot second">
+          <div class="pod-avatar" style="--p-color:var(--p-blue)">P2</div>
+          <div class="pod-bar">2</div>
+          <div class="pod-name">132</div>
+        </div>
+        <div class="pod-slot first">
+          <div class="pod-avatar" style="--p-color:var(--accent)">P1</div>
+          <div class="pod-bar">1</div>
+          <div class="pod-name">148</div>
+        </div>
+        <div class="pod-slot third">
+          <div class="pod-avatar" style="--p-color:var(--p-yellow)">P3</div>
+          <div class="pod-bar">3</div>
+          <div class="pod-name">97</div>
+        </div>
+      </div>
+
+      <div class="stats-card">
+        <div class="stat-row2">
+          <div class="stat-label2">Mejor en Sentadillas</div>
+          <div class="stat-value2">P1</div>
+        </div>
+        <div class="stat-row2">
+          <div class="stat-label2">Mejor en Flexiones</div>
+          <div class="stat-value2">P3</div>
+        </div>
+        <div class="stat-row2">
+          <div class="stat-label2">Mejor en Jumping Jacks</div>
+          <div class="stat-value2">P2</div>
+        </div>
+      </div>
+
+      <div class="token-earned">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0058B0" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0058B0" stroke-width="1.8" stroke-linecap="round"/></svg>
+        +40 tokens ganados
+      </div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="goTo('screen-home')">Jugar de nuevo</button>
+      </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       CARGA SINCRONIZADA (Multi/Personalizada) · pantalla PASIVA. Aparece
+       apenas termina la ventana de 3s de "Comenzar" (ya no cancelable) y
+       ANTES del gameplay real. Fondo oscuro (mismo tono que la carga de
+       gameplay), spinner + lista de la sala (Vos + simulados) con check al ir
+       quedando "listos" + contador "X de N". Avanza SOLA cuando están todos
+       (timing simulado en carga-sync.js). No aplica a Individual. Sin botones.
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="screen" id="screen-carga-sync">
+      <!-- Salida de la espera. En Multijugador la sala NO se completa con bots
+           ni tiene tiempo límite: se espera a personas reales todo lo que haga
+           falta, y la única forma de terminar es que el jugador decida irse.
+           Por eso hay una flecha discreta y NO un mensaje de "no encontramos
+           jugadores": la app no lo empuja a salir.
+           Oculta mientras se espera entre rondas (ahí la partida ya empezó y
+           salir sería abandonarla). -->
+      <div class="cs-salida" id="csSalida" style="display:none;">
+        <div class="back-btn" onclick="salirDeEspera()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+        <!-- (El boton "Cambiar configuracion" del 25/8 se retiro el 6/9 —
+             Tao: "deberia suceder solo con volver en la flechita". Ahora la
+             flecha de arriba decide sola: host de Personalizada vuelve con
+             la sala viva, el resto sale como siempre — ver salirDeEspera()
+             en net/flujo.js.) -->
+      </div>
+      <div class="cs-wrap">
+        <div class="cs-spinner"></div>
+        <div class="cs-titulo" id="csTitulo" data-i18n="html.carga_sync.01">Sincronizando jugadores</div>
+        <div class="cs-rows" id="csRows"></div>
+        <div class="cs-contador" id="csContador" data-i18n="html.carga_sync.02">0 de 2 listos</div>
+      </div>
+      <!-- ESTADO DE ERROR · solo para fallas de CONEXIÓN, que no se arreglan
+           esperando. Que no aparezca gente NO es esto: eso es una espera normal
+           y no muestra ningún mensaje. Reemplaza al bloque de espera (.cs-wrap),
+           no se suma, para que no queden dos mensajes contradictorios. -->
+      <div class="cs-error" id="csError" style="display:none;">
+        <div class="cs-error-icono">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+        </div>
+        <div class="cs-error-titulo" data-i18n="html.carga_sync.03">No pudimos conectarnos</div>
+        <div class="cs-error-sub" data-i18n="html.carga_sync.04">Revisa tu conexión e intenta de nuevo.</div>
+        <button class="btn btn-primary cs-error-btn" onclick="reintentarConexion()" data-i18n="html.carga_sync.05">Reintentar</button>
+      </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANTALLA DE GAMEPLAY (SPA) · Fase 1 — shell visual, sin 3D ni cámara.
+       Pantalla GENÉRICA (la manejará movimientoActual en fases próximas; hoy
+       los valores son estáticos). Porta el diseño ya validado en el puente
+       reprs-integrado.html, adaptado al tema claro de la app: badge, botón
+       inferior y fondo de página en claro; la tarjeta-escenario queda oscura
+       para que el HUD blanco (tiempo/reps) sea legible sobre el avatar. La
+       .gp2-avatar-zone alojará el canvas 3D real en Fase 2.
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="screen" id="screen-gameplay">
+
+      <!-- Salida del gameplay. Esta pantalla no tenía ninguna: viene portada del
+           puente reprs-integrado.html, que era una página suelta sin navegación
+           interna, así que nunca se le agregó la flecha que sí tiene el resto de
+           la app. Mientras carga/prepara el único botón es "Preparando…"
+           deshabilitado — sin esto, una cámara que no arranca dejaba al jugador
+           encerrado. Va absoluta para no correr el layout ya ajustado. -->
+      <div class="gp-salida">
+        <div class="back-btn" onclick="salirDelGameplay()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </div>
+      </div>
+
+      <div class="phase-pill">
+        <div class="phase-dot pulse"></div> <span id="gp-badge-text" data-i18n="html.gameplay.01">Preparación</span>
+      </div>
+
+      <div class="gp2-card">
+        <div class="gp2-toprow">
+          <div class="gp2-p1">P1</div>
+          <div class="gp2-timer" id="gp-timer">30</div>
+          <div class="gp2-reps" id="gp-reps">0</div>
+        </div>
+        <!-- El canvas del avatar 3D (Fase 2) lo inserta gameplay-avatar.js acá. -->
+        <div class="gp2-avatar-zone"></div>
+
+        <!-- Prep sub-fase 2: capa translúcida + número 5→0 + postura (informativa) -->
+        <div class="gp2-countdown" id="gp-countdown">
+          <div class="gp2-countdown-num" id="gp-countdown-num">5</div>
+          <div class="gp2-postura"><span id="gp-postura-label">Postura: </span><span class="gp2-ind no" id="gp-postura">--</span></div>
+        </div>
+
+        <!-- Prep sub-fase 1: lámina de instrucción que cubre toda la tarjeta.
+             Desde el 21/8 la lámina muestra la TARJETA DE INSTRUCCIÓN del
+             movimiento (imágenes que diseñó Tao: posturas correcta/incorrecta
+             con checks) cuando el movimiento tiene una en GP_MOV_UI.laminaImg;
+             el <span> de texto queda de respaldo para movimientos sin tarjeta.
+             gameplay-avatar.js alterna cuál de los dos se ve. -->
+        <div class="gp2-lamina" id="gp-lamina">
+          <span id="gp-lamina-txt" data-i18n="html.gameplay.02">Prepárate para las Sentadillas</span>
+          <img class="gp2-lamina-img" id="gp-lamina-img" alt="Cómo realizar el ejercicio" hidden>
+        </div>
+
+        <!-- Pantalla de carga (mín. 5s garantizado): cubre la tarjeta hasta que la
+             carga real (modelo + cámara) Y los 5s terminen. Mismo fondo que la
+             lámina → transición sin salto hacia la instrucción. -->
+        <div class="gp2-loading" id="gp-loading">
+          <div class="gp2-spinner"></div>
+          <div class="gp2-loading-label" id="gp-loading-label" data-i18n="html.gameplay.03">Cargando…</div>
+        </div>
+      </div>
+
+      <div class="home-actions">
+        <!-- Carga: botón deshabilitado. Prep: barra de progreso. Execute: Terminar.
+             En Multi/Personalizada ese mismo botón va gris e inerte y se rellena
+             durante los 30s (no adelanta la ronda de nadie, así que no es tocable);
+             en Individual sigue siendo el botón real. Ver aplicarModoBotonTerminar
+             en gameplay-avatar.js. -->
+        <button class="btn btn-primary gp2-btn-cargando" id="gp-loading-btn" disabled style="display:none;" data-i18n="html.gameplay.04">Preparando…</button>
+        <div class="gp2-progress" id="gp-progress" style="display:none;">
+          <div class="gp2-progress-fill" id="gp-progress-fill"></div>
+          <div class="gp2-progress-label" data-i18n="html.gameplay.05">Prepárate…</div>
+        </div>
+        <button class="btn btn-primary" id="gp-terminar" style="display:none;"><span class="gp2-terminar-fill" id="gp-terminar-fill"></span><span class="gp2-terminar-label" data-i18n="html.gameplay.06">Terminar</span></button>
+      </div>
+  </section>
+
+  <!-- Resultados de gameplay · modo Individual (1 ejercicio, sin comparación) -->
+  <section class="screen" id="screen-gameplay-results">
+      <div class="topbar2">
+        <div class="home-eyebrow" id="gpr-eyebrow" data-i18n="html.gameplay_results.01">Sentadillas · Individual</div>
+        <div style="width:38px"></div>
+      </div>
+      <h2 class="section-title" data-i18n="html.gameplay_results.02">¡Sesión terminada!</h2>
+      <div class="gpr-wrap">
+        <div class="gpr-reps" id="gp-result-reps">0</div>
+        <div class="gpr-label" data-i18n="html.gameplay_results.03">REPETICIONES</div>
+        <!-- Mensaje de cierre temático: sentFinalizar() (gameplay-avatar.js) lo
+             setea al azar desde FRASES_EJERCICIO[mov] según el ejercicio jugado. -->
+        <div class="gpr-mensaje" id="gpr-mensaje"></div>
+        <!-- Tokens (22/8): MISMO patrón .token-earned que los otros 3 finales
+             (Partida Completa, Multi Completa, Multi Rápida) — era el único de
+             los 4 puntos que no otorgaba nada. sentFinalizar() lo pinta con el
+             resultado real (otorgados, o el aviso de mínimo no alcanzado). -->
+        <div class="token-earned">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0058B0" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0058B0" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span id="sr-tokens" data-i18n="html.gameplay_results.04">+20 tokens ganados</span>
+        </div>
+      </div>
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="volverAConfigTrasPartida()" data-i18n="html.gameplay_results.05">Volver</button>
+        <!-- 19/9 v2 (Tao — 2do intento, sin tocar sentFinalizar). Ver el
+             handler window.compartirDesdeGameplayResults en gameplay-avatar.js. -->
+        <button class="btn btn-terciario" onclick="compartirDesdeGameplayResults()" data-i18n="html.gameplay_results.06">Compartir</button>
+      </div>
+  </section>
+
+  <!-- Entre rondas · Partida Completa (5s fijos, auto-avanza). Check + reps del
+       ejercicio recién completado + "Siguiente: X" (o "Resultados" en el 4º) +
+       barra de rondas. Sin navegación manual: la maneja gameplay-avatar.js. -->
+  <section class="screen" id="screen-entre-rondas">
+      <div class="er-wrap">
+        <div class="er-check">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/></svg>
+        </div>
+        <div class="er-titulo" data-i18n="html.entre_rondas.01">¡Bien ahí!</div>
+        <div class="er-ejercicio" id="er-nombre">—</div>
+        <div class="er-reps" id="er-reps">0</div>
+        <div class="er-reps-label" data-i18n="html.entre_rondas.02">Repeticiones</div>
+        <div class="er-siguiente" id="er-siguiente" data-i18n="html.entre_rondas.03">Siguiente: —</div>
+        <div class="er-progress"><div class="er-progress-fill" id="er-progress-fill"></div></div>
+        <div class="er-progress-label" id="er-progress-label" data-i18n="html.entre_rondas.04">1 de 4</div>
+      </div>
+  </section>
+
+  <!-- Pantalla final · Partida Completa: total + 4 barras (color por ejercicio) +
+       mensaje de cierre + "Jugar de nuevo". Las 4 filas se rellenan por índice
+       desde mostrarPantallaFinal() (gameplay-avatar.js) según el orden sorteado. -->
+  <section class="screen" id="screen-gameplay-final">
+      <div class="topbar2">
+        <div class="home-eyebrow" data-i18n="html.gameplay_final.01">Partida Completa · Individual</div>
+        <div style="width:38px"></div>
+      </div>
+      <h2 class="section-title" data-i18n="html.gameplay_final.02">¡Partida terminada!</h2>
+      <div class="pf-total-wrap">
+        <div class="pf-total" id="pf-total">0</div>
+        <div class="pf-total-label" data-i18n="html.gameplay_final.03">Repeticiones en total</div>
+      </div>
+      <div class="pf-barras">
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="pf-bar-nombre-0">—</span><span class="pf-barra-reps" id="pf-bar-reps-0">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="pf-bar-fill-0"></div></div>
+        </div>
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="pf-bar-nombre-1">—</span><span class="pf-barra-reps" id="pf-bar-reps-1">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="pf-bar-fill-1"></div></div>
+        </div>
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="pf-bar-nombre-2">—</span><span class="pf-barra-reps" id="pf-bar-reps-2">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="pf-bar-fill-2"></div></div>
+        </div>
+        <div class="pf-barra">
+          <div class="pf-barra-top"><span class="pf-barra-nombre" id="pf-bar-nombre-3">—</span><span class="pf-barra-reps" id="pf-bar-reps-3">0</span></div>
+          <div class="pf-barra-track"><div class="pf-barra-fill" id="pf-bar-fill-3"></div></div>
+        </div>
+      </div>
+      <!-- Mensaje de cierre: mostrarPantallaFinal() (gameplay-avatar.js) lo setea
+           al azar desde FRASES_PARTIDA en cada partida (el token {TOTAL} → total
+           real de reps). El texto de acá es solo el default pre-render. -->
+      <div class="pf-mensaje" id="pf-mensaje" data-i18n="html.gameplay_final.04">Vaya... tú sí que eres un Reper</div>
+      <!-- Tokens ganados por terminar la partida. El número lo escribe
+           gameplay-avatar.js al mostrar la pantalla; el de acá es el default
+           pre-render, igual que el resto de los valores de estas pantallas. -->
+      <div class="token-earned">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0058B0" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0058B0" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="pf-tokens" data-i18n="html.gameplay_final.05">+20 tokens ganados</span>
+      </div>
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="entrarPartidaCompleta()" data-i18n="html.gameplay_final.06">Jugar de nuevo</button>
+        <!-- Sin esto la pantalla era un callejón sin salida: la única acción
+             posible era empezar OTRA partida. Las finales de Multi ya tenían
+             "Volver"; esta se quedó sin él. -->
+        <button class="btn btn-secondary" onclick="volverAConfigTrasPartida()" data-i18n="html.gameplay_final.07">Volver</button>
+        <!-- 18/9 (Tao): botón Compartir. Abre screen-compartible con la tarjeta
+             lista para postear en IG/WhatsApp/etc. Ver src/js/compartir.js. -->
+        <button class="btn btn-terciario" onclick="compartirDesdeGameplayFinal()" data-i18n="html.gameplay_final.08">Compartir</button>
+      </div>
+  </section>
+
+  <!-- Entre rondas · Multijugador (5s fijos, auto-avanza). Ganador de la ronda +
+       tabla de resultados de ese ejercicio (cada jugador con su color) + progreso.
+       Filas por JS desde mostrarEntreRondasMulti() (gameplay-avatar.js). -->
+  <section class="screen" id="screen-entre-rondas-multi">
+      <div class="erm-wrap">
+        <!-- Anillo con el color de identidad del ganador de la ronda + sus
+             iniciales ("J2"/"Tú") en el centro. borderColor/color/textContent
+             los fija mostrarEntreRondasMulti() por ganador. -->
+        <div class="erm-anillo" id="erm-anillo" data-i18n="html.entre_rondas_multi.01">Tú</div>
+        <div class="erm-titulo" id="erm-titulo" data-i18n="html.entre_rondas_multi.02">¡Ganaste la ronda!</div>
+        <div class="erm-ejercicio" id="erm-ejercicio">—</div>
+        <div class="erm-tabla" id="erm-tabla"></div>
+        <div class="er-siguiente" id="erm-siguiente" data-i18n="html.entre_rondas_multi.03">Siguiente: —</div>
+        <div class="er-progress"><div class="er-progress-fill" id="erm-progress-fill"></div></div>
+        <div class="er-progress-label" id="erm-progress-label" data-i18n="html.entre_rondas_multi.04">1 de 4</div>
+      </div>
+  </section>
+
+  <!-- Pantalla final · Multijugador: podio por total acumulado + "Mejor en cada
+       ejercicio". Filas por JS desde mostrarPantallaFinalMulti() (gameplay-avatar.js). -->
+  <section class="screen" id="screen-final-multi">
+      <div class="topbar2">
+        <div class="home-eyebrow" id="pfm-eyebrow" data-i18n="html.final_multi.01">Multijugador · Partida Completa</div>
+        <div style="width:38px"></div>
+      </div>
+      <h2 class="section-title" data-i18n="html.final_multi.02">¡Partida terminada!</h2>
+      <div class="pfm-label" data-i18n="html.final_multi.03">Podio · total de repeticiones</div>
+      <div class="pod-podio" id="pfm-podio"></div>
+      <!-- Frase ganás/no ganás (mismas 20 de Partida Rápida, mismo estilo frm-mensaje).
+           La setea mostrarPantallaFinalMulti() según el TOTAL acumulado. -->
+      <div class="frm-mensaje" id="pfm-mensaje"></div>
+      <div class="pfm-mejores-card">
+        <div class="pfm-mejores-titulo" data-i18n="html.final_multi.04">Mejor en cada ejercicio</div>
+        <div class="pfm-mejores" id="pfm-mejores"></div>
+      </div>
+      <!-- Tokens ganados por terminar la partida. El número lo escribe
+           gameplay-avatar.js al mostrar la pantalla; el de acá es el default
+           pre-render, igual que el resto de los valores de estas pantallas. -->
+      <div class="token-earned">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0058B0" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0058B0" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="pfm-tokens" data-i18n="html.final_multi.05">+20 tokens ganados</span>
+      </div>
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="reiniciarPartidaMulti()" data-i18n="html.final_multi.06">Jugar de nuevo</button>
+        <!-- Volver DEJANDO la sala: si no, seguirías figurando como presente y
+             un "Jugar de nuevo" de otro jugador te arrastraría a una partida
+             nueva desde el Inicio. -->
+        <button class="btn btn-secondary" onclick="salirDeSalaYVolver()" data-i18n="html.final_multi.07">Volver</button>
+        <!-- 18/9 (Tao): botón Compartir. Abre screen-compartible con la tarjeta. -->
+        <button class="btn btn-terciario" onclick="compartirDesdeFinalMulti()" data-i18n="html.final_multi.08">Compartir</button>
+      </div>
+  </section>
+
+  <!-- Pantalla final · Partida Rápida (Multi/Personalizada): título = ejercicio jugado,
+       podio de BARRAS del único ejercicio (altura ∝ reps) + frase ganás/no ganás.
+       Render por mostrarPantallaFinalRapidaMulti() (gameplay-avatar.js). -->
+  <section class="screen" id="screen-final-rapida-multi">
+      <div class="topbar2">
+        <div class="home-eyebrow" id="frm-eyebrow" data-i18n="html.final_rapida_multi.01">Multijugador · Partida Rápida</div>
+        <div style="width:38px"></div>
+      </div>
+      <h2 class="section-title" id="frm-titulo" data-i18n="html.final_rapida_multi.02">Sentadillas</h2>
+      <div class="pfm-label" data-i18n="html.final_rapida_multi.03">Podio · repeticiones</div>
+      <div class="pod-podio" id="frm-podio"></div>
+      <div class="frm-mensaje" id="frm-mensaje"></div>
+      <!-- Tokens ganados por terminar la partida. El número lo escribe
+           gameplay-avatar.js al mostrar la pantalla; el de acá es el default
+           pre-render, igual que el resto de los valores de estas pantallas. -->
+      <div class="token-earned">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0058B0" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#0058B0" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="frm-tokens" data-i18n="html.final_rapida_multi.04">+20 tokens ganados</span>
+      </div>
+      <div class="home-actions">
+        <button class="btn btn-primary" onclick="reiniciarRapidaMulti()" data-i18n="html.final_rapida_multi.05">Jugar de nuevo</button>
+        <!-- Volver DEJANDO la sala: si no, seguirías figurando como presente y
+             un "Jugar de nuevo" de otro jugador te arrastraría a una partida
+             nueva desde el Inicio. -->
+        <button class="btn btn-secondary" onclick="salirDeSalaYVolver()" data-i18n="html.final_rapida_multi.06">Volver</button>
+        <!-- 18/9 (Tao): botón Compartir. Abre screen-compartible con la tarjeta. -->
+        <button class="btn btn-terciario" onclick="compartirDesdeFinalRapida()" data-i18n="html.final_rapida_multi.07">Compartir</button>
+      </div>
+  </section>
+
+  <!-- Pantalla compartible (18/9, Tao — feature viralidad). Aparece cuando el
+       jugador toca "Compartir" en cualquiera de las 3 pantallas de final
+       (gameplay-final, final-multi, final-rapida-multi). Muestra la tarjeta
+       lista para compartir + botón grande que dispara el share sheet nativo
+       de iOS (@capacitor/share). El botón X arriba a la derecha vuelve a la
+       pantalla de podio de la que se vino (guardada en pantallaAnterior por
+       compartir.js). Mismo brand que el paso 7 del onboarding: fondo azul
+       #0048FD con radial-gradient blanco, cabeza R con halo, texto blanco.
+       DOM slots (tc-*) los llena compartir.js.mostrarCompartible(datos). -->
+  <section class="screen" id="screen-compartible">
+    <button class="tc-cerrar" onclick="cerrarCompartible()" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="tc-tarjeta">
+      <img class="tc-cabeza" id="tc-cabeza" src="./assets/r-logo-k4cNpXok.png" alt="">
+      <div class="tc-nombre" id="tc-nombre">—</div>
+      <div class="tc-num" id="tc-num">0</div>
+      <div class="tc-label" id="tc-label" data-i18n="js.compartir.repeticiones">repeticiones</div>
+      <ul class="tc-lista" id="tc-lista"></ul>
+      <div class="tc-racha" id="tc-racha" hidden></div>
+      <div class="tc-footer">
+        <div class="tc-footer-cta" data-i18n="js.compartir.cta_appstore">Descarga Repers en la App Store</div>
+        <div class="tc-footer-alt" data-i18n="js.compartir.cta_web">o juega en repers.app/game</div>
+      </div>
+    </div>
+    <div class="home-actions">
+      <button class="btn btn-primary" onclick="compartirTarjeta()" data-i18n="js.compartir.boton_compartir">Compartir</button>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

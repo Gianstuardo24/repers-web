@@ -1,0 +1,22 @@
+# ════════════════════════════════════════════════════════════════════
+# Cabeceras de seguridad de repers.app en Cloudflare Pages (18/10/2026).
+# Va en la RAÍZ del repo repers-web (Cloudflare solo lee /_headers).
+# - Candado obligatorio por 1 año (HSTS).
+# - El navegador no adivina tipos de archivo (nosniff).
+# - Otros sitios no pueden meter Repers dentro de un marco (anti-clickjacking);
+#   el simulador PANT usa un marco del MISMO sitio, eso sí se permite.
+# - Al salir a otro sitio no se envía la dirección completa (Referrer).
+# - Cámara solo para Repers; micrófono, ubicación y pagos apagados.
+# - El service worker de /juego se revisa siempre (versiones nuevas al toque).
+# Política de contenido completa (CSP): más adelante, primero en modo prueba.
+# ════════════════════════════════════════════════════════════════════
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
+
+/juego/sw.js
+  Cache-Control: no-cache
