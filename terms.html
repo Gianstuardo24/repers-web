@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms of Service — Repers</title>
+<title>Términos y Condiciones — Repers</title>
 <style>
   :root {
     --bg: #ffffff;
@@ -12,6 +12,8 @@
     --accent: #0066cc;
     --border: #e5e5e5;
     --code-bg: #f5f5f5;
+    --warn-bg: #fff6e5;
+    --warn-border: #e8a33d;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -21,6 +23,8 @@
       --accent: #4d9fff;
       --border: #333;
       --code-bg: #2a2a2a;
+      --warn-bg: #2b2416;
+      --warn-border: #b07a2a;
     }
   }
   * { box-sizing: border-box; }
@@ -62,16 +66,24 @@
   h3 { font-size: 16px; margin: 20px 0 8px; }
   p, li { font-size: 15px; }
   .meta { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
-  .warning {
+  .summary {
     background: var(--code-bg);
     padding: 12px 20px;
     border-radius: 8px;
     margin: 16px 0 24px;
-    border-left: 3px solid var(--accent);
+  }
+  .warning {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn-border);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 15px;
   }
   a { color: var(--accent); }
   .content { display: none; }
   .content.active { display: block; }
+  .fin { margin-top: 32px; color: var(--muted); font-size: 14px; }
   footer {
     margin-top: 48px;
     padding-top: 16px;
@@ -93,290 +105,350 @@
   <!-- ===== ESPAÑOL ===== -->
   <div id="content-es" class="content active">
     <h1>Términos y Condiciones</h1>
-    <p class="meta">Última actualización: 15 de septiembre de 2026</p>
+    <p class="meta">Versión 2.0 · Última actualización: 19 de octubre de 2026</p>
+
+    <div class="summary">
+      <strong>En simple:</strong>
+      <ul>
+        <li>Repers es un juego de movimiento operado por Repers SpA (Chile).</li>
+        <li>Los menores necesitan permiso de su madre, padre o tutor.</li>
+        <li>Mostramos publicidad no personalizada; a los menores, solo anuncios aptos para su edad.</li>
+        <li>Las compras las procesa Apple App Store o Google Play. No vemos tus tarjetas.</li>
+        <li>La cámara funciona solo en tu teléfono. Haz ejercicio con cuidado y dentro de tus límites.</li>
+      </ul>
+    </div>
 
     <h2>1. Aceptación</h2>
-    <p>Al descargar, instalar o usar Repers, aceptas estos Términos y Condiciones ("Términos"). Si no estás de acuerdo, no uses la app. Estos Términos constituyen un acuerdo legalmente vinculante entre tú y el equipo de Repers.</p>
+    <p>Repers es operado por <strong>Repers SpA</strong>, sociedad constituida en Chile. Al aceptar estos Términos y Condiciones ("Términos") en la pantalla <em>Tus datos</em> —después de recorrer el texto completo— o al usar Repers, aceptas un acuerdo legalmente vinculante con Repers SpA. Si no estás de acuerdo, no uses la app.</p>
+    <p>Si eres menor de la edad de consentimiento de tu país (ver sección 3), tu madre, padre o tutor debe autorizar tu uso y aceptar estos Términos en tu nombre.</p>
 
     <h2>2. Definiciones</h2>
     <ul>
-      <li><strong>"Repers"</strong>, <strong>"nosotros"</strong>, <strong>"nuestro"</strong>: el equipo de Repers, operador de la aplicación.</li>
-      <li><strong>"Servicio"</strong>: la aplicación móvil Repers, el sitio web repers.app y cualquier funcionalidad relacionada.</li>
+      <li><strong>"Repers"</strong>, <strong>"nosotros"</strong>, <strong>"nuestro"</strong>: Repers SpA, operadora de la aplicación.</li>
+      <li><strong>"Servicio"</strong>: la aplicación Repers para iOS y Android, el sitio web repers.app y cualquier funcionalidad relacionada.</li>
       <li><strong>"Usuario"</strong>, <strong>"tú"</strong>: cualquier persona que descargue, instale o use el Servicio.</li>
-      <li><strong>"Contenido del usuario"</strong>: cualquier contenido que subas al Servicio (nombre de usuario, mensajes de Feedback, etc.).</li>
+      <li><strong>"Contenido del usuario"</strong>: cualquier contenido que envíes al Servicio (nombre de usuario, mensajes de Feedback, etc.).</li>
+      <li><strong>"Elementos virtuales"</strong>: monedas, prendas, cofres, skins y cualquier otro objeto digital del juego.</li>
     </ul>
 
-    <h2>3. Elegibilidad y edad mínima</h2>
-    <p>Para usar Repers debes tener al menos 13 años. Si te encuentras en un país o región donde la edad mínima para consentir el tratamiento de datos personales es superior a 13 años (por ejemplo, 16 años en algunos estados de la Unión Europea), debes cumplir con esa edad mínima. Al usar el Servicio, declaras y garantizas que cumples con la edad requerida.</p>
+    <h2>3. Edad mínima y consentimiento parental</h2>
+    <p>Puedes usar Repers por tu cuenta si tienes:</p>
+    <ul>
+      <li>14 años o más en Chile;</li>
+      <li>13 años o más en Estados Unidos, Canadá, Argentina y México;</li>
+      <li>16 años o más en cualquier otro país, salvo que su ley fije otra edad.</li>
+    </ul>
+    <p>Si tienes menos, necesitas el consentimiento verificable de tu madre, padre o tutor legal. Lo pedimos por correo electrónico con una confirmación posterior (método conocido como <em>Email+</em>, reconocido por la Comisión Federal de Comercio de Estados Unidos bajo la ley COPPA), y en el futuro podremos sumar Family Sharing de Apple y Family Link de Google. Mientras no exista ese consentimiento, puedes jugar en modo invitado sin que tus datos salgan del dispositivo.</p>
+    <p>Al indicar tu edad declaras que es verdadera. Si una madre, padre o tutor autoriza el uso de un menor, es responsable de supervisar ese uso.</p>
 
     <h2>4. Uso permitido</h2>
     <p>Puedes usar Repers para jugar personalmente. <strong>No puedes</strong>:</p>
     <ul>
       <li>Copiar, modificar, distribuir, vender, licenciar o crear obras derivadas del código, diseño o contenido de la app.</li>
       <li>Aplicar ingeniería inversa, descompilar o intentar extraer el código fuente, excepto en la medida permitida por la ley aplicable.</li>
-      <li>Usar bots, scripts, trampas, exploits o cualquier método automatizado para manipular tu progreso, tokens, logros o partidas.</li>
+      <li>Usar bots, scripts, trampas, exploits o cualquier método automatizado para manipular tu progreso, monedas, logros o partidas.</li>
       <li>Interferir con el funcionamiento del Servicio (spam, ataques de denegación de servicio, sobrecarga intencional).</li>
       <li>Acceder o intentar acceder a cuentas de otros usuarios, a partes no públicas del Servicio o a datos protegidos.</li>
       <li>Suplantar la identidad de otras personas, entidades o de Repers.</li>
-      <li>Publicar contenido ilegal, amenazante, difamatorio, obsceno, discriminatorio, acosador o abusivo en el nombre de usuario, mensajes de Feedback o cualquier canal del Servicio.</li>
+      <li>Publicar contenido ilegal, amenazante, difamatorio, obsceno, discriminatorio, acosador o abusivo en tu nombre de usuario, mensajes de Feedback o cualquier canal del Servicio.</li>
       <li>Recopilar datos de otros usuarios sin su consentimiento explícito.</li>
-      <li>Usar el Servicio para actividades comerciales no autorizadas, publicidad, encuestas o cualquier forma de spam.</li>
+      <li>Usar el Servicio para actividades comerciales no autorizadas, publicidad propia, encuestas o cualquier forma de spam.</li>
       <li>Violar cualquier ley, regulación u obligación contractual aplicable.</li>
     </ul>
 
-    <h2>5. Cuentas</h2>
+    <h2>5. Cuentas y modo invitado</h2>
     <ul>
-      <li>Puedes jugar como invitado (sin cuenta) o registrarte con correo electrónico, Apple ID o Google.</li>
-      <li>Eres responsable de mantener la confidencialidad y seguridad de tu contraseña y credenciales.</li>
-      <li>Eres responsable de todas las actividades que ocurran bajo tu cuenta.</li>
-      <li>Debes notificarnos inmediatamente si sospechas de un acceso no autorizado escribiendo a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</li>
+      <li>Puedes jugar como invitado (sin cuenta) o registrarte con correo electrónico, Apple o Google.</li>
+      <li>Eres responsable de mantener la confidencialidad de tus credenciales y de toda actividad que ocurra bajo tu cuenta.</li>
+      <li>Debes avisarnos de inmediato si sospechas un acceso no autorizado, escribiendo a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</li>
       <li>Podemos suspender, limitar o eliminar cuentas que violen estos Términos, con o sin aviso previo.</li>
     </ul>
 
     <h2>6. Contenido del usuario</h2>
-    <p>Conservas la titularidad del contenido que subes al Servicio (nombre de usuario, mensajes de Feedback, etc.). Al subirlo, nos otorgas una licencia mundial, no exclusiva, libre de regalías, transferible y sublicenciable para usar, copiar, adaptar, mostrar y distribuir dicho contenido dentro del Servicio y para su mejora, mientras mantengas tu cuenta activa.</p>
-    <p>Declaras y garantizas que tienes todos los derechos necesarios sobre el contenido que subes y que no infringe derechos de terceros.</p>
-    <p>Nos reservamos el derecho de eliminar cualquier contenido del usuario que consideremos inapropiado, sin previo aviso.</p>
+    <p>Conservas la titularidad del contenido que envías al Servicio. Al enviarlo, nos otorgas una licencia mundial, no exclusiva, libre de regalías, transferible y sublicenciable para usarlo, copiarlo, adaptarlo, mostrarlo y distribuirlo dentro del Servicio y para mejorarlo, mientras mantengas tu cuenta activa.</p>
+    <p>Declaras que tienes todos los derechos necesarios sobre ese contenido y que no infringe derechos de terceros. Podemos eliminar cualquier contenido del usuario que consideremos inapropiado, sin previo aviso.</p>
 
     <h2>7. Propiedad intelectual</h2>
-    <p>Repers, incluyendo su marca, logotipo, diseño, avatar, código fuente, gráficos, animaciones, música, textos y cualquier otro elemento del Servicio, pertenece a <strong>Repers</strong> o a sus licenciantes, y está protegido por leyes de propiedad intelectual, marcas registradas y otras normas aplicables en todo el mundo. Estos Términos no te transfieren ningún derecho de propiedad intelectual sobre el Servicio.</p>
-    <p>Ciertos componentes del Servicio pueden estar sujetos a licencias de software de código abierto de terceros. Estas licencias prevalecen sobre estos Términos en la medida que apliquen a esos componentes específicos.</p>
+    <p>Repers, incluyendo su marca, logotipo, personajes, avatar, diseño, código fuente, gráficos, animaciones, música, textos y cualquier otro elemento del Servicio, pertenece a <strong>Repers SpA</strong> o a sus licenciantes, y está protegido por las leyes de propiedad intelectual y marcas aplicables. Estos Términos no te transfieren ningún derecho de propiedad intelectual sobre el Servicio.</p>
+    <p>Algunos componentes del Servicio pueden estar sujetos a licencias de software de código abierto de terceros, que prevalecen sobre estos Términos en lo que respecta a esos componentes.</p>
 
-    <h2>8. Reporte de infracciones de derechos de autor (DMCA)</h2>
-    <p>Respetamos los derechos de propiedad intelectual de terceros. Si crees que contenido dentro del Servicio infringe tus derechos de autor, envíanos un aviso a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> con la siguiente información:</p>
+    <h2>8. Reporte de infracciones de derechos de autor</h2>
+    <p>Si crees que contenido dentro del Servicio infringe tus derechos de autor, envíanos un aviso a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> con:</p>
     <ul>
       <li>Identificación de la obra protegida que crees infringida.</li>
       <li>Identificación del contenido supuestamente infractor y su ubicación en el Servicio.</li>
       <li>Tus datos de contacto (nombre, dirección, correo).</li>
       <li>Una declaración de buena fe de que el uso no está autorizado.</li>
-      <li>Una declaración, bajo pena de perjurio, de que la información es exacta y que eres el titular o estás autorizado a actuar en nombre del titular.</li>
+      <li>Una declaración, bajo pena de perjurio, de que la información es exacta y de que eres el titular o estás autorizado a actuar en su nombre.</li>
       <li>Tu firma física o electrónica.</li>
     </ul>
-    <p>Investigaremos y actuaremos según corresponda, incluyendo la eliminación del contenido infractor y, en casos reiterados, la suspensión de la cuenta responsable.</p>
+    <p>Investigaremos y actuaremos según corresponda, incluyendo la eliminación del contenido y, en casos reiterados, la suspensión de la cuenta responsable.</p>
 
-    <h2>9. Compras dentro de la app</h2>
-    <p>Actualmente Repers no ofrece compras con dinero real. Los "tokens", "skins" y demás elementos virtuales se obtienen jugando. Si en el futuro añadimos compras con dinero real, actualizaremos estos Términos y te notificaremos.</p>
-    <p>Los elementos virtuales (tokens, skins, ítems) no tienen valor monetario en el mundo real, no son transferibles ni canjeables por dinero, y su uso está limitado al Servicio. Si tu cuenta es suspendida o eliminada por violación de estos Términos, perderás el acceso a estos elementos sin derecho a compensación.</p>
+    <h2>9. Compras dentro de la aplicación</h2>
+    <p>Repers ofrece compras opcionales de monedas del juego y una suscripción Premium. Todas las compras se procesan por completo a través de la tienda de tu dispositivo: <strong>Apple App Store</strong> en iPhone y <strong>Google Play</strong> en Android, y están sujetas a los términos de esa tienda. Las suscripciones se renuevan automáticamente hasta que las canceles desde la configuración de tu tienda.</p>
+    <p>Repers no recibe, no ve y no guarda números de tarjeta, códigos de seguridad ni fechas de vencimiento. Los reembolsos se solicitan mediante el proceso oficial de cada tienda (<em>Reportar un problema</em> en Apple, <em>Solicitar reembolso</em> en Google Play); nosotros no podemos emitirlos directamente.</p>
+    <p>Si la cuenta de la tienda pertenece a un menor, aplican los controles parentales de cada plataforma (<em>Pedir la compra</em> en Family Sharing de Apple y aprobación de compras en Family Link de Google).</p>
+    <p>Cuando un elemento con contenido aleatorio (por ejemplo, un cofre) pueda obtenerse con dinero real o con monedas compradas, te mostraremos las probabilidades de cada resultado antes de la compra.</p>
+    <p>Los elementos virtuales no tienen valor monetario fuera del juego, no son transferibles ni canjeables por dinero, y su uso está limitado al Servicio. Si tu cuenta es suspendida o eliminada por violar estos Términos, perderás el acceso a ellos, sin perjuicio de los derechos irrenunciables que te otorgue la ley de protección al consumidor de tu país.</p>
 
-    <h2>10. Disponibilidad y cambios del Servicio</h2>
-    <ul>
-      <li>Podemos modificar, suspender, limitar o descontinuar el Servicio, en su totalidad o en parte, en cualquier momento y sin aviso previo.</li>
-      <li>No garantizamos que el Servicio esté disponible de forma ininterrumpida, libre de errores o siempre accesible.</li>
-      <li>Podemos actualizar el Servicio, agregar nuevas funciones, remover funciones existentes o cambiar el diseño en cualquier momento.</li>
-      <li>Actualizamos estos Términos periódicamente. Los cambios materiales se notifican como se describe en la sección "Notificaciones y cambios".</li>
-    </ul>
+    <h2>10. Publicidad</h2>
+    <p>Repers muestra publicidad <strong>no personalizada</strong> mediante las redes Google AdMob, Unity LevelPlay y SuperAwesome. No personalizada significa que los anuncios no se eligen según tu historial, tus intereses ni tu perfil, sino según el contexto: tu país, tu idioma y tu rango de edad.</p>
+    <p>A los menores bajo la edad de consentimiento de su país solo les mostramos anuncios de redes aptas para niños, con el tratamiento infantil activado. Para todas las edades bloqueamos anuncios de apuestas, citas, alcohol, tabaco, dietas o pérdida de peso, suplementos, criptomonedas e inversiones.</p>
+    <p>Usamos banners pequeños en pantallas de menú y anuncios con recompensa opcionales (ver un video a cambio de monedas, solo si tú lo eliges). Nunca mostramos anuncios durante una partida, ni anuncios de pantalla completa por sorpresa, ni anuncios con sonido automático. No somos responsables del contenido de sitios o productos de terceros que aparezcan en los anuncios.</p>
 
-    <h2>11. Descargo de garantías</h2>
-    <p>EL SERVICIO SE PROPORCIONA "TAL COMO ESTÁ" Y "SEGÚN DISPONIBILIDAD", SIN GARANTÍAS DE NINGÚN TIPO, EXPRESAS O IMPLÍCITAS. EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, RENUNCIAMOS A TODAS LAS GARANTÍAS IMPLÍCITAS, INCLUYENDO PERO NO LIMITADAS A GARANTÍAS DE COMERCIABILIDAD, IDONEIDAD PARA UN PROPÓSITO PARTICULAR, NO INFRACCIÓN Y CURSO DE NEGOCIACIÓN.</p>
-    <p>No garantizamos que el Servicio: (a) cumpla con tus requisitos específicos, (b) funcione sin interrupciones, sea seguro o esté libre de errores, (c) proporcione resultados precisos o confiables, o (d) corrija cualquier defecto del Servicio.</p>
+    <h2>11. Privacidad y cámara</h2>
+    <p>Tratamos tus datos según nuestra <a href="./privacy.html">Política de Privacidad</a>, que forma parte de estos Términos. En especial: la cámara funciona solo dentro de tu teléfono y ningún video o imagen sale del dispositivo; no reconocemos rostros ni guardamos datos biométricos; no usamos el micrófono ni tu ubicación; no vendemos tus datos ni te perfilamos para publicidad.</p>
 
-    <h2>12. Limitación de responsabilidad</h2>
-    <p>EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY APLICABLE, EN NINGÚN CASO REPERS, SUS DIRECTORES, EMPLEADOS O PROVEEDORES SERÁN RESPONSABLES POR:</p>
-    <ul>
-      <li>Daños indirectos, incidentales, especiales, consecuentes o punitivos.</li>
-      <li>Pérdida de ganancias, ingresos, datos, oportunidades comerciales o buena voluntad.</li>
-      <li>Lesiones físicas o daños derivados del ejercicio realizado usando el Servicio.</li>
-      <li>Interrupciones del servicio, pérdida de datos o fallas de terceros.</li>
-      <li>Actos u omisiones de otros usuarios.</li>
-    </ul>
-    <p>Nuestra responsabilidad total agregada por cualquier reclamo relacionado con el Servicio no excederá el mayor de: (a) el monto que hayas pagado a Repers en los 12 meses anteriores al hecho que dio origen al reclamo, o (b) cien dólares estadounidenses (USD 100).</p>
-    <p>Algunas jurisdicciones no permiten la exclusión de ciertas garantías o la limitación de responsabilidad por ciertos daños, por lo que algunas de las limitaciones anteriores pueden no aplicarte. En dichas jurisdicciones, nuestra responsabilidad se limita al mínimo permitido por la ley.</p>
-
+    <h2>12. Actividad física y salud</h2>
     <div class="warning">
-      <strong>Importante sobre el ejercicio físico:</strong> Repers implica actividad física. Consulta a un profesional de la salud antes de comenzar cualquier programa de ejercicio, especialmente si tienes alguna condición médica, estás embarazada, en recuperación o tienes cualquier limitación física. Ejercítate dentro de tus límites, en un espacio seguro y despejado. Si sientes mareo, dolor u otra molestia, detente inmediatamente. Usar el Servicio es bajo tu propio riesgo.
+      <strong>Importante:</strong> Repers implica actividad física cuya intensidad depende de cuánto te exijas. Consulta a un profesional de la salud antes de usarlo si tienes problemas cardíacos o hipertensión, estás embarazada o en posparto reciente, tienes lesiones o dolor articular, te estás recuperando de una cirugía o tienes cualquier condición que limite el ejercicio. Juega en un espacio seguro y despejado, dentro de tus límites. Si sientes mareo, dolor en el pecho, falta de aire o cualquier molestia, detente de inmediato. Repers no reemplaza el consejo médico profesional. Los menores deben jugar con la supervisión de un adulto.
     </div>
 
-    <h2>13. Indemnización</h2>
-    <p>Aceptas defender, indemnizar y mantener indemne a Repers, sus filiales, directores, empleados, agentes y licenciantes de cualquier reclamo, responsabilidad, daño, pérdida, costo o gasto (incluidos honorarios razonables de abogados) derivado de: (a) tu uso del Servicio, (b) tu violación de estos Términos, (c) tu violación de derechos de terceros (incluidos propiedad intelectual, privacidad o publicidad), (d) el contenido que subas, o (e) tu conducta negligente o dolosa.</p>
+    <h2>13. Disponibilidad y cambios del Servicio</h2>
+    <ul>
+      <li>Podemos modificar, suspender, limitar o descontinuar el Servicio, total o parcialmente, en cualquier momento.</li>
+      <li>No garantizamos que el Servicio esté disponible de forma ininterrumpida o libre de errores.</li>
+      <li>Podemos agregar, quitar o cambiar funciones y diseño en cualquier momento.</li>
+    </ul>
 
-    <h2>14. Fuerza mayor</h2>
-    <p>No seremos responsables por incumplimiento o retraso en el cumplimiento de estos Términos causado por eventos fuera de nuestro control razonable, incluyendo pero no limitado a: desastres naturales, guerras, actos de terrorismo, disturbios civiles, pandemias, epidemias, cortes generalizados de internet o electricidad, fallas de proveedores de servicios de terceros (Supabase, Apple, Google, PostHog, Sentry), acciones gubernamentales o cambios legales que impidan el funcionamiento del Servicio.</p>
+    <h2>14. Descargo de garantías</h2>
+    <p>EL SERVICIO SE PROPORCIONA "TAL COMO ESTÁ" Y "SEGÚN DISPONIBILIDAD", SIN GARANTÍAS DE NINGÚN TIPO, EXPRESAS O IMPLÍCITAS. EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, RENUNCIAMOS A TODAS LAS GARANTÍAS IMPLÍCITAS, INCLUYENDO LAS DE COMERCIABILIDAD, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN.</p>
+    <p>No garantizamos que el Servicio: (a) cumpla tus requisitos específicos, (b) funcione sin interrupciones o errores, (c) cuente cada repetición con exactitud, o (d) corrija todos sus defectos.</p>
 
-    <h2>15. Terminación</h2>
-    <p>Puedes dejar de usar Repers en cualquier momento borrando la app de tu dispositivo. Puedes solicitar la eliminación de tu cuenta escribiendo a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</p>
-    <p>Podemos suspender, restringir o terminar tu acceso al Servicio, con o sin aviso previo, si: (a) violas estos Términos, (b) creemos razonablemente que tu conducta pone en riesgo el Servicio o a otros usuarios, (c) somos requeridos por ley u orden judicial, o (d) discontinuamos el Servicio.</p>
-    <p>Las secciones que por su naturaleza deban sobrevivir a la terminación (incluyendo Propiedad intelectual, Descargo de garantías, Limitación de responsabilidad, Indemnización, Ley aplicable y Resolución de disputas) permanecerán en vigor tras la terminación.</p>
+    <h2>15. Limitación de responsabilidad</h2>
+    <p>EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY APLICABLE, REPERS SPA, SUS DIRECTORES, EMPLEADOS Y PROVEEDORES NO SERÁN RESPONSABLES POR:</p>
+    <ul>
+      <li>Daños indirectos, incidentales, especiales, consecuentes o punitivos.</li>
+      <li>Pérdida de ganancias, ingresos, datos u oportunidades.</li>
+      <li>Lesiones físicas o daños derivados del ejercicio realizado usando el Servicio, salvo culpa grave o dolo de nuestra parte.</li>
+      <li>Interrupciones del servicio, pérdida de datos o fallas de terceros.</li>
+      <li>Actos u omisiones de otros usuarios o de anunciantes.</li>
+    </ul>
+    <p>Nuestra responsabilidad total por cualquier reclamo relacionado con el Servicio no excederá el mayor de: (a) el monto que hayas pagado en compras dentro de Repers en los 12 meses anteriores al hecho que originó el reclamo, o (b) cien dólares estadounidenses (USD 100).</p>
+    <p>Algunas jurisdicciones no permiten estas exclusiones o limitaciones. En ellas, nuestra responsabilidad se limita al mínimo permitido por la ley, y nada de esta sección afecta tus derechos irrenunciables como consumidor.</p>
 
-    <h2>16. Resolución de disputas</h2>
-    <p>Cualquier disputa, controversia o reclamo derivado de o relacionado con estos Términos o con el uso del Servicio se resolverá conforme al siguiente proceso:</p>
+    <h2>16. Indemnización</h2>
+    <p>Aceptas defender, indemnizar y mantener indemne a Repers SpA, sus directores, empleados, agentes y licenciantes de cualquier reclamo, daño, pérdida o gasto (incluidos honorarios razonables de abogados) derivado de: (a) tu uso indebido del Servicio, (b) tu violación de estos Términos, (c) tu violación de derechos de terceros, o (d) el contenido que envíes.</p>
+
+    <h2>17. Fuerza mayor</h2>
+    <p>No seremos responsables por incumplimientos o retrasos causados por hechos fuera de nuestro control razonable, como desastres naturales, guerras, pandemias, cortes generalizados de internet o electricidad, fallas de proveedores de infraestructura, tiendas de aplicaciones o redes publicitarias, o actos de autoridad que impidan el funcionamiento del Servicio.</p>
+
+    <h2>18. Terminación y eliminación de cuenta</h2>
+    <p>Puedes dejar de usar Repers en cualquier momento borrando la app. Para eliminar tu cuenta y tus datos, usa <em>Perfil → Eliminar cuenta</em> dentro de la app o escribe a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> con el asunto "Eliminar cuenta". Garantizamos el borrado efectivo en un máximo de <strong>30 días hábiles</strong>, como se detalla en la Política de Privacidad.</p>
+    <p>Podemos suspender o terminar tu acceso, con o sin aviso, si: (a) violas estos Términos, (b) tu conducta pone en riesgo el Servicio o a otros usuarios, (c) la ley o una orden judicial lo exige, o (d) descontinuamos el Servicio.</p>
+    <p>Las secciones que por su naturaleza deban sobrevivir a la terminación (propiedad intelectual, descargo de garantías, limitación de responsabilidad, indemnización, ley aplicable y resolución de disputas) seguirán vigentes.</p>
+
+    <h2>19. Resolución de disputas</h2>
     <ol>
-      <li><strong>Contacto informal:</strong> antes de iniciar cualquier procedimiento formal, aceptas contactarnos primero a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> para intentar resolver la disputa de buena fe. Nos comprometemos a responder dentro de 30 días.</li>
-      <li><strong>Mediación:</strong> si no logramos resolverla informalmente en 60 días, las partes intentarán resolverla mediante mediación en la ciudad indicada en la sección "Ley aplicable" antes de acudir a tribunales.</li>
-      <li><strong>Tribunales:</strong> cualquier acción legal se presentará ante los tribunales indicados en la sección "Ley aplicable", salvo que la ley aplicable en tu jurisdicción de residencia como consumidor te otorgue el derecho irrenunciable de acudir a tribunales locales.</li>
+      <li><strong>Contacto directo:</strong> antes de cualquier procedimiento formal, escríbenos a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> para intentar resolver la disputa de buena fe. Respondemos dentro de 30 días.</li>
+      <li><strong>Mediación:</strong> si no la resolvemos en 60 días, intentaremos una mediación en Santiago de Chile antes de acudir a tribunales.</li>
+      <li><strong>Tribunales:</strong> cualquier acción se presentará ante los tribunales indicados en la sección 20, salvo que la ley de tu país de residencia como consumidor te dé el derecho irrenunciable de acudir a tribunales locales.</li>
     </ol>
-    <p><strong>Renuncia a acciones colectivas:</strong> en la máxima medida permitida por la ley, aceptas resolver disputas de manera individual y renuncias a participar en acciones de clase, demandas colectivas o arbitrajes consolidados.</p>
+    <p><strong>Acciones colectivas:</strong> en la máxima medida permitida por la ley, aceptas resolver disputas de forma individual. Esta renuncia no aplica donde la ley de protección al consumidor la prohíbe.</p>
 
-    <h2>17. Ley aplicable y jurisdicción</h2>
-    <p>Estos Términos se rigen por las leyes de la República de <strong>Chile</strong>, sin dar efecto a sus disposiciones sobre conflictos de leyes. Cualquier acción legal se presentará ante los tribunales competentes de <strong>Santiago, Chile</strong>.</p>
-    <p>Si eres consumidor y resides en un país donde las leyes de protección al consumidor te otorgan derechos irrenunciables, esas leyes prevalecen sobre esta cláusula en lo que respecta específicamente a esos derechos.</p>
+    <h2>20. Ley aplicable y jurisdicción</h2>
+    <p>Estos Términos se rigen por las leyes de la República de <strong>Chile</strong>, incluida la Ley 19.496 sobre Protección de los Derechos de los Consumidores. Cualquier acción se presentará ante los tribunales competentes de <strong>Santiago, Chile</strong>.</p>
+    <p>Si resides en un país cuyas leyes de protección al consumidor te otorgan derechos irrenunciables, esas leyes prevalecen sobre esta cláusula en lo que respecta a esos derechos.</p>
 
-    <h2>18. Cesión</h2>
-    <p>No puedes ceder, transferir o subcontratar tus derechos u obligaciones bajo estos Términos sin nuestro consentimiento previo por escrito. Podemos ceder, transferir o subcontratar nuestros derechos u obligaciones a cualquier tercero (incluyendo en caso de fusión, adquisición, venta de activos o reorganización corporativa) sin tu consentimiento y sin previo aviso, siempre que dicha cesión no reduzca tus derechos bajo estos Términos.</p>
+    <h2>21. Cesión</h2>
+    <p>No puedes ceder tus derechos u obligaciones bajo estos Términos sin nuestro consentimiento previo por escrito. Podemos cederlos a un tercero (por ejemplo, en una fusión, adquisición o reorganización), siempre que la cesión no reduzca tus derechos.</p>
 
-    <h2>19. Divisibilidad</h2>
-    <p>Si un tribunal competente determina que alguna disposición de estos Términos es inválida, ilegal o inejecutable, dicha disposición se modificará al mínimo necesario para hacerla ejecutable, o si eso no es posible, se removerá, y las disposiciones restantes permanecerán en pleno vigor.</p>
+    <h2>22. Divisibilidad</h2>
+    <p>Si un tribunal determina que alguna disposición es inválida o inejecutable, se ajustará al mínimo necesario o se eliminará, y el resto seguirá vigente.</p>
 
-    <h2>20. Renuncia</h2>
-    <p>Nuestro fracaso o retraso en ejercer cualquier derecho bajo estos Términos no constituye una renuncia a ese derecho. Cualquier renuncia debe hacerse por escrito para ser válida.</p>
+    <h2>23. Renuncia</h2>
+    <p>Que no ejerzamos o demoremos en ejercer un derecho no significa que renunciemos a él. Cualquier renuncia debe constar por escrito.</p>
 
-    <h2>21. Acuerdo completo</h2>
-    <p>Estos Términos, junto con la Política de Privacidad y cualquier otro acuerdo específico referenciado, constituyen el acuerdo completo entre tú y Repers respecto al Servicio, y reemplazan cualquier acuerdo previo, oral o escrito, entre las partes sobre el mismo asunto.</p>
+    <h2>24. Acuerdo completo</h2>
+    <p>Estos Términos, junto con la Política de Privacidad, son el acuerdo completo entre tú y Repers SpA sobre el Servicio, y reemplazan cualquier acuerdo previo sobre el mismo asunto.</p>
 
-    <h2>22. Notificaciones y cambios</h2>
-    <p>Podemos actualizar estos Términos en cualquier momento. Publicaremos la versión actualizada en <a href="https://repers.app/terms.html">repers.app/terms.html</a> con una nueva fecha de "Última actualización". Si el cambio es material, te notificaremos dentro de la app o —si tienes cuenta— por correo electrónico, con al menos 15 días de antelación cuando sea razonablemente posible. El uso continuado del Servicio tras la entrada en vigor constituye aceptación de los Términos actualizados. Si no estás de acuerdo, debes dejar de usar el Servicio antes de esa fecha.</p>
+    <h2>25. Notificaciones y cambios</h2>
+    <p>Si hacemos cambios importantes a estos Términos, te mostraremos la nueva versión completa dentro de la app antes de que entre en vigor y te pediremos aceptarla de nuevo con el mismo mecanismo: recorrer el texto hasta el final y tocar Aceptar. Los cambios menores (redacción, datos de contacto) se publican en <a href="https://repers.app/terms.html">repers.app/terms.html</a> con aviso en pantalla.</p>
 
-    <h2>23. Idioma prevalente</h2>
-    <p>Estos Términos se publican en español e inglés. En caso de discrepancia entre ambas versiones, la versión en <strong>español</strong> prevalecerá.</p>
+    <h2>26. Idioma prevalente</h2>
+    <p>Estos Términos se publican en español e inglés. Si ambas versiones difieren, prevalece la versión en <strong>español</strong>.</p>
 
-    <h2>24. Contacto</h2>
+    <h2>27. Contacto</h2>
     <p>Para cualquier consulta sobre estos Términos, escribe a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</p>
+
+    <p class="fin">Términos y Condiciones de Repers · Versión 2.0 · Vigentes desde el 17 de octubre de 2026 · Repers SpA</p>
   </div>
 
   <!-- ===== ENGLISH ===== -->
   <div id="content-en" class="content">
     <h1>Terms of Service</h1>
-    <p class="meta">Last updated: September 15, 2026</p>
+    <p class="meta">Version 2.0 · Last updated: October 19, 2026</p>
+
+    <div class="summary">
+      <strong>In short:</strong>
+      <ul>
+        <li>Repers is a movement game operated by Repers SpA (Chile).</li>
+        <li>Minors need permission from a parent or guardian.</li>
+        <li>We show non-personalized ads; minors only see ads suitable for their age.</li>
+        <li>Purchases are processed by the Apple App Store or Google Play. We never see your cards.</li>
+        <li>The camera only works on your phone. Exercise carefully and within your limits.</li>
+      </ul>
+    </div>
 
     <h2>1. Acceptance</h2>
-    <p>By downloading, installing, or using Repers, you accept these Terms of Service ("Terms"). If you don't agree, don't use the app. These Terms constitute a legally binding agreement between you and the Repers team.</p>
+    <p>Repers is operated by <strong>Repers SpA</strong>, a company incorporated in Chile. By accepting these Terms of Service ("Terms") on the <em>Your data</em> screen —after scrolling through the full text— or by using Repers, you enter into a legally binding agreement with Repers SpA. If you don't agree, don't use the app.</p>
+    <p>If you are under the age of consent in your country (see section 3), your parent or legal guardian must approve your use and accept these Terms on your behalf.</p>
 
     <h2>2. Definitions</h2>
     <ul>
-      <li><strong>"Repers"</strong>, <strong>"we"</strong>, <strong>"our"</strong>: the Repers team, operator of the application.</li>
-      <li><strong>"Service"</strong>: the Repers mobile application, the repers.app website, and any related functionality.</li>
-      <li><strong>"User"</strong>, <strong>"you"</strong>: any person who downloads, installs, or uses the Service.</li>
-      <li><strong>"User content"</strong>: any content you upload to the Service (username, Feedback messages, etc.).</li>
+      <li><strong>"Repers"</strong>, <strong>"we"</strong>, <strong>"our"</strong>: Repers SpA, the operator of the app.</li>
+      <li><strong>"Service"</strong>: the Repers app for iOS and Android, the repers.app website and any related features.</li>
+      <li><strong>"User"</strong>, <strong>"you"</strong>: anyone who downloads, installs or uses the Service.</li>
+      <li><strong>"User content"</strong>: any content you send to the Service (username, Feedback messages, etc.).</li>
+      <li><strong>"Virtual items"</strong>: coins, clothes, chests, skins and any other digital item in the game.</li>
     </ul>
 
-    <h2>3. Eligibility and minimum age</h2>
-    <p>To use Repers you must be at least 13 years old. If you are in a country or region where the minimum age to consent to personal data processing is higher than 13 (for example, 16 in some European Union states), you must meet that minimum age. By using the Service, you represent and warrant that you meet the required age.</p>
+    <h2>3. Minimum age and parental consent</h2>
+    <p>You can use Repers on your own if you are:</p>
+    <ul>
+      <li>14 or older in Chile;</li>
+      <li>13 or older in the United States, Canada, Argentina and Mexico;</li>
+      <li>16 or older in any other country, unless its law sets a different age.</li>
+    </ul>
+    <p>If you are younger, you need verifiable consent from your parent or legal guardian. We request it by email with a follow-up confirmation (the method known as <em>Email+</em>, recognized by the U.S. Federal Trade Commission under COPPA), and in the future we may add Apple Family Sharing and Google Family Link. Until that consent exists, you can play in guest mode without your data leaving the device.</p>
+    <p>By entering your age, you confirm it is true. A parent or guardian who approves a minor's use is responsible for supervising that use.</p>
 
     <h2>4. Permitted use</h2>
-    <p>You may use Repers for personal play. <strong>You may not</strong>:</p>
+    <p>You may use Repers to play personally. <strong>You may not</strong>:</p>
     <ul>
-      <li>Copy, modify, distribute, sell, license, or create derivative works of the app's code, design, or content.</li>
-      <li>Reverse engineer, decompile, or attempt to extract source code, except to the extent permitted by applicable law.</li>
-      <li>Use bots, scripts, cheats, exploits, or any automated method to manipulate your progress, tokens, achievements, or matches.</li>
-      <li>Interfere with the Service's operation (spam, denial-of-service attacks, intentional overload).</li>
-      <li>Access or attempt to access other users' accounts, non-public parts of the Service, or protected data.</li>
-      <li>Impersonate other people, entities, or Repers.</li>
-      <li>Post illegal, threatening, defamatory, obscene, discriminatory, harassing, or abusive content in usernames, Feedback messages, or any Service channel.</li>
+      <li>Copy, modify, distribute, sell, license or create derivative works of the app's code, design or content.</li>
+      <li>Reverse engineer, decompile or try to extract the source code, except as allowed by applicable law.</li>
+      <li>Use bots, scripts, cheats, exploits or any automated method to manipulate your progress, coins, achievements or matches.</li>
+      <li>Interfere with the operation of the Service (spam, denial-of-service attacks, intentional overload).</li>
+      <li>Access or try to access other users' accounts, non-public parts of the Service or protected data.</li>
+      <li>Impersonate other people, entities or Repers.</li>
+      <li>Post illegal, threatening, defamatory, obscene, discriminatory, harassing or abusive content in your username, Feedback messages or any channel of the Service.</li>
       <li>Collect data from other users without their explicit consent.</li>
-      <li>Use the Service for unauthorized commercial activities, advertising, surveys, or any form of spam.</li>
-      <li>Violate any applicable law, regulation, or contractual obligation.</li>
+      <li>Use the Service for unauthorized commercial activities, your own advertising, surveys or any form of spam.</li>
+      <li>Violate any applicable law, regulation or contractual obligation.</li>
     </ul>
 
-    <h2>5. Accounts</h2>
+    <h2>5. Accounts and guest mode</h2>
     <ul>
-      <li>You can play as a guest (no account) or register with email, Apple ID, or Google.</li>
-      <li>You are responsible for maintaining the confidentiality and security of your password and credentials.</li>
-      <li>You are responsible for all activities that occur under your account.</li>
-      <li>You must notify us immediately if you suspect unauthorized access by writing to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</li>
-      <li>We may suspend, limit, or delete accounts that violate these Terms, with or without prior notice.</li>
+      <li>You can play as a guest (no account) or sign up with email, Apple or Google.</li>
+      <li>You are responsible for keeping your credentials confidential and for all activity under your account.</li>
+      <li>You must tell us right away if you suspect unauthorized access, by writing to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</li>
+      <li>We may suspend, limit or delete accounts that violate these Terms, with or without prior notice.</li>
     </ul>
 
     <h2>6. User content</h2>
-    <p>You retain ownership of the content you upload to the Service (username, Feedback messages, etc.). By uploading it, you grant us a worldwide, non-exclusive, royalty-free, transferable, and sublicensable license to use, copy, adapt, display, and distribute such content within the Service and to improve it, while you maintain an active account.</p>
-    <p>You represent and warrant that you have all necessary rights over the content you upload and that it does not infringe third-party rights.</p>
-    <p>We reserve the right to remove any user content we consider inappropriate, without prior notice.</p>
+    <p>You keep ownership of the content you send to the Service. By sending it, you grant us a worldwide, non-exclusive, royalty-free, transferable and sublicensable license to use, copy, adapt, display and distribute it within the Service and to improve it, while your account is active.</p>
+    <p>You confirm that you have all necessary rights to that content and that it doesn't infringe third-party rights. We may remove any user content we consider inappropriate, without prior notice.</p>
 
     <h2>7. Intellectual property</h2>
-    <p>Repers, including its brand, logo, design, avatar, source code, graphics, animations, music, texts, and any other Service element, belongs to <strong>Repers</strong> or its licensors, and is protected by intellectual property laws, trademarks, and other applicable regulations worldwide. These Terms do not transfer to you any intellectual property rights over the Service.</p>
-    <p>Certain Service components may be subject to third-party open source software licenses. Those licenses prevail over these Terms to the extent they apply to those specific components.</p>
+    <p>Repers, including its brand, logo, characters, avatar, design, source code, graphics, animations, music, text and every other element of the Service, belongs to <strong>Repers SpA</strong> or its licensors and is protected by applicable intellectual property and trademark laws. These Terms don't transfer any intellectual property rights in the Service to you.</p>
+    <p>Some components of the Service may be subject to third-party open-source licenses, which prevail over these Terms with respect to those components.</p>
 
-    <h2>8. Copyright infringement reporting (DMCA)</h2>
-    <p>We respect the intellectual property rights of others. If you believe content within the Service infringes your copyrights, send us a notice at <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> with the following information:</p>
+    <h2>8. Copyright infringement reporting</h2>
+    <p>If you believe content in the Service infringes your copyright, send a notice to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> including:</p>
     <ul>
       <li>Identification of the copyrighted work you believe is infringed.</li>
-      <li>Identification of the allegedly infringing content and its location on the Service.</li>
-      <li>Your contact information (name, address, email).</li>
-      <li>A good faith statement that the use is not authorized.</li>
-      <li>A statement, under penalty of perjury, that the information is accurate and that you are the rights holder or authorized to act on behalf of the rights holder.</li>
+      <li>Identification of the allegedly infringing content and where it is in the Service.</li>
+      <li>Your contact details (name, address, email).</li>
+      <li>A good-faith statement that the use is not authorized.</li>
+      <li>A statement, under penalty of perjury, that the information is accurate and that you are the owner or authorized to act on their behalf.</li>
       <li>Your physical or electronic signature.</li>
     </ul>
-    <p>We will investigate and act accordingly, including removal of infringing content and, in repeat cases, suspension of the responsible account.</p>
+    <p>We will investigate and act as appropriate, including removing the content and, for repeat cases, suspending the responsible account.</p>
 
     <h2>9. In-app purchases</h2>
-    <p>Currently Repers does not offer real-money purchases. "Tokens", "skins", and other virtual items are obtained by playing. If we add real-money purchases in the future, we will update these Terms and notify you.</p>
-    <p>Virtual items (tokens, skins, items) have no real-world monetary value, are not transferable, cannot be exchanged for money, and their use is limited to the Service. If your account is suspended or deleted for violating these Terms, you will lose access to these items without right to compensation.</p>
+    <p>Repers offers optional purchases of in-game coins and a Premium subscription. All purchases are fully processed by your device's store: the <strong>Apple App Store</strong> on iPhone and <strong>Google Play</strong> on Android, and are subject to that store's terms. Subscriptions renew automatically until you cancel them in your store settings.</p>
+    <p>Repers doesn't receive, see or store card numbers, security codes or expiration dates. Refunds are requested through each store's official process (<em>Report a Problem</em> on Apple, <em>Request a refund</em> on Google Play); we can't issue them directly.</p>
+    <p>If the store account belongs to a minor, each platform's parental controls apply (<em>Ask to Buy</em> in Apple Family Sharing and purchase approvals in Google Family Link).</p>
+    <p>When an item with random contents (for example, a chest) can be obtained with real money or with purchased coins, we will show you the odds of each outcome before the purchase.</p>
+    <p>Virtual items have no monetary value outside the game, can't be transferred or exchanged for money, and can only be used within the Service. If your account is suspended or deleted for violating these Terms, you will lose access to them, without prejudice to any non-waivable rights granted by the consumer protection law of your country.</p>
 
-    <h2>10. Service availability and changes</h2>
-    <ul>
-      <li>We may modify, suspend, limit, or discontinue the Service, in whole or in part, at any time and without prior notice.</li>
-      <li>We do not guarantee that the Service will be uninterrupted, error-free, or always accessible.</li>
-      <li>We may update the Service, add new features, remove existing ones, or change the design at any time.</li>
-      <li>We update these Terms periodically. Material changes are notified as described in the "Notifications and changes" section.</li>
-    </ul>
+    <h2>10. Advertising</h2>
+    <p>Repers shows <strong>non-personalized</strong> advertising through the Google AdMob, Unity LevelPlay and SuperAwesome networks. Non-personalized means ads aren't chosen based on your history, interests or profile, but on context: your country, language and age range.</p>
+    <p>Minors under the age of consent in their country only see ads from child-safe networks, with child-directed treatment turned on. For all ages, we block ads for gambling, dating, alcohol, tobacco, diets or weight loss, supplements, cryptocurrencies and investing.</p>
+    <p>We use small banners on menu screens and optional rewarded ads (watching a video in exchange for coins, only if you choose to). We never show ads during a match, surprise full-screen ads or ads with autoplaying sound. We are not responsible for the content of third-party sites or products that appear in ads.</p>
 
-    <h2>11. Disclaimer of warranties</h2>
-    <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL IMPLIED WARRANTIES, INCLUDING BUT NOT LIMITED TO MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND COURSE OF DEALING.</p>
-    <p>We do not warrant that the Service: (a) will meet your specific requirements, (b) will operate without interruption, be secure, or error-free, (c) will provide accurate or reliable results, or (d) will correct any Service defect.</p>
+    <h2>11. Privacy and camera</h2>
+    <p>We handle your data according to our <a href="./privacy.html">Privacy Policy</a>, which is part of these Terms. In particular: the camera only works inside your phone and no video or image leaves the device; we don't recognize faces or store biometric data; we don't use the microphone or your location; we don't sell your data or profile you for advertising.</p>
 
-    <h2>12. Limitation of liability</h2>
-    <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL REPERS, ITS DIRECTORS, EMPLOYEES, OR SUPPLIERS BE LIABLE FOR:</p>
-    <ul>
-      <li>Indirect, incidental, special, consequential, or punitive damages.</li>
-      <li>Loss of profits, revenue, data, business opportunities, or goodwill.</li>
-      <li>Physical injuries or damages arising from exercise performed using the Service.</li>
-      <li>Service interruptions, data loss, or third-party failures.</li>
-      <li>Acts or omissions of other users.</li>
-    </ul>
-    <p>Our total aggregate liability for any claim related to the Service shall not exceed the greater of: (a) the amount you have paid Repers in the 12 months preceding the event giving rise to the claim, or (b) one hundred US dollars (USD 100).</p>
-    <p>Some jurisdictions do not allow the exclusion of certain warranties or the limitation of liability for certain damages, so some of the above limitations may not apply to you. In those jurisdictions, our liability is limited to the minimum permitted by law.</p>
-
+    <h2>12. Physical activity and health</h2>
     <div class="warning">
-      <strong>Important about physical exercise:</strong> Repers involves physical activity. Consult a health professional before starting any exercise program, especially if you have a medical condition, are pregnant, in recovery, or have any physical limitation. Exercise within your limits, in a safe and clear space. If you feel dizzy, in pain, or any discomfort, stop immediately. Use of the Service is at your own risk.
+      <strong>Important:</strong> Repers involves physical activity whose intensity depends on how hard you push yourself. Talk to a health professional before using it if you have heart problems or high blood pressure, are pregnant or recently gave birth, have injuries or joint pain, are recovering from surgery or have any condition that limits exercise. Play in a safe, clear space and within your limits. If you feel dizzy, chest pain, shortness of breath or any discomfort, stop immediately. Repers is not a substitute for professional medical advice. Minors should play under adult supervision.
     </div>
 
-    <h2>13. Indemnification</h2>
-    <p>You agree to defend, indemnify, and hold harmless Repers, its affiliates, directors, employees, agents, and licensors from any claim, liability, damage, loss, cost, or expense (including reasonable attorneys' fees) arising from: (a) your use of the Service, (b) your violation of these Terms, (c) your violation of third-party rights (including intellectual property, privacy, or publicity), (d) content you upload, or (e) your negligent or willful conduct.</p>
+    <h2>13. Service availability and changes</h2>
+    <ul>
+      <li>We may modify, suspend, limit or discontinue the Service, in whole or in part, at any time.</li>
+      <li>We don't guarantee that the Service will be uninterrupted or error-free.</li>
+      <li>We may add, remove or change features and design at any time.</li>
+    </ul>
 
-    <h2>14. Force majeure</h2>
-    <p>We shall not be liable for non-performance or delay in performance of these Terms caused by events beyond our reasonable control, including but not limited to: natural disasters, wars, acts of terrorism, civil unrest, pandemics, epidemics, widespread internet or power outages, failures of third-party service providers (Supabase, Apple, Google, PostHog, Sentry), governmental actions, or legal changes that prevent Service operation.</p>
+    <h2>14. Disclaimer of warranties</h2>
+    <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL IMPLIED WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.</p>
+    <p>We don't guarantee that the Service will: (a) meet your specific requirements, (b) work without interruptions or errors, (c) count every rep exactly, or (d) correct all of its defects.</p>
 
-    <h2>15. Termination</h2>
-    <p>You may stop using Repers at any time by deleting the app from your device. You may request deletion of your account by writing to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</p>
-    <p>We may suspend, restrict, or terminate your access to the Service, with or without prior notice, if: (a) you violate these Terms, (b) we reasonably believe your conduct puts the Service or other users at risk, (c) we are required by law or court order, or (d) we discontinue the Service.</p>
-    <p>Sections that by their nature should survive termination (including Intellectual property, Disclaimer of warranties, Limitation of liability, Indemnification, Governing law, and Dispute resolution) shall remain in force after termination.</p>
+    <h2>15. Limitation of liability</h2>
+    <p>TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, REPERS SPA, ITS DIRECTORS, EMPLOYEES AND PROVIDERS WILL NOT BE LIABLE FOR:</p>
+    <ul>
+      <li>Indirect, incidental, special, consequential or punitive damages.</li>
+      <li>Loss of profits, revenue, data or opportunities.</li>
+      <li>Physical injury or harm resulting from exercise done while using the Service, except in cases of our gross negligence or willful misconduct.</li>
+      <li>Service interruptions, data loss or third-party failures.</li>
+      <li>Acts or omissions of other users or advertisers.</li>
+    </ul>
+    <p>Our total liability for any claim related to the Service will not exceed the greater of: (a) the amount you paid for purchases within Repers in the 12 months before the event giving rise to the claim, or (b) one hundred U.S. dollars (USD 100).</p>
+    <p>Some jurisdictions don't allow these exclusions or limitations. There, our liability is limited to the minimum allowed by law, and nothing in this section affects your non-waivable rights as a consumer.</p>
 
-    <h2>16. Dispute resolution</h2>
-    <p>Any dispute, controversy, or claim arising from or related to these Terms or the use of the Service shall be resolved through the following process:</p>
+    <h2>16. Indemnification</h2>
+    <p>You agree to defend, indemnify and hold harmless Repers SpA, its directors, employees, agents and licensors from any claim, damage, loss or expense (including reasonable attorneys' fees) arising from: (a) your misuse of the Service, (b) your breach of these Terms, (c) your violation of third-party rights, or (d) content you send.</p>
+
+    <h2>17. Force majeure</h2>
+    <p>We are not liable for failures or delays caused by events beyond our reasonable control, such as natural disasters, wars, pandemics, widespread internet or power outages, failures of infrastructure providers, app stores or ad networks, or government actions that prevent the Service from working.</p>
+
+    <h2>18. Termination and account deletion</h2>
+    <p>You can stop using Repers at any time by deleting the app. To delete your account and data, use <em>Profile → Delete account</em> inside the app or write to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> with the subject "Delete account". We guarantee effective deletion within <strong>30 business days</strong> at most, as detailed in the Privacy Policy.</p>
+    <p>We may suspend or end your access, with or without notice, if: (a) you violate these Terms, (b) your conduct puts the Service or other users at risk, (c) the law or a court order requires it, or (d) we discontinue the Service.</p>
+    <p>Sections that by their nature should survive termination (intellectual property, disclaimer of warranties, limitation of liability, indemnification, governing law and dispute resolution) remain in effect.</p>
+
+    <h2>19. Dispute resolution</h2>
     <ol>
-      <li><strong>Informal contact:</strong> before initiating any formal proceeding, you agree to contact us first at <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> to attempt to resolve the dispute in good faith. We commit to respond within 30 days.</li>
-      <li><strong>Mediation:</strong> if we cannot resolve it informally within 60 days, the parties will attempt to resolve it through mediation in the city indicated in the "Governing law" section before going to court.</li>
-      <li><strong>Courts:</strong> any legal action shall be filed before the courts indicated in the "Governing law" section, unless the applicable law in your jurisdiction of residence as a consumer grants you the non-waivable right to file in local courts.</li>
+      <li><strong>Direct contact:</strong> before any formal proceeding, write to us at <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> to try to resolve the dispute in good faith. We reply within 30 days.</li>
+      <li><strong>Mediation:</strong> if we don't resolve it within 60 days, we will try mediation in Santiago, Chile before going to court.</li>
+      <li><strong>Courts:</strong> any action will be filed before the courts named in section 20, unless the law of your country of residence as a consumer gives you the non-waivable right to go to local courts.</li>
     </ol>
-    <p><strong>Waiver of class actions:</strong> to the maximum extent permitted by law, you agree to resolve disputes individually and waive participation in class actions, collective lawsuits, or consolidated arbitrations.</p>
+    <p><strong>Class actions:</strong> to the fullest extent permitted by law, you agree to resolve disputes individually. This waiver does not apply where consumer protection law prohibits it.</p>
 
-    <h2>17. Governing law and jurisdiction</h2>
-    <p>These Terms are governed by the laws of the Republic of <strong>Chile</strong>, without giving effect to its conflict of laws provisions. Any legal action shall be filed before the competent courts of <strong>Santiago, Chile</strong>.</p>
-    <p>If you are a consumer residing in a country where consumer protection laws grant you non-waivable rights, those laws prevail over this clause specifically regarding those rights.</p>
+    <h2>20. Governing law and jurisdiction</h2>
+    <p>These Terms are governed by the laws of the Republic of <strong>Chile</strong>, including Law 19,496 on Consumer Rights Protection. Any action will be filed before the competent courts of <strong>Santiago, Chile</strong>.</p>
+    <p>If you live in a country whose consumer protection laws give you non-waivable rights, those laws prevail over this clause with respect to those rights.</p>
 
-    <h2>18. Assignment</h2>
-    <p>You may not assign, transfer, or subcontract your rights or obligations under these Terms without our prior written consent. We may assign, transfer, or subcontract our rights or obligations to any third party (including in case of merger, acquisition, asset sale, or corporate reorganization) without your consent and without prior notice, provided such assignment does not reduce your rights under these Terms.</p>
+    <h2>21. Assignment</h2>
+    <p>You may not assign your rights or obligations under these Terms without our prior written consent. We may assign them to a third party (for example, in a merger, acquisition or reorganization), as long as the assignment doesn't reduce your rights.</p>
 
-    <h2>19. Severability</h2>
-    <p>If a competent court determines that any provision of these Terms is invalid, illegal, or unenforceable, that provision shall be modified to the minimum necessary to make it enforceable, or if that is not possible, removed, and the remaining provisions shall remain in full force.</p>
+    <h2>22. Severability</h2>
+    <p>If a court finds any provision invalid or unenforceable, it will be adjusted to the minimum extent necessary or removed, and the rest will remain in effect.</p>
 
-    <h2>20. Waiver</h2>
-    <p>Our failure or delay in exercising any right under these Terms does not constitute a waiver of that right. Any waiver must be made in writing to be valid.</p>
+    <h2>23. Waiver</h2>
+    <p>Our failure or delay in exercising a right doesn't mean we waive it. Any waiver must be in writing.</p>
 
-    <h2>21. Entire agreement</h2>
-    <p>These Terms, together with the Privacy Policy and any other specific agreement referenced, constitute the entire agreement between you and Repers regarding the Service, and supersede any prior agreement, oral or written, between the parties on the same subject.</p>
+    <h2>24. Entire agreement</h2>
+    <p>These Terms, together with the Privacy Policy, are the entire agreement between you and Repers SpA about the Service, and replace any prior agreement on the same subject.</p>
 
-    <h2>22. Notifications and changes</h2>
-    <p>We may update these Terms at any time. We will post the updated version at <a href="https://repers.app/terms.html">repers.app/terms.html</a> with a new "Last updated" date. If the change is material, we will notify you within the app or — if you have an account — by email, with at least 15 days notice when reasonably possible. Continued use of the Service after the effective date constitutes acceptance of the updated Terms. If you don't agree, you must stop using the Service before that date.</p>
+    <h2>25. Notices and changes</h2>
+    <p>If we make important changes to these Terms, we will show you the full new version inside the app before it takes effect and ask you to accept it again with the same mechanism: scroll through the text to the end and tap Accept. Minor changes (wording, contact details) are published at <a href="https://repers.app/terms.html">repers.app/terms.html</a> with an on-screen notice.</p>
 
-    <h2>23. Governing language</h2>
-    <p>These Terms are published in Spanish and English. In case of discrepancy between both versions, the <strong>Spanish</strong> version shall prevail.</p>
+    <h2>26. Governing language</h2>
+    <p>These Terms are published in Spanish and English. If the two versions differ, the <strong>Spanish</strong> version prevails.</p>
 
-    <h2>24. Contact</h2>
-    <p>For any inquiry about these Terms, write to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</p>
+    <h2>27. Contact</h2>
+    <p>For any questions about these Terms, write to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a>.</p>
+
+    <p class="fin">Repers Terms of Service · Version 2.0 · Effective October 17, 2026 · Repers SpA</p>
   </div>
 
   <footer>
-    <a href="./index.html">Repers</a> · <a href="./privacy.html">Privacy</a> · <a href="./terms.html">Terms</a>
-    <p>&copy; 2026 Repers</p>
+    <a href="./index.html">Repers</a> · <a href="./privacy.html">Privacidad / Privacy</a> · <a href="./terms.html">Términos / Terms</a>
+    <p>&copy; 2026 Repers SpA</p>
   </footer>
 </div>
 
@@ -390,7 +462,8 @@
     try { localStorage.setItem('repers-legal-lang', lang); } catch(_) {}
   }
   try {
-    var saved = localStorage.getItem('repers-legal-lang');
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = (q === 'en' || q === 'es') ? q : localStorage.getItem('repers-legal-lang');
     if (saved === 'en' || saved === 'es') setLang(saved);
   } catch(_) {}
 </script>

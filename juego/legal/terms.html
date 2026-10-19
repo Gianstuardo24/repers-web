@@ -105,7 +105,7 @@
   <!-- ===== ESPAÑOL ===== -->
   <div id="content-es" class="content active">
     <h1>Términos y Condiciones</h1>
-    <p class="meta">Versión 2.0 · Última actualización: 17 de octubre de 2026</p>
+    <p class="meta">Versión 2.0 · Última actualización: 19 de octubre de 2026</p>
 
     <div class="summary">
       <strong>En simple:</strong>
@@ -234,7 +234,7 @@
     <p>No seremos responsables por incumplimientos o retrasos causados por hechos fuera de nuestro control razonable, como desastres naturales, guerras, pandemias, cortes generalizados de internet o electricidad, fallas de proveedores de infraestructura, tiendas de aplicaciones o redes publicitarias, o actos de autoridad que impidan el funcionamiento del Servicio.</p>
 
     <h2>18. Terminación y eliminación de cuenta</h2>
-    <p>Puedes dejar de usar Repers en cualquier momento borrando la app. Para eliminar tu cuenta y tus datos, escribe a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> con el asunto "Eliminar cuenta"; la opción también estará disponible dentro de la app en una próxima actualización. Garantizamos el borrado efectivo en un máximo de <strong>30 días hábiles</strong>, como se detalla en la Política de Privacidad.</p>
+    <p>Puedes dejar de usar Repers en cualquier momento borrando la app. Para eliminar tu cuenta y tus datos, usa <em>Perfil → Eliminar cuenta</em> dentro de la app o escribe a <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> con el asunto "Eliminar cuenta". Garantizamos el borrado efectivo en un máximo de <strong>30 días hábiles</strong>, como se detalla en la Política de Privacidad.</p>
     <p>Podemos suspender o terminar tu acceso, con o sin aviso, si: (a) violas estos Términos, (b) tu conducta pone en riesgo el Servicio o a otros usuarios, (c) la ley o una orden judicial lo exige, o (d) descontinuamos el Servicio.</p>
     <p>Las secciones que por su naturaleza deban sobrevivir a la terminación (propiedad intelectual, descargo de garantías, limitación de responsabilidad, indemnización, ley aplicable y resolución de disputas) seguirán vigentes.</p>
 
@@ -277,7 +277,7 @@
   <!-- ===== ENGLISH ===== -->
   <div id="content-en" class="content">
     <h1>Terms of Service</h1>
-    <p class="meta">Version 2.0 · Last updated: October 17, 2026</p>
+    <p class="meta">Version 2.0 · Last updated: October 19, 2026</p>
 
     <div class="summary">
       <strong>In short:</strong>
@@ -406,7 +406,7 @@
     <p>We are not liable for failures or delays caused by events beyond our reasonable control, such as natural disasters, wars, pandemics, widespread internet or power outages, failures of infrastructure providers, app stores or ad networks, or government actions that prevent the Service from working.</p>
 
     <h2>18. Termination and account deletion</h2>
-    <p>You can stop using Repers at any time by deleting the app. To delete your account and data, write to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> with the subject "Delete account"; this option will also be available inside the app in an upcoming update. We guarantee effective deletion within <strong>30 business days</strong> at most, as detailed in the Privacy Policy.</p>
+    <p>You can stop using Repers at any time by deleting the app. To delete your account and data, use <em>Profile → Delete account</em> inside the app or write to <a href="mailto:repersapp@gmail.com">repersapp@gmail.com</a> with the subject "Delete account". We guarantee effective deletion within <strong>30 business days</strong> at most, as detailed in the Privacy Policy.</p>
     <p>We may suspend or end your access, with or without notice, if: (a) you violate these Terms, (b) your conduct puts the Service or other users at risk, (c) the law or a court order requires it, or (d) we discontinue the Service.</p>
     <p>Sections that by their nature should survive termination (intellectual property, disclaimer of warranties, limitation of liability, indemnification, governing law and dispute resolution) remain in effect.</p>
 
@@ -462,7 +462,8 @@
     try { localStorage.setItem('repers-legal-lang', lang); } catch(_) {}
   }
   try {
-    var saved = localStorage.getItem('repers-legal-lang');
+    var q = new URLSearchParams(location.search).get('lang');
+    var saved = (q === 'en' || q === 'es') ? q : localStorage.getItem('repers-legal-lang');
     if (saved === 'en' || saved === 'es') setLang(saved);
   } catch(_) {}
 </script>
