@@ -20,3 +20,7 @@
 
 /juego/sw.js
   Cache-Control: no-cache
+
+# Número de versión de la app web (19/10): se revisa siempre para la actualización automática.
+/juego/version.json
+  Cache-Control: no-cache

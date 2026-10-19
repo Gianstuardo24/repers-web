@@ -13,10 +13,12 @@
 //  - Videos (.mp4): no se guardan acá (Safari los pide por pedazos).
 //  - Nada de otros sitios (Supabase, analítica): pasa directo a la red.
 //
-// Para forzar que todos los teléfonos limpien lo guardado, subir VERSION.
+// VERSION la reemplaza vite.config.js en cada compilación (19/10): cada
+// versión publicada renueva lo guardado (imágenes y modelos 3D que no cambian
+// de nombre ya no quedan pegados en la versión vieja).
 // ════════════════════════════════════════════════════════════════════
 
-const VERSION = 'repers-2026-10-17a';
+const VERSION = 'repers-202610190222';
 const CACHE_PAGINA = `${VERSION}-pagina`;
 const CACHE_ESTATICO = `${VERSION}-estatico`;
 const BASE = new URL('./', self.location).pathname;   // carpeta donde vive la app (ej. /juego/)
