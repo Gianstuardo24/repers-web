@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Permiso · Repers</title>
+<link rel="icon" href="/juego/icons/icon-192.png">
+<style>
+  :root{--bg:#eef1f6;--papel:#fff;--tinta:#1a1c22;--tinta2:#4b505c;--tinta3:#7f8593;--linea:#dfe3ea;--azul:#0071e3;--azul2:#0052a8;--azulSuave:#e7f1fd;--verde:#1f8a4c;--verdeSuave:#e4f4ea;--rojo:#c0392b;--rojoSuave:#fbeceb}
+  @media (prefers-color-scheme:dark){:root{--bg:#121419;--papel:#1c1f26;--tinta:#eef0f4;--tinta2:#c2c7d1;--tinta3:#8d93a0;--linea:#323743;--azul:#4c9dff;--azul2:#2f7fe0;--azulSuave:#16273d;--verde:#5fd18c;--verdeSuave:#15291e;--rojo:#ff8a80;--rojoSuave:#2d1817}}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--tinta);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;line-height:1.5}
+  main{max-width:520px;margin:0 auto;padding:28px 16px 48px}
+  .tarjeta{background:var(--papel);border:1px solid var(--linea);border-radius:18px;padding:24px 22px;box-shadow:0 1px 2px rgba(20,28,45,.06),0 10px 28px rgba(20,28,45,.08)}
+  .marca{display:flex;align-items:center;gap:10px;margin:0 0 18px}
+  .marca img{width:36px;height:36px;border-radius:10px;display:block}
+  .marca span{font-weight:800;letter-spacing:.06em;font-size:16px}
+  h1{font-size:23px;line-height:1.2;margin:0 0 10px;text-wrap:balance}
+  p{margin:0 0 12px;color:var(--tinta2);font-size:15.5px}
+  .ficha{display:flex;gap:12px;align-items:center;background:var(--azulSuave);border-radius:12px;padding:10px 12px;margin:0 0 14px}
+  .ficha img{width:40px;height:40px;border-radius:50%}
+  .ficha b{display:block;color:var(--tinta);font-size:15.5px}
+  .ficha small{color:var(--tinta2);font-size:13px}
+  ul{margin:4px 0 14px;padding-left:20px;color:var(--tinta2);font-size:14.5px}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;background:var(--bg);border:1px solid var(--linea);border-radius:12px;padding:12px;margin:4px 0 14px;cursor:pointer}
+  .check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--azul);flex:none}
+  .botones{display:flex;flex-wrap:wrap;gap:10px}
+  button{font:inherit;font-weight:700;font-size:15.5px;min-height:46px;padding:0 24px;border-radius:999px;cursor:pointer;border:2px solid transparent}
+  button:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+  button[disabled]{opacity:.5;cursor:default}
+  .si{background:linear-gradient(180deg,var(--azul),var(--azul2));color:#fff}
+  .no{background:transparent;color:var(--tinta2);border-color:var(--linea)}
+  .peligro{background:transparent;color:var(--rojo);border-color:var(--rojo)}
+  .aviso{border-radius:12px;padding:14px;font-size:15px;color:var(--tinta)}
+  .aviso.ok{background:var(--verdeSuave)} .aviso.mal{background:var(--rojoSuave)} .aviso.neutro{background:var(--bg)}
+  .aviso b{display:block;margin-bottom:4px}
+  .pie{font-size:12.5px;color:var(--tinta3);text-align:center;margin-top:18px}
+  .pie a{color:var(--tinta3)}
+  .cargando{color:var(--tinta3)}
+  @media (max-width:400px){button{width:100%}}
+</style>
+</head>
+<body>
+<main>
+  <div class="tarjeta">
+    <div class="marca"><img src="/juego/icons/icon-192.png" alt=""><span>REPERS</span></div>
+    <div id="contenido" aria-live="polite"><p class="cargando" id="cargando">Cargando…</p></div>
+  </div>
+  <p class="pie" id="pie">Repers SpA · Viña del Mar, Chile · repersapp@gmail.com · <a id="lnkPriv" href="/privacy.html">Política de Privacidad</a></p>
+</main>
+<script>
+(function () {
+  var FN = 'https://ckpbwxryhlzaabynupnt.supabase.co/functions/v1/permiso';
+  var q = new URLSearchParams(location.search);
+  var token = q.get('c') || '';
+  var pista = q.get('d') || '';
+  var idioma = (q.get('lang') || (navigator.language || 'es')).slice(0, 2) === 'en' ? 'en' : 'es';
+  // Saca el token de la barra de direcciones (no queda en el historial a la vista).
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+
+  var T = {
+    es: {
+      cargando: 'Cargando…',
+      titulo: function (j) { return 'Permiso para ' + j; },
+      ficha: function (l) { return 'Declaró tener menos de ' + l + ' años'; },
+      explica: 'Al autorizar, su progreso se guarda en su cuenta y puede jugar en línea y agregar amigos. Lo que ya jugó en el teléfono pasa a la cuenta.',
+      guarda: 'Guardamos su nombre de jugador, su progreso, sus partidas y los amigos que agregue. La cámara nunca sale del teléfono, sin anuncios personalizados ni estadísticas de uso.',
+      soy: 'Soy su padre, madre o tutor responsable y tengo 18 años o más.',
+      si: 'Autorizar', no: 'No autorizar',
+      okT: 'Listo: la cuenta quedó autorizada.',
+      okD: 'La próxima vez que abra Repers ya juega con su cuenta. Mañana te llega un correo de confirmación, y puedes retirar el permiso cuando quieras.',
+      noT: 'No autorizaste la cuenta.',
+      noD: 'Borramos tu correo. Puede seguir jugando en modo invitado, con todo guardado solo en su teléfono.',
+      yaT: function (j) { return 'La cuenta de ' + j + ' está autorizada.'; },
+      yaD: 'Si cambiaste de opinión, puedes retirar el permiso: borramos sus datos del servidor y vuelve al modo invitado.',
+      seguro: 'Entiendo que se borran sus datos del servidor.',
+      retirar: 'Retirar el permiso',
+      retT: 'Retiraste el permiso.',
+      retD: 'Borramos sus datos del servidor y tu correo. Puede seguir jugando en modo invitado.',
+      invT: 'Este enlace ya no sirve.',
+      invD: 'Venció o ya se usó. Si el jugador todavía necesita permiso, puede pedirlo de nuevo desde la app.',
+      errT: 'No pudimos conectar.',
+      errD: 'Revisa tu conexión e inténtalo de nuevo en un momento.',
+      reintentar: 'Reintentar',
+      priv: 'Política de Privacidad',
+    },
+    en: {
+      cargando: 'Loading…',
+      titulo: function (j) { return 'Permission for ' + j; },
+      ficha: function (l) { return 'Said they are under ' + l; },
+      explica: 'If you approve, their progress is saved to their account and they can play online and add friends. What they already played on the phone moves to the account.',
+      guarda: 'We store their player name, progress, games and the friends they add. The camera never leaves the phone; no personalized ads and no usage analytics.',
+      soy: 'I am their parent or legal guardian and I am 18 or older.',
+      si: 'Approve', no: 'Don’t approve',
+      okT: 'Done: the account is approved.',
+      okD: 'Next time they open Repers they play with their account. Tomorrow you’ll get a confirmation email, and you can withdraw permission at any time.',
+      noT: 'You didn’t approve the account.',
+      noD: 'We deleted your email. They can keep playing in guest mode, with everything saved only on their phone.',
+      yaT: function (j) { return j + '’s account is approved.'; },
+      yaD: 'If you changed your mind, you can withdraw permission: we delete their data from our servers and they go back to guest mode.',
+      seguro: 'I understand their data will be deleted from the servers.',
+      retirar: 'Withdraw permission',
+      retT: 'You withdrew permission.',
+      retD: 'We deleted their data from our servers and your email. They can keep playing in guest mode.',
+      invT: 'This link no longer works.',
+      invD: 'It expired or was already used. If the player still needs permission, they can ask again from the app.',
+      errT: 'We couldn’t connect.',
+      errD: 'Check your connection and try again in a moment.',
+      reintentar: 'Try again',
+      priv: 'Privacy Policy',
+    },
+  };
+  var $c = document.getElementById('contenido');
+  function t() { return T[idioma]; }
+  function el(tag, attrs, hijos) {
+    var e = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      if (k === 'texto') e.textContent = attrs[k]; else if (k === 'clase') e.className = attrs[k]; else e.setAttribute(k, attrs[k]);
+    });
+    (hijos || []).forEach(function (h) { if (h) e.appendChild(h); });
+    return e;
+  }
+  function aviso(tipo, titulo, detalle) {
+    return el('div', { clase: 'aviso ' + tipo }, [el('b', { texto: titulo }), el('span', { texto: detalle })]);
+  }
+  function pintar(nodos) { $c.textContent = ''; nodos.forEach(function (n) { $c.appendChild(n); }); }
+  function pie() {
+    document.documentElement.lang = idioma;
+    var a = document.getElementById('lnkPriv');
+    a.textContent = t().priv; a.href = '/privacy.html?lang=' + idioma;
+  }
+  function llamar(cuerpo) {
+    return fetch(FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) })
+      .then(function (r) { return r.json(); });
+  }
+  function errorRed(reintento) {
+    var b = el('button', { clase: 'no', type: 'button', texto: t().reintentar });
+    b.addEventListener('click', reintento);
+    pintar([aviso('mal', t().errT, t().errD), el('div', { clase: 'botones', style: 'margin-top:12px' }, [b])]);
+  }
+  function ficha(d) {
+    return el('div', { clase: 'ficha' }, [
+      el('img', { src: '/juego/icons/icon-192.png', alt: '' }),
+      el('div', null, [el('b', { texto: d.jugador }), el('small', { texto: t().ficha(d.limite || 14) })]),
+    ]);
+  }
+  function confirmar(textoCheck, botonPrincipal) {
+    var id = 'chk' + Math.random().toString(36).slice(2, 7);
+    var input = el('input', { type: 'checkbox', id: id });
+    var lbl = el('label', { clase: 'check', for: id }, [input, el('span', { texto: textoCheck })]);
+    botonPrincipal.disabled = true;
+    input.addEventListener('change', function () { botonPrincipal.disabled = !input.checked; });
+    return lbl;
+  }
+  function responder(decision, botones) {
+    botones.forEach(function (b) { b.disabled = true; });
+    llamar({ accion: 'responder', token: token, decision: decision })
+      .then(mostrar)
+      .catch(function () { errorRed(function () { responder(decision, botones); }); });
+  }
+  function mostrar(d) {
+    if (d && (d.idioma === 'es' || d.idioma === 'en') && !q.get('lang')) idioma = d.idioma;
+    pie();
+    var est = d && d.estado;
+    if (est === 'pendiente') {
+      var si = el('button', { clase: 'si', type: 'button', texto: t().si });
+      var no = el('button', { clase: 'no', type: 'button', texto: t().no });
+      si.addEventListener('click', function () { responder('autorizar', [si, no]); });
+      no.addEventListener('click', function () { responder('rechazar', [si, no]); });
+      document.title = t().titulo(d.jugador) + ' · Repers';
+      pintar([
+        el('h1', { texto: t().titulo(d.jugador) }), ficha(d),
+        el('p', { texto: t().explica }), el('p', { texto: t().guarda, style: 'font-size:14px' }),
+        confirmar(t().soy, si),
+        el('div', { clase: 'botones' }, pista === 'no' ? [no, si] : [si, no]),
+      ]);
+      return;
+    }
+    // Recién autorizado con el botón (la respuesta trae solo { estado }): "Listo".
+    if (est === 'autorizado' && !d.jugador) { pintar([aviso('ok', t().okT, t().okD)]); return; }
+    if (est === 'autorizado') {
+      var ret = el('button', { clase: 'peligro', type: 'button', texto: t().retirar });
+      ret.addEventListener('click', function () { responder('retirar', [ret]); });
+      pintar([el('h1', { texto: t().yaT(d.jugador || '') }), el('p', { texto: t().yaD }), confirmar(t().seguro, ret), el('div', { clase: 'botones' }, [ret])]);
+      return;
+    }
+    if (est === 'rechazado') { pintar([aviso('neutro', t().noT, t().noD)]); return; }
+    if (est === 'retirado') { pintar([aviso('neutro', t().retT, t().retD)]); return; }
+    pintar([aviso('mal', t().invT, t().invD)]);
+  }
+  function cargar() {
+    pie();
+    var c = document.getElementById('cargando'); if (c) c.textContent = t().cargando;
+    if (!token) { mostrar({ estado: 'invalido' }); return; }
+    llamar({ accion: 'ver', token: token }).then(mostrar).catch(function () { errorRed(cargar); });
+  }
+  cargar();
+})();
+</script>
+</body>
+</html>
