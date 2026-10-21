@@ -18,7 +18,7 @@
 // de nombre ya no quedan pegados en la versión vieja).
 // ════════════════════════════════════════════════════════════════════
 
-const VERSION = 'repers-202610201815';
+const VERSION = 'repers-202610202331';
 const CACHE_PAGINA = `${VERSION}-pagina`;
 const CACHE_ESTATICO = `${VERSION}-estatico`;
 const BASE = new URL('./', self.location).pathname;   // carpeta donde vive la app (ej. /juego/)
