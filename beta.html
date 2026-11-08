@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repers — Beta en TestFlight</title>
-  <meta name="description" content="Prueba Repers antes que nadie: únete a la beta por TestFlight.">
+  <title>Repers — Únete a la beta</title>
+  <meta name="description" content="Prueba Repers antes que nadie: inscríbete a la beta para iPhone o Android.">
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -43,30 +43,45 @@
       <span class="orb orb-1" aria-hidden="true">🚀</span>
       <span class="orb orb-2" aria-hidden="true">🧪</span>
     </div>
-    <span class="beta-badge"><span class="dot"></span> <span data-i18n="beta.badge">Beta cerrada · TestFlight</span></span>
+    <span class="beta-badge"><span class="dot"></span> <span data-i18n="beta.badge">Beta cerrada · iPhone y Android</span></span>
     <h1>
       <span class="line"><span data-i18n="beta.title1">Sé de los</span></span>
       <span class="line"><span data-i18n="beta.title2">primeros.</span></span>
     </h1>
     <p class="hero-sub" data-i18n="beta.sub">
-      Repers está en beta por TestFlight, la plataforma oficial de pruebas de Apple.
-      Prueba la app antes que nadie y ayúdanos a pulirla.
+      Prueba Repers antes que nadie y ayúdanos a pulirlo. Inscríbete y te
+      enviamos la invitación para tu iPhone o tu Android.
     </p>
-    <div class="hero-ctas">
-      <!-- ⚠️ PLACEHOLDER: reemplazar por el link público real cuando se active
-           en App Store Connect (TestFlight → grupo externo → Enable Public Link).
-           Formato: https://testflight.apple.com/join/XXXXXXXX -->
-      <a class="btn btn-primary btn-big" href="https://testflight.apple.com/join/PLACEHOLDER" target="_blank" rel="noopener">
-         <span data-i18n="beta.cta">Abrir en TestFlight</span>
-      </a>
-    </div>
-    <div class="tf-note reveal in">
-      <span aria-hidden="true">📱</span>
-      <span data-i18n="beta.note">
-        La beta es solo para iPhone por ahora. Esta página es temporal: cuando Repers
-        llegue al App Store, el botón te va a llevar directo ahí.
-      </span>
-    </div>
+    <!-- 8/11/2026: inscripción a la beta. Guarda el correo y el teléfono en
+         Supabase (tabla beta_inscritos, función inscribir_beta). Tao filtra por
+         iPhone o Android y los agrega a TestFlight o a Google Play. -->
+    <form class="feedback-card beta-form" id="beta-form" novalidate>
+      <label class="field-label" data-i18n="bf.disp">¿Qué teléfono tienes?</label>
+      <div class="chip-row" role="group">
+        <button type="button" class="chip-btn active" data-plat="ios" aria-pressed="true" data-i18n="bf.ios">iPhone</button>
+        <button type="button" class="chip-btn" data-plat="android" aria-pressed="false" data-i18n="bf.android">Android</button>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="bf-email" data-i18n="bf.email">Tu correo</label>
+        <input type="email" id="bf-email" maxlength="200" autocomplete="email" inputmode="email" required>
+        <p class="field-hint" id="bf-hint" data-i18n="bf.hint.ios">Usa el correo de tu Apple ID: ahí te llega la invitación de TestFlight.</p>
+      </div>
+      <div class="form-row">
+        <label class="field-label" for="bf-nombre" data-i18n="bf.nombre">Tu nombre (opcional)</label>
+        <input type="text" id="bf-nombre" maxlength="60" autocomplete="given-name">
+      </div>
+      <label class="check-row" for="bf-edad">
+        <input type="checkbox" id="bf-edad">
+        <span data-i18n="bf.edad">Tengo 18 años o más, o soy el adulto responsable que inscribe este correo.</span>
+      </label>
+      <!-- honeypot anti-bots -->
+      <div class="hp" aria-hidden="true">
+        <label for="bf-web">Web</label>
+        <input type="text" id="bf-web" tabindex="-1" autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-primary btn-big" id="bf-submit" data-i18n="bf.enviar">Quiero probar Repers</button>
+      <p class="form-msg" id="bf-out" role="status" aria-live="polite"></p>
+    </form>
   </header>
 
   <!-- ===== Pasos ===== -->
@@ -74,16 +89,16 @@
     <div class="wrap">
       <div class="reveal">
         <span class="kicker" data-i18n="beta.how.kicker">Cómo entrar</span>
-        <h2 class="section-title" data-i18n="beta.how.title">En tres toques ya estás jugando</h2>
+        <h2 class="section-title" data-i18n="beta.how.title">Tres pasos y ya estás jugando</h2>
       </div>
       <div class="steps">
         <div class="step reveal">
-          <h3 data-i18n="beta.1.t">Instala TestFlight</h3>
-          <p data-i18n="beta.1.p">Descarga la app gratuita TestFlight desde el App Store (es de Apple).</p>
+          <h3 data-i18n="beta.1.t">Inscríbete</h3>
+          <p data-i18n="beta.1.p">Elige tu teléfono y deja tu correo en el formulario de arriba.</p>
         </div>
         <div class="step reveal">
-          <h3 data-i18n="beta.2.t">Toca el botón de arriba</h3>
-          <p data-i18n="beta.2.p">El enlace de invitación abre TestFlight con Repers listo para instalar.</p>
+          <h3 data-i18n="beta.2.t">Te llega la invitación</h3>
+          <p data-i18n="beta.2.p">En iPhone, por TestFlight (la app de pruebas de Apple). En Android, por Google Play.</p>
         </div>
         <div class="step reveal">
           <h3 data-i18n="beta.3.t">Juega y cuéntanos</h3>

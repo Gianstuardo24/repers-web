@@ -121,12 +121,12 @@
       en: '© 2026 Repers. Made with lots of squats.'
     },
     /* beta page */
-    'beta.badge': { es: 'Beta cerrada · TestFlight', en: 'Closed beta · TestFlight' },
+    'beta.badge': { es: 'Beta cerrada · iPhone y Android', en: 'Closed beta · iPhone & Android' },
     'beta.title1': { es: 'Sé de los', en: 'Be one of the' },
     'beta.title2': { es: 'primeros.', en: 'first.' },
     'beta.sub': {
-      es: 'Repers está en beta por TestFlight, la plataforma oficial de pruebas de Apple. Prueba la app antes que nadie y ayúdanos a pulirla.',
-      en: 'Repers is in beta on TestFlight, Apple’s official testing platform. Try the app before anyone else and help us polish it.'
+      es: 'Prueba Repers antes que nadie y ayúdanos a pulirlo. Inscríbete y te enviamos la invitación para tu iPhone o tu Android.',
+      en: 'Try Repers before anyone else and help us polish it. Sign up and we’ll send you an invite for your iPhone or Android.'
     },
     'beta.cta': { es: 'Abrir en TestFlight', en: 'Open in TestFlight' },
     'beta.note': {
@@ -134,16 +134,16 @@
       en: 'The beta is iPhone-only for now. This page is temporary: once Repers hits the App Store, this button will take you straight there.'
     },
     'beta.how.kicker': { es: 'Cómo entrar', en: 'How to join' },
-    'beta.how.title': { es: 'En tres toques ya estás jugando', en: 'Three taps and you’re in' },
-    'beta.1.t': { es: 'Instala TestFlight', en: 'Install TestFlight' },
+    'beta.how.title': { es: 'Tres pasos y ya estás jugando', en: 'Three steps and you’re in' },
+    'beta.1.t': { es: 'Inscríbete', en: 'Sign up' },
     'beta.1.p': {
-      es: 'Descarga la app gratuita TestFlight desde el App Store (es de Apple).',
-      en: 'Get the free TestFlight app from the App Store (it’s Apple’s).'
+      es: 'Elige tu teléfono y deja tu correo en el formulario de arriba.',
+      en: 'Pick your phone and leave your email in the form above.'
     },
-    'beta.2.t': { es: 'Toca el botón de arriba', en: 'Tap the button above' },
+    'beta.2.t': { es: 'Te llega la invitación', en: 'Get your invite' },
     'beta.2.p': {
-      es: 'El enlace de invitación abre TestFlight con Repers listo para instalar.',
-      en: 'The invite link opens TestFlight with Repers ready to install.'
+      es: 'En iPhone, por TestFlight (la app de pruebas de Apple). En Android, por Google Play.',
+      en: 'On iPhone, through TestFlight (Apple’s testing app). On Android, through Google Play.'
     },
     'beta.3.t': { es: 'Juega y cuéntanos', en: 'Play and tell us' },
     'beta.3.p': {
@@ -151,7 +151,41 @@
       en: 'Something odd? Something great? Leave feedback on the main page.'
     },
     'beta.back': { es: '← Volver a la página principal', en: '← Back to the main page' },
-    'beta.fb': { es: 'Dejar feedback', en: 'Leave feedback' }
+    'beta.fb': { es: 'Dejar feedback', en: 'Leave feedback' },
+    /* formulario de inscripción a la beta (8/11/2026) */
+    'bf.disp': { es: '¿Qué teléfono tienes?', en: 'Which phone do you have?' },
+    'bf.ios': { es: 'iPhone', en: 'iPhone' },
+    'bf.android': { es: 'Android', en: 'Android' },
+    'bf.email': { es: 'Tu correo', en: 'Your email' },
+    'bf.hint.ios': {
+      es: 'Usa el correo de tu Apple ID: ahí te llega la invitación de TestFlight.',
+      en: 'Use your Apple ID email: that’s where your TestFlight invite goes.'
+    },
+    'bf.hint.android': {
+      es: 'Usa el correo de la cuenta de Google de tu teléfono (la de Play Store): solo esa cuenta puede instalar la beta.',
+      en: 'Use the Google account on your phone (the one in the Play Store): only that account can install the beta.'
+    },
+    'bf.nombre': { es: 'Tu nombre (opcional)', en: 'Your name (optional)' },
+    'bf.edad': {
+      es: 'Tengo 18 años o más, o soy el adulto responsable que inscribe este correo.',
+      en: 'I’m 18 or older, or I’m the responsible adult signing up this email.'
+    },
+    'bf.enviar': { es: 'Quiero probar Repers', en: 'I want to try Repers' },
+    'bf.enviando': { es: 'Inscribiendo…', en: 'Signing you up…' },
+    'bf.ok': {
+      es: '¡Listo! Quedaste inscrito. Te escribiremos a ese correo cuando tengas acceso.',
+      en: 'Done! You’re on the list. We’ll email you when you have access.'
+    },
+    'bf.ya': {
+      es: 'Ese correo ya estaba inscrito para este teléfono. Te escribiremos cuando tengas acceso.',
+      en: 'That email was already signed up for this phone. We’ll email you when you have access.'
+    },
+    'bf.mal': { es: 'Revisa el correo: parece que le falta algo.', en: 'Check your email: something looks off.' },
+    'bf.falta_edad': { es: 'Marca la casilla de edad para seguir.', en: 'Tick the age box to continue.' },
+    'bf.err': {
+      es: 'No pudimos inscribirte. Revisa tu conexión y vuelve a intentarlo.',
+      en: 'We couldn’t sign you up. Check your connection and try again.'
+    }
   };
 
   /* ---------- Idioma ---------- */
@@ -302,6 +336,69 @@
       }).finally(function () {
         btn.disabled = false;
         btn.textContent = DICT['fb.enviar'][lang];
+      });
+    });
+  }
+
+  /* ---------- Inscripción a la beta (beta.html, 8/11/2026) ----------
+     Llama a la función inscribir_beta de Supabase: el público solo puede
+     inscribirse, nunca leer la lista. Devuelve 'ok' o 'ya_inscrito'. */
+  var bform = document.getElementById('beta-form');
+  if (bform) {
+    var plat = 'ios';
+    var hint = document.getElementById('bf-hint');
+    bform.querySelectorAll('.chip-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        bform.querySelectorAll('.chip-btn').forEach(function (x) { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
+        b.classList.add('active'); b.setAttribute('aria-pressed', 'true');
+        plat = b.getAttribute('data-plat');
+        hint.setAttribute('data-i18n', 'bf.hint.' + plat);
+        hint.textContent = DICT['bf.hint.' + plat][lang];
+      });
+    });
+    bform.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var emailEl = document.getElementById('bf-email');
+      var out = document.getElementById('bf-out');
+      var btn = document.getElementById('bf-submit');
+      var hp = document.getElementById('bf-web');
+      out.className = 'form-msg';
+      var email = (emailEl.value || '').trim().toLowerCase();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 200) {
+        out.textContent = DICT['bf.mal'][lang]; out.className = 'form-msg err'; emailEl.focus(); return;
+      }
+      if (!document.getElementById('bf-edad').checked) {
+        out.textContent = DICT['bf.falta_edad'][lang]; out.className = 'form-msg err'; return;
+      }
+      if (hp && hp.value) return; /* honeypot: bots fuera */
+      btn.disabled = true;
+      btn.textContent = DICT['bf.enviando'][lang];
+      fetch(SUPABASE_URL + '/rest/v1/rpc/inscribir_beta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({
+          p_email: email,
+          p_plataforma: plat,
+          p_nombre: (document.getElementById('bf-nombre').value || '').trim().slice(0, 60) || null,
+          p_idioma: lang
+        })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function (res) {
+        out.textContent = DICT[res === 'ya_inscrito' ? 'bf.ya' : 'bf.ok'][lang];
+        out.className = 'form-msg ok';
+        if (res !== 'ya_inscrito') { bform.reset(); confetti(); }
+      }).catch(function () {
+        out.textContent = DICT['bf.err'][lang];
+        out.className = 'form-msg err';
+      }).finally(function () {
+        btn.disabled = false;
+        btn.textContent = DICT['bf.enviar'][lang];
       });
     });
   }
