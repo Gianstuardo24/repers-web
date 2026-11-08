@@ -121,17 +121,12 @@
       en: '© 2026 Repers. Made with lots of squats.'
     },
     /* beta page */
-    'beta.badge': { es: 'Beta cerrada · iPhone y Android', en: 'Closed beta · iPhone & Android' },
+    'beta.badge': { es: 'Beta cerrada · Android y iOS', en: 'Closed beta · Android & iOS' },
     'beta.title1': { es: 'Sé de los', en: 'Be one of the' },
     'beta.title2': { es: 'primeros.', en: 'first.' },
     'beta.sub': {
-      es: 'Prueba Repers antes que nadie y ayúdanos a pulirlo. Inscríbete y te enviamos la invitación para tu iPhone o tu Android.',
-      en: 'Try Repers before anyone else and help us polish it. Sign up and we’ll send you an invite for your iPhone or Android.'
-    },
-    'beta.cta': { es: 'Abrir en TestFlight', en: 'Open in TestFlight' },
-    'beta.note': {
-      es: 'La beta es solo para iPhone por ahora. Esta página es temporal: cuando Repers llegue al App Store, el botón te va a llevar directo ahí.',
-      en: 'The beta is iPhone-only for now. This page is temporary: once Repers hits the App Store, this button will take you straight there.'
+      es: 'Prueba Repers antes que nadie y ayúdanos a pulirlo. Inscríbete y te enviamos la invitación para Android o iOS.',
+      en: 'Try Repers before anyone else and help us polish it. Sign up and we’ll send you an invite for Android or iOS.'
     },
     'beta.how.kicker': { es: 'Cómo entrar', en: 'How to join' },
     'beta.how.title': { es: 'Tres pasos y ya estás jugando', en: 'Three steps and you’re in' },
@@ -142,8 +137,8 @@
     },
     'beta.2.t': { es: 'Te llega la invitación', en: 'Get your invite' },
     'beta.2.p': {
-      es: 'En iPhone, por TestFlight (la app de pruebas de Apple). En Android, por Google Play.',
-      en: 'On iPhone, through TestFlight (Apple’s testing app). On Android, through Google Play.'
+      es: 'En Android, por Google Play. En iOS, por TestFlight (la app de pruebas de Apple).',
+      en: 'On Android, through Google Play. On iOS, through TestFlight (Apple’s testing app).'
     },
     'beta.3.t': { es: 'Juega y cuéntanos', en: 'Play and tell us' },
     'beta.3.p': {
