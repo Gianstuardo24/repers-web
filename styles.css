@@ -314,7 +314,8 @@ footer { border-top: 1px solid var(--line); background: var(--surface); }
   padding: clamp(26px, 4vw, 38px); border-radius: 24px;
 }
 .beta-form .field-label { font: 600 14px var(--font-body); color: var(--ink); letter-spacing: -0.01em; margin: 0 0 8px; }
-.beta-form .chip-row { margin: 0 0 22px; gap: 8px; }
+.beta-form .chip-row { margin: 0 0 22px; gap: 8px; justify-content: center; }
+.beta-form .field-label.centrada { text-align: center; }
 .beta-form .chip-btn { padding: 10px 22px; font-size: 15px; }
 .beta-form .form-row { margin: 0 0 22px; }
 .beta-form input[type="text"], .beta-form input[type="email"] {

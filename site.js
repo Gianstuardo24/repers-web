@@ -111,7 +111,7 @@
     'fb.corto': { es: 'Cuéntanos un poquito más 🙂', en: 'Tell us a bit more 🙂' },
     'fb.nota': { es: 'Solo guardamos lo que escribes aquí. Nada más.', en: 'We only store what you write here. Nothing else.' },
     /* footer */
-    'foot.beta': { es: 'Beta en TestFlight', en: 'TestFlight beta' },
+    'foot.beta': { es: 'Únete a la beta', en: 'Join the beta' },
     'foot.fb': { es: 'Feedback', en: 'Feedback' },
     'foot.privacy': { es: 'Privacidad', en: 'Privacy' },
     'foot.terms': { es: 'Términos', en: 'Terms' },
@@ -153,8 +153,8 @@
     'beta.back': { es: '← Volver a la página principal', en: '← Back to the main page' },
     'beta.fb': { es: 'Dejar feedback', en: 'Leave feedback' },
     /* formulario de inscripción a la beta (8/11/2026) */
-    'bf.disp': { es: '¿Qué teléfono tienes?', en: 'Which phone do you have?' },
-    'bf.ios': { es: 'iPhone', en: 'iPhone' },
+    'bf.disp': { es: '¿Qué sistema operativo usas?', en: 'Which operating system do you use?' },
+    'bf.ios': { es: 'iOS', en: 'iOS' },
     'bf.android': { es: 'Android', en: 'Android' },
     'bf.email': { es: 'Tu correo', en: 'Your email' },
     'bf.hint.ios': {
