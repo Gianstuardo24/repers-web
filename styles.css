@@ -231,6 +231,20 @@ section:not(.band) + section:not(.band) > .wrap { padding-top: 0; }
 .step h3 { font-size: 19px; margin-bottom: 8px; }
 .step p { color: var(--ink-soft); font-size: 14.5px; }
 
+/* Cómo instalar la beta (8/11/2026) */
+.install-grid { display: grid; gap: 18px; margin-top: 44px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.install-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 26px; }
+.install-card h3 { font-size: 19px; margin-bottom: 16px; }
+.install-steps { margin: 0; padding: 0; list-style: none; counter-reset: ip; display: grid; gap: 14px; }
+.install-steps li { counter-increment: ip; position: relative; padding-left: 40px; color: var(--ink-soft); font-size: 14.5px; line-height: 1.5; }
+.install-steps li::before {
+  content: counter(ip); position: absolute; left: 0; top: -2px; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent-tint); color: var(--accent); font: 700 13px/26px var(--font-body); text-align: center;
+}
+.install-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 13px; line-height: 1.45; }
+.install-help { margin-top: 26px; text-align: center; color: var(--ink-soft); font-size: 14px; }
+.install-help a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
 /* Banda azul (avatar/market) */
 .band {
   background: linear-gradient(160deg, var(--accent-deep) 0%, var(--accent) 55%, #2E8BFF 100%);

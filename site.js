@@ -147,6 +147,29 @@
     },
     'beta.back': { es: '← Volver a la página principal', en: '← Back to the main page' },
     'beta.fb': { es: 'Dejar feedback', en: 'Leave feedback' },
+    /* cómo instalar la beta (8/11/2026) */
+    'bi.kicker': { es: 'Cuando te llegue la invitación', en: 'Once you get your invite' },
+    'bi.title': { es: 'Cómo instalar la beta', en: 'How to install the beta' },
+    'bi.and.t': { es: 'Android', en: 'Android' },
+    'bi.and.1': {
+      es: 'Abre el enlace de invitación desde tu teléfono, con la misma cuenta de Google que inscribiste.',
+      en: 'Open the invite link on your phone, signed in with the same Google account you signed up with.'
+    },
+    'bi.and.2': { es: 'Toca «Aceptar invitación» o «Convertirse en tester».', en: 'Tap “Accept invite” or “Become a tester”.' },
+    'bi.and.3': { es: 'Toca «Descargar en Google Play» e instala Repers como cualquier app.', en: 'Tap “Download it on Google Play” and install Repers like any other app.' },
+    'bi.and.n': { es: 'Las actualizaciones llegan solas por Google Play.', en: 'Updates arrive automatically through Google Play.' },
+    'bi.ios.t': { es: 'iPhone (iOS)', en: 'iPhone (iOS)' },
+    'bi.ios.1': { es: 'Instala TestFlight desde el App Store. Es gratis y es de Apple.', en: 'Install TestFlight from the App Store. It’s free and made by Apple.' },
+    'bi.ios.2': { es: 'Abre el enlace de invitación desde tu iPhone.', en: 'Open the invite link on your iPhone.' },
+    'bi.ios.3': { es: 'Toca «Aceptar» y luego «Instalar».', en: 'Tap “Accept” and then “Install”.' },
+    'bi.ios.n': {
+      es: 'Para contarnos algo, haz una captura dentro de la app y toca «Compartir con la beta».',
+      en: 'To send us feedback, take a screenshot in the app and tap “Share Beta Feedback”.'
+    },
+    'bi.help': {
+      es: '¿No te llegó la invitación? Revisa la carpeta de spam o escríbenos a',
+      en: 'Didn’t get the invite? Check your spam folder or write to us at'
+    },
     /* formulario de inscripción a la beta (8/11/2026) */
     'bf.disp': { es: '¿Qué sistema operativo usas?', en: 'Which operating system do you use?' },
     'bf.ios': { es: 'iOS', en: 'iOS' },
@@ -168,8 +191,8 @@
     'bf.enviar': { es: 'Quiero probar Repers', en: 'I want to try Repers' },
     'bf.enviando': { es: 'Inscribiendo…', en: 'Signing you up…' },
     'bf.ok': {
-      es: '¡Listo! Quedaste inscrito. Te escribiremos a ese correo cuando tengas acceso.',
-      en: 'Done! You’re on the list. We’ll email you when you have access.'
+      es: '¡Listo! Quedaste inscrito. Te enviaremos el enlace de invitación a ese correo. Abajo tienes los pasos para instalarla.',
+      en: 'Done! You’re on the list. We’ll email you the invite link. The install steps are below.'
     },
     'bf.ya': {
       es: 'Ese correo ya estaba inscrito para este teléfono. Te escribiremos cuando tengas acceso.',
