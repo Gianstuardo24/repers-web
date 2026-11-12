@@ -183,7 +183,28 @@
       es: 'Usa el correo de la cuenta de Google de tu teléfono (la de Play Store): solo esa cuenta puede instalar la beta.',
       en: 'Use the Google account on your phone (the one in the Play Store): only that account can install the beta.'
     },
-    'bf.nombre': { es: 'Tu nombre (opcional)', en: 'Your name (optional)' },
+    'bf.nombre': { es: 'Nombre (opcional)', en: 'First name (optional)' },
+    /* 12/11/2026: apellido, país y "cómo nos conociste" */
+    'bf.apellido': { es: 'Apellido (opcional)', en: 'Last name (optional)' },
+    'bf.pais': { es: '¿De qué país eres?', en: 'Where are you from?' },
+    'bf.pais.elige': { es: 'Elige tu país', en: 'Choose your country' },
+    'pais.CL': { es: 'Chile', en: 'Chile' },
+    'pais.MX': { es: 'México', en: 'Mexico' },
+    'pais.US': { es: 'Estados Unidos', en: 'United States' },
+    'pais.CA': { es: 'Canadá', en: 'Canada' },
+    'pais.AR': { es: 'Argentina', en: 'Argentina' },
+    'pais.CO': { es: 'Colombia', en: 'Colombia' },
+    'pais.PE': { es: 'Perú', en: 'Peru' },
+    'pais.ES': { es: 'España', en: 'Spain' },
+    'pais.OTRO': { es: 'Otro', en: 'Other' },
+    'bf.org': { es: '¿Cómo nos conociste?', en: 'How did you hear about us?' },
+    'bf.org.instagram': { es: 'Instagram', en: 'Instagram' },
+    'bf.org.tiktok': { es: 'TikTok', en: 'TikTok' },
+    'bf.org.youtube': { es: 'YouTube', en: 'YouTube' },
+    'bf.org.amigo': { es: 'Un amigo', en: 'A friend' },
+    'bf.org.otro': { es: 'Otro', en: 'Other' },
+    'bf.falta_pais': { es: 'Elige tu país para seguir.', en: 'Choose your country to continue.' },
+    'bf.falta_org': { es: 'Cuéntanos cómo nos conociste.', en: 'Tell us how you heard about us.' },
     'bf.edad': {
       es: 'Tengo 18 años o más, o soy el adulto responsable que inscribe este correo.',
       en: 'I’m 18 or older, or I’m the responsible adult signing up this email.'
@@ -365,14 +386,27 @@
   if (bform) {
     var plat = 'ios';
     var hint = document.getElementById('bf-hint');
-    bform.querySelectorAll('.chip-btn').forEach(function (b) {
+    bform.querySelectorAll('.chip-btn[data-plat]').forEach(function (b) {
       b.addEventListener('click', function () {
-        bform.querySelectorAll('.chip-btn').forEach(function (x) { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
+        bform.querySelectorAll('.chip-btn[data-plat]').forEach(function (x) { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
         b.classList.add('active'); b.setAttribute('aria-pressed', 'true');
         plat = b.getAttribute('data-plat');
         hint.setAttribute('data-i18n', 'bf.hint.' + plat);
         hint.textContent = DICT['bf.hint.' + plat][lang];
       });
+    });
+    /* "¿Cómo nos conociste?" (12/11/2026) */
+    var origen = null;
+    var orgBtns = bform.querySelectorAll('.chip-btn[data-org]');
+    function marcarOrigen(v) {
+      origen = v;
+      orgBtns.forEach(function (x) {
+        var on = x.getAttribute('data-org') === v;
+        x.classList.toggle('active', on); x.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+    orgBtns.forEach(function (b) {
+      b.addEventListener('click', function () { marcarOrigen(b.getAttribute('data-org')); });
     });
     bform.addEventListener('submit', function (ev) {
       ev.preventDefault();
@@ -384,6 +418,13 @@
       var email = (emailEl.value || '').trim().toLowerCase();
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 200) {
         out.textContent = DICT['bf.mal'][lang]; out.className = 'form-msg err'; emailEl.focus(); return;
+      }
+      var paisEl = document.getElementById('bf-pais');
+      if (!paisEl.value) {
+        out.textContent = DICT['bf.falta_pais'][lang]; out.className = 'form-msg err'; paisEl.focus(); return;
+      }
+      if (!origen) {
+        out.textContent = DICT['bf.falta_org'][lang]; out.className = 'form-msg err'; return;
       }
       if (!document.getElementById('bf-edad').checked) {
         out.textContent = DICT['bf.falta_edad'][lang]; out.className = 'form-msg err'; return;
@@ -402,7 +443,10 @@
           p_email: email,
           p_plataforma: plat,
           p_nombre: (document.getElementById('bf-nombre').value || '').trim().slice(0, 60) || null,
-          p_idioma: lang
+          p_idioma: lang,
+          p_apellido: (document.getElementById('bf-apellido').value || '').trim().slice(0, 60) || null,
+          p_pais: paisEl.value,
+          p_origen: origen
         })
       }).then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -410,7 +454,7 @@
       }).then(function (res) {
         out.textContent = DICT[res === 'ya_inscrito' ? 'bf.ya' : 'bf.ok'][lang];
         out.className = 'form-msg ok';
-        if (res !== 'ya_inscrito') { bform.reset(); confetti(); }
+        if (res !== 'ya_inscrito') { bform.reset(); marcarOrigen(null); confetti(); }
       }).catch(function () {
         out.textContent = DICT['bf.err'][lang];
         out.className = 'form-msg err';

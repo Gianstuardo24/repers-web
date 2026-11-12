@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261108-6">
+  <link rel="stylesheet" href="styles.css?v=20261112-1">
 </head>
 <body>
 
@@ -66,9 +66,39 @@
         <input type="email" id="bf-email" maxlength="200" autocomplete="email" inputmode="email" required>
         <p class="field-hint" id="bf-hint" data-i18n="bf.hint.ios">Usa el correo de tu Apple ID: ahí te llega la invitación de TestFlight.</p>
       </div>
+      <!-- 12/11/2026: apellido, país y "cómo nos conociste" (columnas apellido, pais, origen) -->
+      <div class="form-dos">
+        <div class="form-row">
+          <label class="field-label" for="bf-nombre" data-i18n="bf.nombre">Nombre (opcional)</label>
+          <input type="text" id="bf-nombre" maxlength="60" autocomplete="given-name">
+        </div>
+        <div class="form-row">
+          <label class="field-label" for="bf-apellido" data-i18n="bf.apellido">Apellido (opcional)</label>
+          <input type="text" id="bf-apellido" maxlength="60" autocomplete="family-name">
+        </div>
+      </div>
       <div class="form-row">
-        <label class="field-label" for="bf-nombre" data-i18n="bf.nombre">Tu nombre (opcional)</label>
-        <input type="text" id="bf-nombre" maxlength="60" autocomplete="given-name">
+        <label class="field-label" for="bf-pais" data-i18n="bf.pais">¿De qué país eres?</label>
+        <select id="bf-pais" required>
+          <option value="" selected disabled data-i18n="bf.pais.elige">Elige tu país</option>
+          <option value="CL" data-i18n="pais.CL">Chile</option>
+          <option value="MX" data-i18n="pais.MX">México</option>
+          <option value="US" data-i18n="pais.US">Estados Unidos</option>
+          <option value="CA" data-i18n="pais.CA">Canadá</option>
+          <option value="AR" data-i18n="pais.AR">Argentina</option>
+          <option value="CO" data-i18n="pais.CO">Colombia</option>
+          <option value="PE" data-i18n="pais.PE">Perú</option>
+          <option value="ES" data-i18n="pais.ES">España</option>
+          <option value="OTRO" data-i18n="pais.OTRO">Otro</option>
+        </select>
+      </div>
+      <label class="field-label centrada" data-i18n="bf.org">¿Cómo nos conociste?</label>
+      <div class="chip-row chip-row-org" role="group">
+        <button type="button" class="chip-btn" data-org="instagram" aria-pressed="false" data-i18n="bf.org.instagram">Instagram</button>
+        <button type="button" class="chip-btn" data-org="tiktok" aria-pressed="false" data-i18n="bf.org.tiktok">TikTok</button>
+        <button type="button" class="chip-btn" data-org="youtube" aria-pressed="false" data-i18n="bf.org.youtube">YouTube</button>
+        <button type="button" class="chip-btn" data-org="amigo" aria-pressed="false" data-i18n="bf.org.amigo">Un amigo</button>
+        <button type="button" class="chip-btn" data-org="otro" aria-pressed="false" data-i18n="bf.org.otro">Otro</button>
       </div>
       <label class="check-row" for="bf-edad">
         <input type="checkbox" id="bf-edad">
@@ -159,6 +189,6 @@
     </div>
   </footer>
 
-  <script src="site.js?v=20261108-6"></script>
+  <script src="site.js?v=20261112-1"></script>
 </body>
 </html>
