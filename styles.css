@@ -388,3 +388,8 @@ footer { border-top: 1px solid var(--line); background: var(--surface); }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
 }
+/* 13/11/2026: botón de Google Play en la beta */
+.beta-form .bf-android { text-align: center; margin: 4px 0 6px; }
+.beta-form .bf-android .btn-play { display: flex; text-decoration: none; }
+.beta-form .field-hint.centrada { text-align: center; margin-top: 12px; }
+.beta-form [hidden] { display: none !important; }

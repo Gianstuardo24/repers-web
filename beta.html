@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261112-1">
+  <link rel="stylesheet" href="styles.css?v=20261113-1">
 </head>
 <body>
 
@@ -43,14 +43,14 @@
       <span class="orb orb-1" aria-hidden="true">🚀</span>
       <span class="orb orb-2" aria-hidden="true">🧪</span>
     </div>
-    <span class="beta-badge"><span class="dot"></span> <span data-i18n="beta.badge">Beta cerrada · Android y iOS</span></span>
+    <span class="beta-badge"><span class="dot"></span> <span data-i18n="beta.badge">Beta abierta en Android</span></span>
     <h1>
       <span class="line"><span data-i18n="beta.title1">Sé de los</span></span>
       <span class="line"><span data-i18n="beta.title2">primeros.</span></span>
     </h1>
     <p class="hero-sub" data-i18n="beta.sub">
-      Prueba Repers antes que nadie y ayúdanos a pulirlo. Inscríbete y te
-      enviamos la invitación para Android o iOS.
+      Prueba Repers antes que nadie y ayúdanos a pulirlo. En Android, descárgala
+      directo desde Google Play. En iPhone, inscríbete y te enviamos la invitación.
     </p>
     <!-- 8/11/2026: inscripción a la beta. Guarda el correo y el teléfono en
          Supabase (tabla beta_inscritos, función inscribir_beta). Tao filtra por
@@ -61,56 +61,64 @@
         <button type="button" class="chip-btn" data-plat="android" aria-pressed="false" data-i18n="bf.android">Android</button>
         <button type="button" class="chip-btn active" data-plat="ios" aria-pressed="true" data-i18n="bf.ios">iOS</button>
       </div>
-      <div class="form-row">
-        <label class="field-label" for="bf-email" data-i18n="bf.email">Tu correo</label>
-        <input type="email" id="bf-email" maxlength="200" autocomplete="email" inputmode="email" required>
-        <p class="field-hint" id="bf-hint" data-i18n="bf.hint.ios">Usa el correo de tu Apple ID: ahí te llega la invitación de TestFlight.</p>
+      <!-- 13/11/2026: Android se descarga directo (acceso anticipado de Google Play).
+           iOS sigue con inscripción hasta tener el enlace público de TestFlight. -->
+      <div class="bf-android" id="bf-android" hidden>
+        <a class="btn btn-primary btn-big btn-play" id="bf-play" href="https://play.google.com/store/apps/details?id=com.repers.app&amp;referrer=utm_source%3Drepers_web%26utm_medium%3Dbeta" target="_blank" rel="noopener" data-i18n="bf.play">Descargar en Google Play</a>
+        <p class="field-hint centrada" data-i18n="bf.play.hint">Gratis. Se instala desde Google Play como cualquier app.</p>
       </div>
-      <!-- 12/11/2026: apellido, país y "cómo nos conociste" (columnas apellido, pais, origen) -->
-      <div class="form-dos">
+      <div class="bf-ios" id="bf-ios">
         <div class="form-row">
-          <label class="field-label" for="bf-nombre" data-i18n="bf.nombre">Nombre (opcional)</label>
-          <input type="text" id="bf-nombre" maxlength="60" autocomplete="given-name">
+          <label class="field-label" for="bf-email" data-i18n="bf.email">Tu correo</label>
+          <input type="email" id="bf-email" maxlength="200" autocomplete="email" inputmode="email" required>
+          <p class="field-hint" id="bf-hint" data-i18n="bf.hint.ios">Usa el correo de tu Apple ID: ahí te llega la invitación de TestFlight.</p>
+        </div>
+        <!-- 12/11/2026: apellido, país y "cómo nos conociste" (columnas apellido, pais, origen) -->
+        <div class="form-dos">
+          <div class="form-row">
+            <label class="field-label" for="bf-nombre" data-i18n="bf.nombre">Nombre (opcional)</label>
+            <input type="text" id="bf-nombre" maxlength="60" autocomplete="given-name">
+          </div>
+          <div class="form-row">
+            <label class="field-label" for="bf-apellido" data-i18n="bf.apellido">Apellido (opcional)</label>
+            <input type="text" id="bf-apellido" maxlength="60" autocomplete="family-name">
+          </div>
         </div>
         <div class="form-row">
-          <label class="field-label" for="bf-apellido" data-i18n="bf.apellido">Apellido (opcional)</label>
-          <input type="text" id="bf-apellido" maxlength="60" autocomplete="family-name">
+          <label class="field-label" for="bf-pais" data-i18n="bf.pais">¿De qué país eres?</label>
+          <select id="bf-pais" required>
+            <option value="" selected disabled data-i18n="bf.pais.elige">Elige tu país</option>
+            <option value="CL" data-i18n="pais.CL">Chile</option>
+            <option value="MX" data-i18n="pais.MX">México</option>
+            <option value="US" data-i18n="pais.US">Estados Unidos</option>
+            <option value="CA" data-i18n="pais.CA">Canadá</option>
+            <option value="AR" data-i18n="pais.AR">Argentina</option>
+            <option value="CO" data-i18n="pais.CO">Colombia</option>
+            <option value="PE" data-i18n="pais.PE">Perú</option>
+            <option value="ES" data-i18n="pais.ES">España</option>
+            <option value="OTRO" data-i18n="pais.OTRO">Otro</option>
+          </select>
         </div>
+        <label class="field-label centrada" data-i18n="bf.org">¿Cómo nos conociste?</label>
+        <div class="chip-row chip-row-org" role="group">
+          <button type="button" class="chip-btn" data-org="instagram" aria-pressed="false" data-i18n="bf.org.instagram">Instagram</button>
+          <button type="button" class="chip-btn" data-org="tiktok" aria-pressed="false" data-i18n="bf.org.tiktok">TikTok</button>
+          <button type="button" class="chip-btn" data-org="youtube" aria-pressed="false" data-i18n="bf.org.youtube">YouTube</button>
+          <button type="button" class="chip-btn" data-org="amigo" aria-pressed="false" data-i18n="bf.org.amigo">Un amigo</button>
+          <button type="button" class="chip-btn" data-org="otro" aria-pressed="false" data-i18n="bf.org.otro">Otro</button>
+        </div>
+        <label class="check-row" for="bf-edad">
+          <input type="checkbox" id="bf-edad">
+          <span data-i18n="bf.edad">Tengo 18 años o más, o soy el adulto responsable que inscribe este correo.</span>
+        </label>
+        <!-- honeypot anti-bots -->
+        <div class="hp" aria-hidden="true">
+          <label for="bf-web">Web</label>
+          <input type="text" id="bf-web" tabindex="-1" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary btn-big" id="bf-submit" data-i18n="bf.enviar">Quiero probar Repers</button>
+        <p class="form-msg" id="bf-out" role="status" aria-live="polite"></p>
       </div>
-      <div class="form-row">
-        <label class="field-label" for="bf-pais" data-i18n="bf.pais">¿De qué país eres?</label>
-        <select id="bf-pais" required>
-          <option value="" selected disabled data-i18n="bf.pais.elige">Elige tu país</option>
-          <option value="CL" data-i18n="pais.CL">Chile</option>
-          <option value="MX" data-i18n="pais.MX">México</option>
-          <option value="US" data-i18n="pais.US">Estados Unidos</option>
-          <option value="CA" data-i18n="pais.CA">Canadá</option>
-          <option value="AR" data-i18n="pais.AR">Argentina</option>
-          <option value="CO" data-i18n="pais.CO">Colombia</option>
-          <option value="PE" data-i18n="pais.PE">Perú</option>
-          <option value="ES" data-i18n="pais.ES">España</option>
-          <option value="OTRO" data-i18n="pais.OTRO">Otro</option>
-        </select>
-      </div>
-      <label class="field-label centrada" data-i18n="bf.org">¿Cómo nos conociste?</label>
-      <div class="chip-row chip-row-org" role="group">
-        <button type="button" class="chip-btn" data-org="instagram" aria-pressed="false" data-i18n="bf.org.instagram">Instagram</button>
-        <button type="button" class="chip-btn" data-org="tiktok" aria-pressed="false" data-i18n="bf.org.tiktok">TikTok</button>
-        <button type="button" class="chip-btn" data-org="youtube" aria-pressed="false" data-i18n="bf.org.youtube">YouTube</button>
-        <button type="button" class="chip-btn" data-org="amigo" aria-pressed="false" data-i18n="bf.org.amigo">Un amigo</button>
-        <button type="button" class="chip-btn" data-org="otro" aria-pressed="false" data-i18n="bf.org.otro">Otro</button>
-      </div>
-      <label class="check-row" for="bf-edad">
-        <input type="checkbox" id="bf-edad">
-        <span data-i18n="bf.edad">Tengo 18 años o más, o soy el adulto responsable que inscribe este correo.</span>
-      </label>
-      <!-- honeypot anti-bots -->
-      <div class="hp" aria-hidden="true">
-        <label for="bf-web">Web</label>
-        <input type="text" id="bf-web" tabindex="-1" autocomplete="off">
-      </div>
-      <button type="submit" class="btn btn-primary btn-big" id="bf-submit" data-i18n="bf.enviar">Quiero probar Repers</button>
-      <p class="form-msg" id="bf-out" role="status" aria-live="polite"></p>
     </form>
   </header>
 
@@ -123,12 +131,12 @@
       </div>
       <div class="steps">
         <div class="step reveal">
-          <h3 data-i18n="beta.1.t">Inscríbete</h3>
-          <p data-i18n="beta.1.p">Elige tu teléfono y deja tu correo en el formulario de arriba.</p>
+          <h3 data-i18n="beta.1.t">Descárgala o inscríbete</h3>
+          <p data-i18n="beta.1.p">En Android, toca «Descargar en Google Play». En iPhone, deja tu correo en el formulario de arriba.</p>
         </div>
         <div class="step reveal">
-          <h3 data-i18n="beta.2.t">Te llega la invitación</h3>
-          <p data-i18n="beta.2.p">En Android, por Google Play. En iOS, por TestFlight (la app de pruebas de Apple).</p>
+          <h3 data-i18n="beta.2.t">Instálala</h3>
+          <p data-i18n="beta.2.p">En Android, directo desde Google Play. En iPhone, por TestFlight (la app de pruebas de Apple), cuando te llegue la invitación.</p>
         </div>
         <div class="step reveal">
           <h3 data-i18n="beta.3.t">Juega y cuéntanos</h3>
@@ -142,16 +150,16 @@
   <section id="instalar">
     <div class="wrap">
       <div class="reveal">
-        <span class="kicker" data-i18n="bi.kicker">Cuando te llegue la invitación</span>
+        <span class="kicker" data-i18n="bi.kicker">Paso a paso</span>
         <h2 class="section-title" data-i18n="bi.title">Cómo instalar la beta</h2>
       </div>
       <div class="install-grid">
         <div class="install-card reveal">
           <h3 data-i18n="bi.and.t">Android</h3>
           <ol class="install-steps">
-            <li data-i18n="bi.and.1">Abre el enlace de invitación desde tu teléfono, con la misma cuenta de Google que inscribiste.</li>
-            <li data-i18n="bi.and.2">Toca «Aceptar invitación» o «Convertirse en tester».</li>
-            <li data-i18n="bi.and.3">Toca «Descargar en Google Play» e instala Repers como cualquier app.</li>
+            <li data-i18n="bi.and.1">Toca «Descargar en Google Play» desde tu teléfono Android.</li>
+            <li data-i18n="bi.and.2">Si Google Play te lo pide, acepta unirte al acceso anticipado.</li>
+            <li data-i18n="bi.and.3">Toca «Instalar». Listo, ya puedes jugar.</li>
           </ol>
           <p class="install-note" data-i18n="bi.and.n">Las actualizaciones llegan solas por Google Play.</p>
         </div>
@@ -189,6 +197,6 @@
     </div>
   </footer>
 
-  <script src="site.js?v=20261112-1"></script>
+  <script src="site.js?v=20261113-1"></script>
 </body>
 </html>

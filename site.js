@@ -121,24 +121,24 @@
       en: '© 2026 Repers. Made with lots of squats.'
     },
     /* beta page */
-    'beta.badge': { es: 'Beta cerrada · Android y iOS', en: 'Closed beta · Android & iOS' },
+    'beta.badge': { es: 'Beta abierta en Android', en: 'Open beta on Android' },
     'beta.title1': { es: 'Sé de los', en: 'Be one of the' },
     'beta.title2': { es: 'primeros.', en: 'first.' },
     'beta.sub': {
-      es: 'Prueba Repers antes que nadie y ayúdanos a pulirlo. Inscríbete y te enviamos la invitación para Android o iOS.',
-      en: 'Try Repers before anyone else and help us polish it. Sign up and we’ll send you an invite for Android or iOS.'
+      es: 'Prueba Repers antes que nadie y ayúdanos a pulirlo. En Android, descárgala directo desde Google Play. En iPhone, inscríbete y te enviamos la invitación.',
+      en: 'Try Repers before anyone else and help us polish it. On Android, get it straight from Google Play. On iPhone, sign up and we’ll send you an invite.'
     },
     'beta.how.kicker': { es: 'Cómo entrar', en: 'How to join' },
     'beta.how.title': { es: 'Tres pasos y ya estás jugando', en: 'Three steps and you’re in' },
-    'beta.1.t': { es: 'Inscríbete', en: 'Sign up' },
+    'beta.1.t': { es: 'Descárgala o inscríbete', en: 'Download or sign up' },
     'beta.1.p': {
-      es: 'Elige tu teléfono y deja tu correo en el formulario de arriba.',
-      en: 'Pick your phone and leave your email in the form above.'
+      es: 'En Android, toca «Descargar en Google Play». En iPhone, deja tu correo en el formulario de arriba.',
+      en: 'On Android, tap “Get it on Google Play”. On iPhone, leave your email in the form above.'
     },
-    'beta.2.t': { es: 'Te llega la invitación', en: 'Get your invite' },
+    'beta.2.t': { es: 'Instálala', en: 'Install it' },
     'beta.2.p': {
-      es: 'En Android, por Google Play. En iOS, por TestFlight (la app de pruebas de Apple).',
-      en: 'On Android, through Google Play. On iOS, through TestFlight (Apple’s testing app).'
+      es: 'En Android, directo desde Google Play. En iPhone, por TestFlight (la app de pruebas de Apple), cuando te llegue la invitación.',
+      en: 'On Android, straight from Google Play. On iPhone, through TestFlight (Apple’s testing app) once your invite arrives.'
     },
     'beta.3.t': { es: 'Juega y cuéntanos', en: 'Play and tell us' },
     'beta.3.p': {
@@ -148,15 +148,15 @@
     'beta.back': { es: '← Volver a la página principal', en: '← Back to the main page' },
     'beta.fb': { es: 'Dejar feedback', en: 'Leave feedback' },
     /* cómo instalar la beta (8/11/2026) */
-    'bi.kicker': { es: 'Cuando te llegue la invitación', en: 'Once you get your invite' },
+    'bi.kicker': { es: 'Paso a paso', en: 'Step by step' },
     'bi.title': { es: 'Cómo instalar la beta', en: 'How to install the beta' },
     'bi.and.t': { es: 'Android', en: 'Android' },
     'bi.and.1': {
-      es: 'Abre el enlace de invitación desde tu teléfono, con la misma cuenta de Google que inscribiste.',
-      en: 'Open the invite link on your phone, signed in with the same Google account you signed up with.'
+      es: 'Toca «Descargar en Google Play» desde tu teléfono Android.',
+      en: 'Tap “Get it on Google Play” on your Android phone.'
     },
-    'bi.and.2': { es: 'Toca «Aceptar invitación» o «Convertirse en tester».', en: 'Tap “Accept invite” or “Become a tester”.' },
-    'bi.and.3': { es: 'Toca «Descargar en Google Play» e instala Repers como cualquier app.', en: 'Tap “Download it on Google Play” and install Repers like any other app.' },
+    'bi.and.2': { es: 'Si Google Play te lo pide, acepta unirte al acceso anticipado.', en: 'If Google Play asks, agree to join early access.' },
+    'bi.and.3': { es: 'Toca «Instalar». Listo, ya puedes jugar.', en: 'Tap “Install”. That’s it, you’re ready to play.' },
     'bi.and.n': { es: 'Las actualizaciones llegan solas por Google Play.', en: 'Updates arrive automatically through Google Play.' },
     'bi.ios.t': { es: 'iPhone (iOS)', en: 'iPhone (iOS)' },
     'bi.ios.1': { es: 'Instala TestFlight desde el App Store. Es gratis y es de Apple.', en: 'Install TestFlight from the App Store. It’s free and made by Apple.' },
@@ -185,6 +185,8 @@
     },
     'bf.nombre': { es: 'Nombre (opcional)', en: 'First name (optional)' },
     /* 12/11/2026: apellido, país y "cómo nos conociste" */
+    'bf.play': { es: 'Descargar en Google Play', en: 'Get it on Google Play' },
+    'bf.play.hint': { es: 'Gratis. Se instala desde Google Play como cualquier app.', en: 'Free. It installs from Google Play like any other app.' },
     'bf.apellido': { es: 'Apellido (opcional)', en: 'Last name (optional)' },
     'bf.pais': { es: '¿De qué país eres?', en: 'Where are you from?' },
     'bf.pais.elige': { es: 'Elige tu país', en: 'Choose your country' },
@@ -390,11 +392,22 @@
       b.addEventListener('click', function () {
         bform.querySelectorAll('.chip-btn[data-plat]').forEach(function (x) { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
         b.classList.add('active'); b.setAttribute('aria-pressed', 'true');
-        plat = b.getAttribute('data-plat');
-        hint.setAttribute('data-i18n', 'bf.hint.' + plat);
-        hint.textContent = DICT['bf.hint.' + plat][lang];
+        elegirPlat(b.getAttribute('data-plat'));
       });
     });
+    /* 13/11/2026: Android se descarga directo desde Google Play (acceso anticipado) */
+    function elegirPlat(p) {
+      plat = p;
+      bform.querySelectorAll('.chip-btn[data-plat]').forEach(function (x) {
+        var on = x.getAttribute('data-plat') === p;
+        x.classList.toggle('active', on); x.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      hint.setAttribute('data-i18n', 'bf.hint.' + p);
+      hint.textContent = DICT['bf.hint.' + p][lang];
+      document.getElementById('bf-android').hidden = (p !== 'android');
+      document.getElementById('bf-ios').hidden = (p === 'android');
+    }
+    if (/android/i.test(navigator.userAgent || '')) elegirPlat('android');
     /* "¿Cómo nos conociste?" (12/11/2026) */
     var origen = null;
     var orgBtns = bform.querySelectorAll('.chip-btn[data-org]');
