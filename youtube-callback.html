@@ -1,0 +1,8 @@
+<!DOCTYPE html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Repers</title>
+<body style="font-family:system-ui;background:#1E5FE0;color:#fff;text-align:center;padding:60px">
+<h1 id="t">Conectando...</h1><p id="d"></p>
+<script>
+var p=new URLSearchParams(location.search);
+if(p.has('resultado')){t.textContent=p.get('resultado')=='ok'?'YouTube conectado':'No se pudo conectar';d.textContent=p.get('detalle')||'';}
+else if(p.has('code')||p.has('error')){location.replace('https://ckpbwxryhlzaabynupnt.supabase.co/functions/v1/youtube-callback'+location.search);}
+</script>
