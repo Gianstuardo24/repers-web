@@ -48,7 +48,7 @@
     <div class="marca"><img src="/juego/icons/icon-192.png" alt=""><span>REPERS</span></div>
     <div id="contenido" aria-live="polite"><p class="cargando" id="cargando">Cargando…</p></div>
   </div>
-  <p class="pie" id="pie">Repers SpA · Viña del Mar, Chile · repersapp@gmail.com · <a id="lnkPriv" href="/privacy.html">Política de Privacidad</a></p>
+  <p class="pie" id="pie">Repers SpA · Viña del Mar, Chile · repersapp@gmail.com · <a id="lnkPriv" href="/privacy">Política de Privacidad</a></p>
 </main>
 <script>
 (function () {
@@ -129,7 +129,7 @@
   function pie() {
     document.documentElement.lang = idioma;
     var a = document.getElementById('lnkPriv');
-    a.textContent = t().priv; a.href = '/privacy.html?lang=' + idioma;
+    a.textContent = t().priv; a.href = '/privacy?lang=' + idioma;
   }
   function llamar(cuerpo) {
     return fetch(FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) })
